@@ -1,4 +1,4 @@
-[![Docker Build](https://github.com/justb4/docker-jmeter/actions/workflows/docker.yml/badge.svg)](https://github.com/justb4/docker-jmeter/actions/workflows/docker.yml)
+[![Docker Build](https://github.com/anasoid/docker-jmeter/actions/workflows/docker.yml/badge.svg)](https://github.com/anasoid/docker-jmeter/actions/workflows/docker.yml)
 [![Patreon](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://patreon.com/justb4)
 
 # docker-jmeter
@@ -10,11 +10,6 @@ Find Images of this repo on [Docker Hub](https://hub.docker.com/r/justb4/jmeter)
 Starting version 5.4 Docker builds/pushes 
 are [executed via GitHub Workflows](.github/workflows/docker.yml).
 
-## Donate
-With **over 10 Million Pulls from DockerHub**, this Docker Image is increasingly popular.
-To support its active maintainance consider making a donation, for example via PayPal:
-
-[![Donate with PayPal](https://raw.githubusercontent.com/stefan-niedermann/paypal-donate-button/master/paypal-donate-button.png)](https://www.paypal.com/biz/fund?id=3QZW9SNGCWBM4)
 
 
 ## Security Patches
@@ -85,7 +80,7 @@ Contribution by @wilsonmar
 1. In a Terminal/Command session, install Git, navigate/make a folder, then:
 
    ```
-   git clone https://github.com/justb4/docker-jmeter.git
+   git clone https://github.com/anasoid/docker-jmeter.git
    cd docker-jmeter
    ```
 
@@ -186,7 +181,6 @@ sudo docker run --name ${NAME} -i -v ${WORK_DIR}:${WORK_DIR} -w ${WORK_DIR} ${IM
 
 ## Credits
 
-Thanks to https://github.com/hauptmedia/docker-jmeter
+Thanks to https://github.com/justb4/docker-jmeter, https://github.com/hauptmedia/docker-jmeter
 and https://github.com/hhcordero/docker-jmeter-server for providing
-the Dockerfiles that inspired me.   @wilsonmar for contributing detailed instructions. Others
-that tested/reported after version updates.
+the Dockerfiles that inspired me.
