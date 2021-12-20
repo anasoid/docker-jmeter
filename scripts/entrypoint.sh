@@ -6,7 +6,9 @@
 #
 
 # Install jmeter plugins available on /plugins volume
-echo $PATH
+
+echo  ----------------------------------printenv-------------------------
+printenv
 echo
 mvn -version
 
@@ -17,15 +19,17 @@ echo
 jmeter --version
 
 
+
 echo
 timeout 5 ls -al ${JMETER_HOME}
 
-echo  ----------------------------------ls tmp
-ls -lah /tmp
-
-echo -----------------------------------mvn-download
-mvn-download.sh 
 
 
-echo  ----------------------------------ls tmp
-ls -lah /tmp
+echo -----------------------------------plancheck-download
+plancheck-download.sh
+
+
+
+
+
+

@@ -11,8 +11,17 @@ ARG JMETER_VERSION="5.4.2"
 ENV JMETER_HOME /opt/apache-jmeter-${JMETER_VERSION}
 ENV	JMETER_DOWNLOAD_URL  https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz
 ENV JAVA_HOME=/opt/java/openjdk
-ENV DEPENCENCIES_PATH /dependencies
+
+ENV DEPENCENCIES_TMP_PATH /tmp/dependencies 
+ENV DEPENCENCIES_PATH /jmeter/internal/dependencies
+ENV PLUGINS_PATH /jmeter/plugins
+
+ENV USER_PATH /jmeter/user
+ENV USER_DEPENCENCIES_PATH $USER_PATH/dependencies
+ENV USER_MAVEN_SETTINGS $USER_DEPENCENCIES_PATH/settings.xml
+
 ENV SCRIPTS_PATH /scripts
+
 ENV MVN_OPTION="-DoverWriteReleases=true -DoverWriteSnapshots=true -DoverWriteIfNewer=true -DexcludeTransitive=true"
 #INPUT ENV
 
@@ -44,10 +53,19 @@ RUN    apk update \
 	&& rm -rf ${JMETER_HOME}/docs \
 	&& rm -rf ${JMETER_HOME}/licenses \
 	&& rm -rf ${JMETER_HOME}/printable_docs \
-	&& echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%Installing Jmeter Plugins%%%%%%%%%%%%%%%%%%%%%%%%%%%% \
-	&& rm -rf /tmp/dependencies 
+	&& echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%CLEANUP TMP%%%%%%%%%%%%%%%%%%%%%%%%%%%% \
+	&& rm -rf /tmp/dependencies \
+	&& rm -rf $DEPENCENCIES_TMP_PATH \
+	&& rm -rf $HOME/.m2/repository/kg
 
-RUN ${SCRIPTS_PATH}/mvn-download.sh 
+RUN echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%Installing Jmeter Plugins%%%%%%%%%%%%%%%%%%%%%%%%%%%% \
+    && plancheck-download.sh \ 
+	&& plugin-manager-download.sh \ 
+	&& plugin-manager-download.sh \ 
+	&& mvn-download.sh -f plugins-lib-dependencies.xml -t ${JMETER_HOME}/lib \
+	&& echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%CLEANUP TMP%%%%%%%%%%%%%%%%%%%%%%%%%%%% \
+	&& rm -rf $DEPENCENCIES_TMP_PATH \
+	&& rm -rf $HOME/.m2/repository/kg
 
 
 # Entrypoint has same signature as "jmeter" command
