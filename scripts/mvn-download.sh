@@ -71,7 +71,7 @@ elif [ -f "$DEPENCENCIES_PATH/$FILE" ]; then
     FILE_PARAM="$DEPENCENCIES_PATH/$FILE"
 fi
 
-echo mvn -f $FILE_PARAM dependency:copy-dependencies $SETTNGS_PARAM -DoutputDirectory=$TARGET $MVN_OPTION
-mvn -f $FILE_PARAM dependency:copy-dependencies $SETTNGS_PARAM -DoutputDirectory=$TARGET $MVN_OPTION
+echo mvn -Dmaven.main.skip=true -f $FILE_PARAM dependency:copy-dependencies $SETTNGS_PARAM -DoutputDirectory=$TARGET $MVN_OPTION
+mvn -Dmaven.main.skip=true -f $FILE_PARAM dependency:copy-dependencies $SETTNGS_PARAM -DoutputDirectory=$TARGET $MVN_OPTION
 
 

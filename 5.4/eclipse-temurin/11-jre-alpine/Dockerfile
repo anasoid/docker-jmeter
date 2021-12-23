@@ -68,7 +68,7 @@ RUN    apk update \
 	&& apk add --update  curl unzip bash \
 	&& apk add --no-cache nss \
 	&& rm -rf /var/cache/apk/* \
-	&& echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%Installing Jmeter ${JMETER_VERSION}%%%%%%%%%%%%%%%%%%%%%%%%%%%% \
+	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Installing Jmeter ${JMETER_VERSION} %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
 	&& mkdir -p /tmp/dependencies  \
 	&& curl -Z -L ${JMETER_DOWNLOAD_URL} >  /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz  \
 	&& mkdir -p /opt  \
@@ -76,17 +76,18 @@ RUN    apk update \
 	&& rm -rf ${JMETER_HOME}/docs \
 	&& rm -rf ${JMETER_HOME}/licenses \
 	&& rm -rf ${JMETER_HOME}/printable_docs \
-	&& echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%CLEANUP TMP%%%%%%%%%%%%%%%%%%%%%%%%%%%% \
+	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CLEANUP TMP %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
 	&& rm -rf /tmp/dependencies \
 	&& rm -rf $DEPENCENCIES_TMP_PATH \
 	&& rm -rf $MAVEN_CONFIG/repository/kg
 
-RUN echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%Installing Jmeter Plugins%%%%%%%%%%%%%%%%%%%%%%%%%%%% \
-    && plancheck-download.sh \ 
+
+RUN echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Installing Jmeter Plugins %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
+	&& plancheck-download.sh \ 
 	&& plugin-manager-download.sh \ 
 	&& plugin-manager-download.sh \ 
 	&& mvn-download.sh -f plugins-lib-dependencies.xml -t ${JMETER_HOME}/lib \
-	&& echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%CLEANUP TMP%%%%%%%%%%%%%%%%%%%%%%%%%%%% \
+	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CLEANUP TMP %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
 	&& rm -rf $DEPENCENCIES_TMP_PATH \
 	&& rm -rf $MAVEN_CONFIG/repository/kg
 
