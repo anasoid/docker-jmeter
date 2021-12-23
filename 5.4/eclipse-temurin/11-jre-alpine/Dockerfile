@@ -8,17 +8,40 @@ ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 
 ARG JMETER_VERSION="5.4.2"
-ENV JMETER_HOME /opt/apache-jmeter-${JMETER_VERSION}
 ENV	JMETER_DOWNLOAD_URL  https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz
+ENV JMETER_HOME /opt/apache-jmeter-${JMETER_VERSION}
 ENV JAVA_HOME=/opt/java/openjdk
 
+#docker build
 ENV DEPENCENCIES_TMP_PATH /tmp/dependencies 
 ENV DEPENCENCIES_PATH /jmeter/internal/dependencies
 ENV PLUGINS_PATH /jmeter/plugins
 
+#USER
 ENV USER_PATH /jmeter/user
 ENV USER_DEPENCENCIES_PATH $USER_PATH/dependencies
+ENV USER_PLUGINS_PATH $USER_PATH/plugins
+ENV USER_SCRIPTS_BASE_PATH $PROJECT_PATH/scripts
+ENV USER_SCRIPTS_POST_FILE $USER_SCRIPTS_BASE_PATH/post-test.sh
+ENV USER_SCRIPTS_PRE_FILE $USER_SCRIPTS_BASE_PATH/pre-test.sh
 ENV USER_MAVEN_SETTINGS $USER_DEPENCENCIES_PATH/settings.xml
+ENV USER_JMETER_PROPERTIES $USER_DEPENCENCIES_PATH/additional.propertes
+
+#PROJECT
+ENV PROJECT_PATH /jmeter/project
+ENV PROJECT_DEPENCENCIES_PATH $PROJECT_PATH/dependenciess
+ENV PROJECT_PLUGINS_PATH $PROJECT_PATH/plugins
+ENV PROJECT_SCRIPTS_BASE_PATH $PROJECT_PATH
+ENV PROJECT_SCRIPTS_POST_ACTION_FILE $PROJECT_SCRIPTS_BASE_PATH/post-test.sh
+ENV PROJECT_SCRIPTS_PRE_ACTION_FILE  $PROJECT_SCRIPTS_BASE_PATH/pre-test.sh
+ENV PROJECT_MAVEN_SETTINGS $PROJECT_DEPENCENCIES_PATH/settings.xml
+ENV PROJECT_JMETER_PROPERTIES $PROJECT_DEPENCENCIES_PATH/additional.propertes
+
+#CONFIG
+ENV CONF_SKIP_PLUGINS_INSTALL false
+ENV CONF_SKIP_PRE_ACTION false
+ENV CONF_SKIP_POST_ACTION false
+
 
 ENV SCRIPTS_PATH /scripts
 
@@ -56,7 +79,7 @@ RUN    apk update \
 	&& echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%CLEANUP TMP%%%%%%%%%%%%%%%%%%%%%%%%%%%% \
 	&& rm -rf /tmp/dependencies \
 	&& rm -rf $DEPENCENCIES_TMP_PATH \
-	&& rm -rf $HOME/.m2/repository/kg
+	&& rm -rf $MAVEN_CONFIG/repository/kg
 
 RUN echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%Installing Jmeter Plugins%%%%%%%%%%%%%%%%%%%%%%%%%%%% \
     && plancheck-download.sh \ 
@@ -65,7 +88,7 @@ RUN echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%Installing Jmeter Plugins%%%%%%%%%%%%%%%%%
 	&& mvn-download.sh -f plugins-lib-dependencies.xml -t ${JMETER_HOME}/lib \
 	&& echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%CLEANUP TMP%%%%%%%%%%%%%%%%%%%%%%%%%%%% \
 	&& rm -rf $DEPENCENCIES_TMP_PATH \
-	&& rm -rf $HOME/.m2/repository/kg
+	&& rm -rf $MAVEN_CONFIG/repository/kg
 
 
 # Entrypoint has same signature as "jmeter" command

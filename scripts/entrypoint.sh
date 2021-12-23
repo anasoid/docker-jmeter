@@ -1,35 +1,44 @@
-#!/bin/sh
-# Inspired from https://github.com/hhcordero/docker-jmeter-client
-# Basically runs jmeter, assuming the PATH is set to point to JMeter bin-dir (see Dockerfile)
-#
-# This script expects the standdard JMeter command parameters.
-#
+#!/bin/bash
+set -e
 
-# Install jmeter plugins available on /plugins volume
-
-echo  ----------------------------------printenv-------------------------
+echo "############################################ printenv        ############################################"
 printenv
-echo
+echo "############################################ mvn -version    ############################################"
 mvn -version
 
-echo
+echo "############################################ java -version   ############################################"
 java -version
 
-echo
+echo "############################################ jmeter -version ############################################"
 jmeter --version
-
-
-
+echo "#########################################################################################################"
 echo
-timeout 5 ls -al ${JMETER_HOME}
 
+echo "############################################ Download Maven dependencies (START) ############################################"
+all-mvn-dependencies-download.sh
+echo "############################################ Download Maven dependencies (END)   ############################################"
+echo
 
+echo "############################################ Copy Plugins (START) ############################################"
+copy-plugins.sh
+echo "############################################ Copy Plugins (END)   ############################################"
+echo
 
-echo -----------------------------------plancheck-download
-plancheck-download.sh
+echo "############################################ Download URL dependencies (START) ############################################"
+echo URL dependencies
+echo "############################################ Download URL dependencies (END)   ############################################"
+echo
 
+echo "############################################ PRE-TEST (START) ############################################"
+echo PRE-TEST
+echo "############################################ PRE-TEST (END)   ############################################"
+echo
 
+echo "############################################ Execute-Test (START) ############################################"
+echo EXECUTE TEST
+echo "############################################ Execute-Test (END)   ############################################"
+echo
 
-
-
-
+echo "############################################ POST-TEST (START) ############################################"
+echo POST-TEST
+echo "############################################ POST-TEST (END)   ############################################"
