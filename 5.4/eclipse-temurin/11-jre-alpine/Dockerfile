@@ -6,12 +6,14 @@ FROM eclipse-temurin:11-jre-alpine
 
 ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
+ENV MVN_OPTION="-DoverWriteReleases=true -DoverWriteSnapshots=true -DoverWriteIfNewer=true -DexcludeTransitive=true"
 
 ARG JMETER_VERSION="5.4.2"
 ENV	JMETER_DOWNLOAD_URL  https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz
 ENV JAVA_HOME=/opt/java/openjdk
 
 #docker build
+ENV SCRIPTS_PATH /scripts
 ENV DEPENCENCIES_TMP_PATH /tmp/dependencies 
 ENV DEPENCENCIES_PATH /jmeter/internal/dependencies
 ENV PLUGINS_PATH /jmeter/plugins
@@ -32,9 +34,7 @@ ENV USER_DEPENCENCIES_PATH $USER_PATH/dependencies
 ENV USER_PLUGINS_PATH $USER_PATH/plugins
 ENV USER_LIB_PATH $USER_PATH/lib
 ENV USER_PLUGINS_URL_FILE $USER_PATH/url.txt
-ENV USER_SCRIPTS_BASE_PATH $PROJECT_PATH/scripts
-ENV USER_SCRIPTS_POST_FILE $USER_SCRIPTS_BASE_PATH/post-test.sh
-ENV USER_SCRIPTS_PRE_FILE $USER_SCRIPTS_BASE_PATH/pre-test.sh
+
 ENV USER_MAVEN_SETTINGS $USER_DEPENCENCIES_PATH/settings.xml
 ENV USER_JMETER_PROPERTIES $USER_DEPENCENCIES_PATH/additional.propertes
 
@@ -44,9 +44,6 @@ ENV PROJECT_DEPENCENCIES_PATH $PROJECT_PATH/dependencies
 ENV PROJECT_PLUGINS_PATH $PROJECT_PATH/plugins
 ENV PROJECT_LIB_PATH $PROJECT_PATH/lib
 ENV PROJECT_PLUGINS_URL_FILE $PROJECT_PLUGINS_PATH/url.txt
-ENV PROJECT_SCRIPTS_BASE_PATH $PROJECT_PATH
-ENV PROJECT_SCRIPTS_POST_ACTION_FILE $PROJECT_SCRIPTS_BASE_PATH/post-test.sh
-ENV PROJECT_SCRIPTS_PRE_ACTION_FILE  $PROJECT_SCRIPTS_BASE_PATH/pre-test.sh
 ENV PROJECT_MAVEN_SETTINGS $PROJECT_DEPENCENCIES_PATH/settings.xml
 ENV PROJECT_JMETER_PROPERTIES $PROJECT_DEPENCENCIES_PATH/additional.propertes
 
@@ -58,9 +55,14 @@ ENV CONF_SKIP_PRE_ACTION false
 ENV CONF_SKIP_POST_ACTION false
 ENV CONF_COPY_TO_WORKSPACE false
 
-ENV SCRIPTS_PATH /scripts
+#EXECUTION
+ENV EXEC_MODE master
+ENV CONF_EXEC_WORKER_COUNT 1
+ENV CONF_EXEC_WORKER_NUMBER 1
 
-ENV MVN_OPTION="-DoverWriteReleases=true -DoverWriteSnapshots=true -DoverWriteIfNewer=true -DexcludeTransitive=true"
+
+
+
 #INPUT ENV
 
 
@@ -74,7 +76,7 @@ COPY dependencies $DEPENCENCIES_PATH
 ARG TZ="Europe/Amsterdam"
 ENV TZ ${TZ}
 
-ENV PATH "${SCRIPTS_PATH}:${SCRIPTS_PATH}/internal:${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${JMETER_HOME}/bin:${PATH}"
+ENV PATH "${SCRIPTS_PATH}:${SCRIPTS_PATH}/internal:${SCRIPTS_PATH}/internal/build:${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${JMETER_HOME}/bin:${PATH}"
 
 RUN    apk update \
 	&& apk upgrade \
@@ -114,7 +116,7 @@ RUN echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Installing Jmeter Plugins %%%%%%%%%%%%%%
 	&& mkdir -p $JMETER_ADDITIONAL_EXT  \
 	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CLEANUP TMP %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
 	&& rm -rf $DEPENCENCIES_TMP_PATH \
-	&& rm -rf ${SCRIPTS_PATH}/internal \
+	&& rm -rf ${SCRIPTS_PATH}/internal/build \
 	&& rm -rf $MAVEN_CONFIG/repository/kg
 
 
