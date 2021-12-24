@@ -74,7 +74,7 @@ COPY dependencies $DEPENCENCIES_PATH
 ARG TZ="Europe/Amsterdam"
 ENV TZ ${TZ}
 
-ENV PATH "${SCRIPTS_PATH}:${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${JMETER_HOME}/bin:${PATH}"
+ENV PATH "${SCRIPTS_PATH}:${SCRIPTS_PATH}/internal:${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${JMETER_HOME}/bin:${PATH}"
 
 RUN    apk update \
 	&& apk upgrade \
@@ -85,6 +85,7 @@ RUN    apk update \
 	&& rm -rf /var/cache/apk/* \
 	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Installing Jmeter ${JMETER_VERSION} %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
 	&& mkdir -p /tmp/dependencies  \
+	&& echo ${PATH}  \
 	&& curl -Z -L ${JMETER_DOWNLOAD_URL} >  /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz  \
 	&& mkdir -p /opt  \
 	&& tar -xzf /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz -C /opt  \
@@ -113,6 +114,7 @@ RUN echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Installing Jmeter Plugins %%%%%%%%%%%%%%
 	&& mkdir -p $JMETER_ADDITIONAL_EXT  \
 	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CLEANUP TMP %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
 	&& rm -rf $DEPENCENCIES_TMP_PATH \
+	&& rm -rf ${SCRIPTS_PATH}/internal \
 	&& rm -rf $MAVEN_CONFIG/repository/kg
 
 
