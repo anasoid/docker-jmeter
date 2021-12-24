@@ -9,9 +9,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>kg.apc</groupId>
-      <artifactId>jmeter-plugins-cmn-jmeter</artifactId>
-      <version>0.6</version>
+      <groupId>org.reactivestreams</groupId>
+      <artifactId>reactive-streams</artifactId>
+      <version>1.0.3</version>
       <exclusions>
         <exclusion>
           <groupId>*</groupId>

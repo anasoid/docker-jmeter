@@ -10,8 +10,8 @@ if [ "$CONF_SKIP_PLUGINS_INSTALL" == "false" ]; then
    # lib/ext dependencies`s
    for folder in ${foldersExt[@]}; do
       if [ -d "$folder" ]; then
-         echo "Copy plugins from  :    $folder"
-         cp -vf $folders $EXT_TARGET
+         echo "Copy plugins from  :     $folder to $EXT_TARGET"
+         cp -vrf "$folder"/. $EXT_TARGET/
       else
          echo "Skip copy plugin from : $folder, not found "
       fi
@@ -20,8 +20,8 @@ if [ "$CONF_SKIP_PLUGINS_INSTALL" == "false" ]; then
    # lib dependencies`s
    for folder in ${foldersLib[@]}; do
       if [ -d "$folder" ]; then
-         echo "Copy plugins from  :    $folder"
-         cp -vf $folders $EXT_TARGET
+         echo "Copy plugins from  :    $folder to $EXT_TARGET"
+         cp -vrf "$folder"/. $EXT_TARGET/
       else
          echo "Skip copy plugin from : $folder, not found "
       fi
