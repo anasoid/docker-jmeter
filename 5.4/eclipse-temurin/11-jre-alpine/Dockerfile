@@ -22,7 +22,7 @@ ENV DEPENCENCIES_PATH /jmeter/internal/dependencies
 ENV PLUGINS_PATH /jmeter/plugins
 
 #JMETER
-ENV JMETER_HOME /opt/apache-jmeter-${JMETER_VERSION}
+ENV JMETER_HOME /opt/apache-jmeter
 ENV JMETER_ADDITIONAL_HOME /jmeter/additional
 ENV JMETER_ADDITIONAL_LIB $JMETER_ADDITIONAL_HOME/lib
 ENV JMETER_ADDITIONAL_EXT $JMETER_ADDITIONAL_LIB/ext
@@ -99,23 +99,16 @@ RUN    apk update \
 	&& curl -Z -L ${JMETER_DOWNLOAD_URL} >  /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz  \
 	&& mkdir -p /opt  \
 	&& tar -xzf /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz -C /opt  \
+	&& mv -v /opt/apache-jmeter-${JMETER_VERSION} $JMETER_HOME \
+	&& jmeter --version \
 	&& echo "" >> $JMETER_HOME/bin/jmeter.properties  \
 	&& echo "#DOCKER-JMETER-CONFG" >> $JMETER_HOME/bin/jmeter.properties  \
 	&& echo "search_paths=$JMETER_ADDITIONAL_EXT" >> $JMETER_HOME/bin/jmeter.properties  \
 	&& echo "plugin_dependency_paths=$JMETER_ADDITIONAL_LIB" >> $JMETER_HOME/bin/jmeter.properties  \
-	&& tar -xzf /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz -C /opt  \
 	&& rm -rf ${JMETER_HOME}/docs \
 	&& rm -rf ${JMETER_HOME}/licenses \
 	&& rm -rf ${JMETER_HOME}/printable_docs \
-	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CLEANUP TMP %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
-	&& rm -rf /tmp/dependencies \
-	&& rm -rf $DEPENCENCIES_TMP_PATH \
-	&& rm -rf $MAVEN_CONFIG/repository/kg
-
-
-
-
-RUN echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Installing Jmeter Plugins %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
+	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Installing Jmeter Plugins %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
 	&& plancheck-download.sh \ 
 	&& plugin-manager-download.sh \ 
 	&& plugin-manager-download.sh \ 
@@ -123,9 +116,14 @@ RUN echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Installing Jmeter Plugins %%%%%%%%%%%%%%
 	&& mkdir -p $JMETER_ADDITIONAL_LIB  \
 	&& mkdir -p $JMETER_ADDITIONAL_EXT  \
 	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CLEANUP TMP %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
+	&& rm -rf /tmp/dependencies \
 	&& rm -rf $DEPENCENCIES_TMP_PATH \
 	&& rm -rf ${SCRIPTS_PATH}/internal/build \
 	&& rm -rf $MAVEN_CONFIG/repository/kg
+
+
+
+
 
 
 # Entrypoint has same signature as "jmeter" command

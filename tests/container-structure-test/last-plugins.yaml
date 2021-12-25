@@ -1,0 +1,12 @@
+schemaVersion: "2.0.0"
+fileExistenceTests:
+  - name: "Check bazel cache folder"
+    path: "/bazel/cache"
+    shouldExist: true
+    uid: 1000
+    gid: 1000
+    isExecutableBy: "group"
+fileContentTests:
+  - name: "Cache folder config"
+    path: "/home/user/.bazelrc"
+    expectedContents: [".*build --repository_cache=/bazel/cache.*"]
