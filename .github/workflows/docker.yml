@@ -18,7 +18,7 @@ jobs:
       matrix:
         include:
           - jmeter-branch: 5.4
-            jmeter-version: "5.4.2"
+            jmeter-version: "5.4.3"
             jvm-version: "eclipse-temurin/11-jre-alpine"
             jvm-version-label: "eclipse-temurin-11-jre-alpine"
             tags-latest: "latest"
