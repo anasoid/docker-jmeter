@@ -21,6 +21,7 @@ jobs:
             jmeter-version: "5.4.2"
             jvm-version: "eclipse-temurin/11-jre-alpine"
             jvm-version-label: "eclipse-temurin-11-jre-alpine"
+            tags-latest: "latest"
 
     # v2 https://github.com/docker/build-push-action/blob/master/UPGRADE.md
     steps:
@@ -68,7 +69,7 @@ jobs:
             ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}-${{ matrix.jvm-version-label }}
             ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}
             ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}-${{ matrix.jvm-version-label }}
-            ${{ steps.prep.outputs.image }}:latest
+            ${{ steps.prep.outputs.image }}:${{ matrix.tags-latest }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
