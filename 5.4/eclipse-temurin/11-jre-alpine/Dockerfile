@@ -4,6 +4,9 @@ FROM maven:3.8-eclipse-temurin-11-alpine  as maven-install-build
 # Define your base image
 FROM eclipse-temurin:11-jre-alpine
 
+LABEL org.opencontainers.image.authors="Anas OUFDOU <oufdou.anas@gmail.com>"
+
+
 ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 ENV MVN_OPTION="-DoverWriteReleases=true -DoverWriteSnapshots=true -DoverWriteIfNewer=true -DexcludeTransitive=true"
