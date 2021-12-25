@@ -1,5 +1,10 @@
 {
-  "extends": [
-    "config:base"
-  ]
+  "extends": ["config:base"],
+  "maven": {
+    "fileMatch": [
+      "\\.pom\\.xml$",
+      "(^|/)pom\\.xml$",
+      "(^|/)dependencies\\.xml$"
+    ]
+  }
 }
