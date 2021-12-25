@@ -62,11 +62,12 @@ jobs:
           push: false
           build-args: |
             JMETER_VERSION=${{ matrix.jmeter-version }}
+
           tags: |
             ${{ steps.prep.outputs.tags }}
-            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}-${{ matrix.jvm-version-label }
+            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}-${{ matrix.jvm-version-label }}
             ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}
-            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}-${{ matrix.jvm-version-label }
+            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}-${{ matrix.jvm-version-label }}
             ${{ steps.prep.outputs.image }}:latest
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
