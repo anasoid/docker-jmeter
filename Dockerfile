@@ -1,6 +1,6 @@
 # inspired by https://github.com/hauptmedia/docker-jmeter  and
 # https://github.com/hhcordero/docker-jmeter-server/blob/master/Dockerfile
-FROM alpine:3.12
+FROM alpine:3.15
 
 MAINTAINER Just van den Broecke<just@justobjects.nl>
 
