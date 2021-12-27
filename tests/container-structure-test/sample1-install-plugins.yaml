@@ -13,5 +13,5 @@ fileExistenceTests:
     shouldExist: true
 
   - name: "Project mvn install plugin"
-    path: "/jmeter/additional/lib/ext/reactive-streams-1.0.3.jar"
+    path: "/jmeter/additional/lib/reactive-streams-1.0.3.jar"
     shouldExist: true
