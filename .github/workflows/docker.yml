@@ -85,7 +85,8 @@ jobs:
 
       - name: Test Jmeter Install
         run: |
-          container-structure-test test --image ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }} --config tests/container-structure-test/last-plugins.yaml
+          pwd
+          container-structure-test test --image ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }} --config tests/container-structure-test/jmeter-install.yaml
 
 #      - name: TODO Tests with Docker Image ⚙️
 #        run: docker run  --entrypoint "/run-tests.sh" ${{ steps.prep.outputs.image }}:${{ steps.prep.outputs.version }}

@@ -1,7 +1,7 @@
 schemaVersion: "2.0.0"
 fileExistenceTests:
   - name: "Jmeter install"
-    path: "/opt/apache-jmeter/bin/jmeter"
+    path: "/opt/apache-jmeter/bin/jmeterr"
     shouldExist: true
 
 fileContentTests:
