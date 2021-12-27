@@ -1,0 +1,14 @@
+schemaVersion: "2.0.0"
+fileExistenceTests:
+  - name: "Jmeter install"
+    path: "/opt/apache-jmeter/bin/jmeter"
+    shouldExist: true
+
+fileContentTests:
+  - name: "Jmeter plugin lib config"
+    path: "/opt/apache-jmeter/bin/jmeter.properties"
+    expectedContents:
+      [
+        ".*search_paths=/jmeter/additional/lib/ext",
+        ".*plugin_dependency_paths=/jmeter/additional/lib",
+      ]

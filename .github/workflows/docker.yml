@@ -28,6 +28,12 @@ jobs:
       - name: Checkout ✅
         uses: actions/checkout@v2
 
+      - name: Install  container-structure-test 📦
+        run: |
+          curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64
+          chmod +x container-structure-test-linux-amd64
+          sudo mv container-structure-test-linux-amd64 /usr/local/bin/container-structure-test
+
       - name: Prepare 📦
         id: prep
         run: |
@@ -76,6 +82,10 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.version=${{ github.sha }}
             "org.opencontainers.image.version": "7.15.1"
+
+      - name: Test Jmeter Install
+        run: |
+          container-structure-test test --image ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }} --config tests/container-structure-test/last-plugins.yaml
 
 #      - name: TODO Tests with Docker Image ⚙️
 #        run: docker run  --entrypoint "/run-tests.sh" ${{ steps.prep.outputs.image }}:${{ steps.prep.outputs.version }}
