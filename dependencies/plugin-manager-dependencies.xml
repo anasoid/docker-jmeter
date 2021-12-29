@@ -10,7 +10,7 @@
         <dependency>
             <groupId>kg.apc</groupId>
             <artifactId>jmeter-plugins-manager</artifactId>
-            <version>1.6</version>
+            <version>1.7</version>
             <exclusions>
                 <exclusion>
                     <groupId>*</groupId>
