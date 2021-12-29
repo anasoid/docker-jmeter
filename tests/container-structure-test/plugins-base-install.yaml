@@ -16,7 +16,7 @@ fileExistenceTests:
     isExecutableBy: "owner"
 
   - name: "PluginsManager jar"
-    path: "/opt/apache-jmeter/lib/ext/jmeter-plugins-manager-1.6.jar"
+    path: "/opt/apache-jmeter/lib/ext/jmeter-plugins-manager-1.7.jar"
     shouldExist: true
 
   - name: "cmn jar"
