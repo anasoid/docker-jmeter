@@ -2,7 +2,7 @@
 FROM maven:3.8-eclipse-temurin-11-alpine  as maven-install-build
 
 # Define your base image
-FROM eclipse-temurin:11-jre-alpine
+FROM eclipse-temurin:17-jre-alpine
 
 LABEL org.opencontainers.image.authors="Anas OUFDOU <oufdou.anas@gmail.com>"
 
