@@ -93,9 +93,18 @@ jobs:
 
       - name: Test Jmeter Project Plugin Install
         run: |
-          docker  run --name t1 -v ${PWD}/tests/sample1/:/jmeter/project ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }} hello
+          docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -v ${PWD}/tests/users/user1/:/jmeter/user ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }} hello
           expected='hello'
+          if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else "echo $expected not found"; exit 1; fi;
+          expected='after-project-test1'
+          if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else "echo $expected not found"; exit 1; fi;
+          expected='before-project-test1'
+          if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else "echo $expected not found"; exit 1; fi;
+          expected='after-user-test1'
+          if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else "echo $expected not found"; exit 1; fi;
+          expected='before-user-test1'
           if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else "echo $expected not found"; exit 1; fi;
           docker commit t1 t1 
           container-structure-test test --image t1 --config tests/container-structure-test/sample1-install-plugins.yaml
+          container-structure-test test --image t1 --config tests/container-structure-test/user1-install-plugins.yaml
           docker rmi t1
