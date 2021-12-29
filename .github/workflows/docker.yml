@@ -107,6 +107,7 @@ jobs:
           docker commit t1 t1 
           container-structure-test test -v info --image t1 --config tests/container-structure-test/sample1-install-plugins.yaml
           container-structure-test test -v info --image t1 --config tests/container-structure-test/user1-install-plugins.yaml
+          docker rm t1
           docker rmi t1
 
       - name: Test Jmeter Clone Workspace
@@ -114,6 +115,7 @@ jobs:
           docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project  -e CONF_COPY_TO_WORKSPACE=true ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }} hello
           docker commit t1 t1 
           container-structure-test test -v info --image t1 --config tests/container-structure-test/workspace-clone.yaml
+          docker rm t1
           docker rmi t1
 
       - name: Test Jmeter don't clone Workspace
@@ -121,4 +123,5 @@ jobs:
           docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project  ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }} hello
           docker commit t1 t1 
           container-structure-test test -v info --image t1 --config tests/container-structure-test/workspace-dont-clone.yaml
+          docker rm t1
           docker rmi t1
