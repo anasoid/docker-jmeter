@@ -1,0 +1,7 @@
+schemaVersion: "2.0.0"
+fileExistenceTests:
+  - name: "Jmeter install"
+    path: "/jmeter/workspace/test-plan.jmx"
+    shouldExist: false
+
+

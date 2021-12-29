@@ -11,7 +11,7 @@ if [ "$CONF_SKIP_PLUGINS_INSTALL" == "false" ]; then
     export EXT_TARGET=$JMETER_ADDITIONAL_EXT
     export JMETER_ADDITIONAL_TARGET=$JMETER_ADDITIONAL_HOME
 fi
-echo "Using additional libs folder ($LIB_TARGET ,$LIB_TARGET ) "
+echo "Using additional libs folder ($LIB_TARGET ,$EXT_TARGET ) "
 
 #WORKSPACE
 export WORKSPACE_PATH=${PROJECT_PATH}

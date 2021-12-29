@@ -28,6 +28,12 @@ jobs:
       - name: Checkout ✅
         uses: actions/checkout@v2
 
+      - name: Install  container-structure-test 📦
+        run: |
+          curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64
+          chmod +x container-structure-test-linux-amd64
+          sudo mv container-structure-test-linux-amd64 /usr/local/bin/container-structure-test
+
       - name: Prepare 📦
         id: prep
         run: |
@@ -77,5 +83,45 @@ jobs:
             org.opencontainers.image.version=${{ github.sha }}
             "org.opencontainers.image.version": "7.15.1"
 
-#      - name: TODO Tests with Docker Image ⚙️
-#        run: docker run  --entrypoint "/run-tests.sh" ${{ steps.prep.outputs.image }}:${{ steps.prep.outputs.version }}
+      - name: Test Jmeter Install
+        run: |
+          container-structure-test test -v info --image ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }} --config tests/container-structure-test/jmeter-install.yaml
+
+      - name: Test Jmeter base Plugin Install
+        run: |
+          container-structure-test test -v info --image ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }} --config tests/container-structure-test/plugins-base-install.yaml
+
+      - name: Test Jmeter Project/User Plugin Install
+        run: |
+          docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -v ${PWD}/tests/users/user1/:/jmeter/user ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }} hello
+          expected='hello'
+          if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else "echo $expected not found"; exit 1; fi;
+          expected='after-project-test1'
+          if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else "echo $expected not found"; exit 1; fi;
+          expected='before-project-test1'
+          if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else "echo $expected not found"; exit 1; fi;
+          expected='after-user-test1'
+          if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else "echo $expected not found"; exit 1; fi;
+          expected='before-user-test1'
+          if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else "echo $expected not found"; exit 1; fi;
+          docker commit t1 t1 
+          container-structure-test test -v info --image t1 --config tests/container-structure-test/sample1-install-plugins.yaml
+          container-structure-test test -v info --image t1 --config tests/container-structure-test/user1-install-plugins.yaml
+          docker rm t1
+          docker rmi t1
+
+      - name: Test Jmeter Clone Workspace
+        run: |
+          docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project  -e CONF_COPY_TO_WORKSPACE=true ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }} hello
+          docker commit t1 t1 
+          container-structure-test test -v info --image t1 --config tests/container-structure-test/workspace-clone.yaml
+          docker rm t1
+          docker rmi t1
+
+      - name: Test Jmeter don't clone Workspace
+        run: |
+          docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project  ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }} hello
+          docker commit t1 t1 
+          container-structure-test test -v info --image t1 --config tests/container-structure-test/workspace-dont-clone.yaml
+          docker rm t1
+          docker rmi t1
