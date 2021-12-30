@@ -16,7 +16,14 @@ jobs:
             jvm-version: "eclipse-temurin/11-jre-alpine"
             jvm-version-label: "eclipse-temurin-11-jre-alpine"
             tags-latest: "latest"
-            with-plugins: ["true" , "false"]
+            with-plugins: "true"
+
+          - jmeter-branch: 5.4
+            jmeter-version: "5.4.3"
+            jvm-version: "eclipse-temurin/11-jre-alpine"
+            jvm-version-label: "eclipse-temurin-11-jre-alpine"
+            tags-latest: "latest"
+            with-plugins: "false"
 
     # v2 https://github.com/docker/build-push-action/blob/master/UPGRADE.md
     steps:
