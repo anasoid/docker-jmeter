@@ -94,18 +94,25 @@ jobs:
             org.opencontainers.image.version=${{ github.sha }}
             "org.opencontainers.image.version": "7.15.1"
 
+
+      - name: Result 📦
+        id: result
+        run: |
+          echo ::set-output name=currentImage::${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}${{ steps.prep.outputs.suffix }
+
+
       - name: Test Jmeter Install
         run: |
-          container-structure-test test -v info --image ${{ steps.build.outputs.digest }} --config tests/container-structure-test/jmeter-install.yaml
+          container-structure-test test -v info --image ${{ steps.result.outputs.currentImage }} --config tests/container-structure-test/jmeter-install.yaml
 
       - name: Test Jmeter base Plugin Install
         if: ${{ matrix.with-plugins == 'true' }}
         run: |
-          container-structure-test test -v info --image ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}${{ steps.prep.outputs.suffix }} --config tests/container-structure-test/plugins-base-install.yaml
+          container-structure-test test -v info --image ${{ steps.result.outputs.currentImage }} --config tests/container-structure-test/plugins-base-install.yaml
 
       - name: Test Jmeter Project/User Plugin Install
         run: |
-          docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -v ${PWD}/tests/users/user1/:/jmeter/user ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}${{ steps.prep.outputs.suffix }} hello
+          docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -v ${PWD}/tests/users/user1/:/jmeter/user ${{ steps.result.outputs.currentImage }} hello
           expected='hello'
           c
           expected='after-project-test1'
@@ -124,7 +131,7 @@ jobs:
 
       - name: Test Jmeter Clone Workspace
         run: |
-          docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project  -e CONF_COPY_TO_WORKSPACE=true ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }} hello
+          docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project  -e CONF_COPY_TO_WORKSPACE=true ${{ steps.result.outputs.currentImage }} hello
           docker commit t1 t1 
           container-structure-test test -v info --image t1 --config tests/container-structure-test/workspace-clone.yaml
           docker rm t1
@@ -132,7 +139,7 @@ jobs:
 
       - name: Test Jmeter don't clone Workspace
         run: |
-          docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project  ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }} hello
+          docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project ${{ steps.result.outputs.currentImage }} hello
           docker commit t1 t1 
           container-structure-test test -v info --image t1 --config tests/container-structure-test/workspace-dont-clone.yaml
           docker rm t1
