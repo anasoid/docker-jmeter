@@ -12,6 +12,7 @@ ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 ENV MVN_OPTION="-DoverWriteReleases=true -DoverWriteSnapshots=true -DoverWriteIfNewer=true -DexcludeTransitive=true"
 
 ARG JMETER_VERSION="5.4.3"
+ARG WITH_BASE_PLUGINS="true"
 ENV	JMETER_DOWNLOAD_URL  https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz
 ENV JAVA_HOME=/opt/java/openjdk
 
@@ -109,10 +110,7 @@ RUN    apk update \
 	&& rm -rf ${JMETER_HOME}/licenses \
 	&& rm -rf ${JMETER_HOME}/printable_docs \
 	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Installing Jmeter Plugins %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
-	&& plancheck-download.sh \ 
-	&& plugin-manager-download.sh \ 
-	&& plugin-manager-download.sh \ 
-	&& mvn-download.sh -f plugins-lib-dependencies.xml -t ${JMETER_HOME}/lib \
+	&& if [[ "$WITH_BASE_PLUGINS" == "true" ]];then install-base-plugins.sh; else echo "without install-base-plugins";  fi \
 	&& mkdir -p $JMETER_ADDITIONAL_LIB  \
 	&& mkdir -p $JMETER_ADDITIONAL_EXT  \
 	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CLEANUP TMP %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \

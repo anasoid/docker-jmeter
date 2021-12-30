@@ -1,0 +1,21 @@
+schemaVersion: "2.0.0"
+fileExistenceTests:
+  - name: "TestPlanCheck install"
+    path: "/opt/apache-jmeter/bin/TestPlanCheck.sh"
+    shouldExist: false
+
+  - name: "TestPlanCheck jar"
+    path: "/opt/apache-jmeter/lib/ext/jmeter-plugins-plancheck-2.4.jar"
+    shouldExist: false
+
+  - name: "PluginsManagerCMD install"
+    path: "/opt/apache-jmeter/bin/PluginsManagerCMD.sh"
+    shouldExist: false
+
+  - name: "PluginsManager jar"
+    path: "/opt/apache-jmeter/lib/ext/jmeter-plugins-manager-1.7.jar"
+    shouldExist: false
+
+  - name: "cmn jar"
+    path: "/opt/apache-jmeter/lib/jmeter-plugins-cmn-jmeter-0.7.jar"
+    shouldExist: false

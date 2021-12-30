@@ -1,9 +1,3 @@
-# Triggers a Docker workflow on push events and PRs but
-# pushes to DockerHub only for push on the master branch.
-# Runs GHC unit tests before DockerHub push.
-#
-# Author: Just van den Broecke - 2021
-#
 name: Docker Build ⚓
 
 on: [push, pull_request]
@@ -11,15 +5,23 @@ on: [push, pull_request]
 jobs:
   # Single job now to build Docker Image, run GHC unit tests, and push to DockerHub
   build_test_push:
-    name: Build, Test and Push Docker Image to DockerHub
+    name: Build, Test and Publish
 
     runs-on: ubuntu-latest
     strategy:
       matrix:
         include:
-          - jmeter-branch: 5.4
-            jmeter-version: "5.4.3"
+          - jmeter-version: "5.4.3"
+            with-plugins: "true"
             jvm-version: "eclipse-temurin/11-jre-alpine"
+            jmeter-branch: 5.4
+            jvm-version-label: "eclipse-temurin-11-jre-alpine"
+            tags-latest: "latest"
+
+          - jmeter-version: "5.4.3"
+            with-plugins: "false"
+            jvm-version: "eclipse-temurin/11-jre-alpine"
+            jmeter-branch: 5.4
             jvm-version-label: "eclipse-temurin-11-jre-alpine"
             tags-latest: "latest"
 
@@ -34,16 +36,23 @@ jobs:
           chmod +x container-structure-test-linux-amd64
           sudo mv container-structure-test-linux-amd64 /usr/local/bin/container-structure-test
 
+      - name: Config 📦
+        run: |
+          echo jmeter-branch=${{ matrix.jmeter-branch }}
+          echo jmeter-version=${{ matrix.jmeter-version }}
+          echo jvm-version=${{ matrix.jvm-version }}
+          echo tags-latest=${{ matrix.tags-latest }}
+          echo with-plugins=${{ matrix.with-plugins }}
+
       - name: Prepare 📦
         id: prep
         run: |
           DOCKER_IMAGE=anasoid/jmeter
           VERSION="${{ matrix.jmeter-version }}"
-          TAGS="${DOCKER_IMAGE}:${VERSION}"
           echo ::set-output name=image::${DOCKER_IMAGE}
           echo ::set-output name=version::${VERSION}
-          echo ::set-output name=tags::${TAGS}
           echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+          if [[ "${{ matrix.with-plugins }}" == "true" ]];then   echo ::set-output name=suffix::-plugins; else   echo ::set-output name=suffix::; fi;
 
       - name: Show Image Settings 📦
         run: echo "IMAGE=${{ steps.prep.outputs.image }} VERSION=${{ steps.prep.outputs.version }} TAGS=${{ steps.prep.outputs.tags }}"
@@ -61,6 +70,7 @@ jobs:
           echo "Platforms: ${{ steps.buildx.outputs.platforms }}"
 
       - name: Docker Build only - retain local Image 📦
+        id: build
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -69,13 +79,14 @@ jobs:
           push: false
           build-args: |
             JMETER_VERSION=${{ matrix.jmeter-version }}
+            WITH_BASE_PLUGINS=${{ matrix.with-plugins }}
 
           tags: |
-            ${{ steps.prep.outputs.tags }}
-            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}-${{ matrix.jvm-version-label }}
-            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}
-            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}-${{ matrix.jvm-version-label }}
-            ${{ steps.prep.outputs.image }}:${{ matrix.tags-latest }}
+            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}${{ steps.prep.outputs.suffix }}
+            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}${{ steps.prep.outputs.suffix }}-${{ matrix.jvm-version-label }}
+            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}${{ steps.prep.outputs.suffix }}
+            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}${{ steps.prep.outputs.suffix }}-${{ matrix.jvm-version-label }}
+            ${{ steps.prep.outputs.image }}:${{ matrix.tags-latest }}${{ steps.prep.outputs.suffix }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
@@ -83,19 +94,31 @@ jobs:
             org.opencontainers.image.version=${{ github.sha }}
             "org.opencontainers.image.version": "7.15.1"
 
+
+      - name: Result 📦
+        id: result
+        run: |
+          echo ::set-output name=currentImage::${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}${{ steps.prep.outputs.suffix }}
+
+
       - name: Test Jmeter Install
         run: |
-          container-structure-test test -v info --image ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }} --config tests/container-structure-test/jmeter-install.yaml
+          container-structure-test test -v info --image ${{ steps.result.outputs.currentImage }} --config tests/container-structure-test/jmeter-install.yaml
 
       - name: Test Jmeter base Plugin Install
+        if: ${{ matrix.with-plugins == 'true' }}
         run: |
-          container-structure-test test -v info --image ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }} --config tests/container-structure-test/plugins-base-install.yaml
+          container-structure-test test -v info --image ${{ steps.result.outputs.currentImage }} --config tests/container-structure-test/plugins-base-install.yaml
+
+      - name: Test Jmeter base Plugin Not Install
+        if: ${{ matrix.with-plugins == 'false' }}
+        run: |
+          container-structure-test test -v info --image ${{ steps.result.outputs.currentImage }} --config tests/container-structure-test/plugins-base-not-install.yaml
 
       - name: Test Jmeter Project/User Plugin Install
         run: |
-          docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -v ${PWD}/tests/users/user1/:/jmeter/user ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }} hello
+          docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -v ${PWD}/tests/users/user1/:/jmeter/user ${{ steps.result.outputs.currentImage }} hello
           expected='hello'
-          if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else "echo $expected not found"; exit 1; fi;
           expected='after-project-test1'
           if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else "echo $expected not found"; exit 1; fi;
           expected='before-project-test1'
@@ -112,7 +135,7 @@ jobs:
 
       - name: Test Jmeter Clone Workspace
         run: |
-          docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project  -e CONF_COPY_TO_WORKSPACE=true ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }} hello
+          docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project  -e CONF_COPY_TO_WORKSPACE=true ${{ steps.result.outputs.currentImage }} hello
           docker commit t1 t1 
           container-structure-test test -v info --image t1 --config tests/container-structure-test/workspace-clone.yaml
           docker rm t1
@@ -120,7 +143,7 @@ jobs:
 
       - name: Test Jmeter don't clone Workspace
         run: |
-          docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project  ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }} hello
+          docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project ${{ steps.result.outputs.currentImage }} hello
           docker commit t1 t1 
           container-structure-test test -v info --image t1 --config tests/container-structure-test/workspace-dont-clone.yaml
           docker rm t1
