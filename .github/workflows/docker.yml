@@ -22,6 +22,13 @@ jobs:
             jvm-version: "eclipse-temurin/11-jre-alpine"
             jvm-version-label: "eclipse-temurin-11-jre-alpine"
             tags-latest: "latest"
+            with-plugins: "true"
+          - jmeter-branch: 5.4
+            jmeter-version: "5.4.3"
+            jvm-version: "eclipse-temurin/11-jre-alpine"
+            jvm-version-label: "eclipse-temurin-11-jre-alpine"
+            tags-latest: "latest"
+            with-plugins: "false"
 
     # v2 https://github.com/docker/build-push-action/blob/master/UPGRADE.md
     steps:
@@ -44,6 +51,7 @@ jobs:
           echo ::set-output name=version::${VERSION}
           echo ::set-output name=tags::${TAGS}
           echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+          if [[ "${{ matrix.with-plugins }}" == "true" ]];then   echo ::set-output name=suffix::-plugins; else   echo ::set-output name=suffix::; fi;
 
       - name: Show Image Settings 📦
         run: echo "IMAGE=${{ steps.prep.outputs.image }} VERSION=${{ steps.prep.outputs.version }} TAGS=${{ steps.prep.outputs.tags }}"
@@ -69,13 +77,14 @@ jobs:
           push: false
           build-args: |
             JMETER_VERSION=${{ matrix.jmeter-version }}
+            WITH_BASE_PLUGINS=${{ matrix.with-plugins }}
 
           tags: |
-            ${{ steps.prep.outputs.tags }}
-            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}-${{ matrix.jvm-version-label }}
-            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}
-            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}-${{ matrix.jvm-version-label }}
-            ${{ steps.prep.outputs.image }}:${{ matrix.tags-latest }}
+            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}${{ steps.prep.outputs.suffix }}
+            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}${{ steps.prep.outputs.suffix }}-${{ matrix.jvm-version-label }}
+            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}${{ steps.prep.outputs.suffix }}
+            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}${{ steps.prep.outputs.suffix }}-${{ matrix.jvm-version-label }}
+            ${{ steps.prep.outputs.image }}:${{ matrix.tags-latest }}${{ steps.prep.outputs.suffix }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
@@ -95,7 +104,7 @@ jobs:
         run: |
           docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -v ${PWD}/tests/users/user1/:/jmeter/user ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }} hello
           expected='hello'
-          if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else "echo $expected not found"; exit 1; fi;
+          c
           expected='after-project-test1'
           if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else "echo $expected not found"; exit 1; fi;
           expected='before-project-test1'
