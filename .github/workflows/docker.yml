@@ -114,7 +114,6 @@ jobs:
         run: |
           docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -v ${PWD}/tests/users/user1/:/jmeter/user ${{ steps.result.outputs.currentImage }} hello
           expected='hello'
-          c
           expected='after-project-test1'
           if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else "echo $expected not found"; exit 1; fi;
           expected='before-project-test1'
