@@ -110,7 +110,7 @@ RUN    apk update \
 	&& rm -rf ${JMETER_HOME}/licenses \
 	&& rm -rf ${JMETER_HOME}/printable_docs \
 	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Installing Jmeter Plugins %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
-	&& if [[ $WITH_BASE_PLUGINS =="true" ]];then install-base-plugins.sh; else "echo without install-base-plugins"; exit 1; fi; \
+	&& if [[ $WITH_BASE_PLUGINS =="true" ]];then install-base-plugins.sh; else echo "without install-base-plugins";  fi \
 	&& mkdir -p $JMETER_ADDITIONAL_LIB  \
 	&& mkdir -p $JMETER_ADDITIONAL_EXT  \
 	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CLEANUP TMP %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
