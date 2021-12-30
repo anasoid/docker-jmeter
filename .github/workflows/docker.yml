@@ -110,6 +110,11 @@ jobs:
         run: |
           container-structure-test test -v info --image ${{ steps.result.outputs.currentImage }} --config tests/container-structure-test/plugins-base-install.yaml
 
+      - name: Test Jmeter base Plugin Not Install
+        if: ${{ matrix.with-plugins == 'false' }}
+        run: |
+          container-structure-test test -v info --image ${{ steps.result.outputs.currentImage }} --config tests/container-structure-test/plugins-base-not-install.yaml
+
       - name: Test Jmeter Project/User Plugin Install
         run: |
           docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -v ${PWD}/tests/users/user1/:/jmeter/user ${{ steps.result.outputs.currentImage }} hello
