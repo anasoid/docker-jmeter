@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   # Single job now to build Docker Image, run GHC unit tests, and push to DockerHub
   build_test_push:
-    name: Build, Test and Push Docker Image to DockerHub
+    name: Build, Test and Publish
 
     runs-on: ubuntu-latest
     strategy:
@@ -16,14 +16,7 @@ jobs:
             jvm-version: "eclipse-temurin/11-jre-alpine"
             jvm-version-label: "eclipse-temurin-11-jre-alpine"
             tags-latest: "latest"
-            with-plugins: "true"
-            
-          - jmeter-branch: 5.4
-            jmeter-version: "5.4.3"
-            jvm-version: "eclipse-temurin/11-jre-alpine"
-            jvm-version-label: "eclipse-temurin-11-jre-alpine"
-            tags-latest: "latest"
-            with-plugins: "false"
+            with-plugins: ["true" , "false"]
 
     # v2 https://github.com/docker/build-push-action/blob/master/UPGRADE.md
     steps:
@@ -35,6 +28,14 @@ jobs:
           curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64
           chmod +x container-structure-test-linux-amd64
           sudo mv container-structure-test-linux-amd64 /usr/local/bin/container-structure-test
+
+      - name: Config 📦
+        run: |
+          echo jmeter-branch=${{ matrix.jmeter-branch }}
+          echo jmeter-version=${{ matrix.jmeter-version }}
+          echo jvm-version=${{ matrix.jvm-version }}
+          echo tags-latest=${{ matrix.tags-latest }}
+          echo with-plugins=${{ matrix.with-plugins }}
 
       - name: Prepare 📦
         id: prep
