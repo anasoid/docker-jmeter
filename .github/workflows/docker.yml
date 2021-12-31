@@ -32,7 +32,7 @@ jobs:
 
       - name: Unit Test bash Script 📦
         run: |
-          /scripts/internal/build/test/jmeter-utils-test.sh 
+          ./scripts/internal/build/test/jmeter-utils-test.sh 
 
       - name: Install  container-structure-test 📦
         run: |
