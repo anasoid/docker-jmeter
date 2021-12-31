@@ -13,6 +13,7 @@ ENV MVN_OPTION="-DoverWriteReleases=true -DoverWriteSnapshots=true -DoverWriteIf
 
 ARG JMETER_VERSION="5.4.3"
 ARG WITH_BASE_PLUGINS="true"
+ENV WITH_BASE_PLUGINS ${WITH_BASE_PLUGINS}
 ENV	JMETER_DOWNLOAD_URL  https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz
 ENV JAVA_HOME=/opt/java/openjdk
 
@@ -32,6 +33,9 @@ ENV USER_PATH /jmeter/user
 ENV PROJECT_PATH /jmeter/project
 ENV WORKSPACE_TARGET /jmeter/workspace
 ENV OUTPUT_PATH /jmeter/out
+ENV OUTPUT_JTL_PATH $OUTPUT_PATH/jtl
+ENV OUTPUT_LOG_PATH $OUTPUT_PATH/log
+ENV OUTPUT_REPORT_PATH $OUTPUT_PATH/dashboard
 
 #USER
 ENV USER_DEPENCENCIES_PATH $USER_PATH/dependencies
@@ -63,6 +67,7 @@ ENV CONF_COPY_TO_WORKSPACE false
 ENV EXEC_MODE master
 ENV CONF_EXEC_WORKER_COUNT 1
 ENV CONF_EXEC_WORKER_NUMBER 1
+ENV CONF_EXEC_WAIT_BEFORE_TEST 0
 ENV CONF_EXEC_WAIT_AFTER_TEST 1
 ENV CONF_EXEC_TIMEOUT 999999
 
@@ -75,14 +80,16 @@ ENV CONF_CSV_SPLITTED_TO_OUT true
 
 #JMETER
 ENV JMETER_JMX ""
-ENV JMETER_EXIT ""
+ENV JMETER_EXIT "false"
 ENV JMETER_PROPERTIES_FILES "jmeter.propeties"
-ENV JMETER_JTL_FILE "result.jtl"
+ENV JMETER_JTL_FILE ""
 ENV JMETER_LOG_FILE "jmeter.log"
+ENV JMETER_REPORT_NAME ""
 ENV JMETER_EXTRA_ARGS ""
-ENV JMETER_REPORT_FOLDER_NAME "report"
-ENV JMETER_REPORT_FOLDER_NAME "report"
-
+ENV JMETER_CHECK_ONLY "false"
+ENV JMETER_CHECK_BEFORE_START "false"
+ENV JMETER_PLUGINS_MANAGER_INSTALL_LIST ""
+ENV JMETER_PLUGIN_MANAGER_INSTALL_FOR_JMX "false"
 
 #INPUT ENV
 
@@ -106,6 +113,11 @@ RUN    apk update \
 	&& apk add --update  curl unzip bash \
 	&& apk add --no-cache nss \
 	&& rm -rf /var/cache/apk/* \
+	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Prepare folers %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
+	&& mkdir -p $OUTPUT_PATH  \
+	&& mkdir -p $OUTPUT_JTL_PATH  \
+	&& mkdir -p $OUTPUT_LOG_PATH  \
+	&& mkdir -p $OUTPUT_REPORT_PATH  \
 	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Installing Jmeter ${JMETER_VERSION} %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
 	&& mkdir -p /tmp/dependencies  \
 	&& echo ${PATH}  \
