@@ -98,7 +98,7 @@ prepare_report_args() {
          echo "ERROR: Report folder is configured twice using JMETER_REPORT_NAME env variable ($JMETER_REPORT_NAME), and arguments using -o or --reportoutputfolder in ($@)" 1>&2
          return 1
       else
-         export REPORT_ARG=" -o $OUTPUT_LOG_PATH/$JMETER_LOG_FILE"
+         export REPORT_ARG=" -o $OUTPUT_REPORT_PATH/$JMETER_REPORT_NAME"
       fi
    else
       echo "Skip config JTL not present"
