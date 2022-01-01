@@ -42,16 +42,16 @@ prepare_exit_args() {
 #prepare PROPERTIES_FILES_ARG
 prepare_additional_file_properties() {
    if [ ! -z "$JMETER_PROPERTIES_FILES" ]; then
+      export PROPERTIES_ARG=" "
       for element in $JMETER_PROPERTIES_FILES; do
-         if [[ $element == *".properties" ]]; then
+         if [[ $element != *".properties" ]]; then
             echo "ERROR: file popeties should end with .properties in ($element) from ($JMETER_PROPERTIES_FILES)" 1>&2
             return 1
          fi
 
          file="$WORKSPACE_PATH/$element"
          if [ -f "$file" ]; then
-            export PROPERTIES_FILES_ARG=" -q $file$PROPERTIES_FILES_ARG 
-            "
+            export PROPERTIES_ARG=" -q $file$PROPERTIES_ARG"
          else
             echo "ERROR: Configured propeties file ($element) not found in  : ($file) " 1>&2
             return 1
