@@ -30,6 +30,10 @@ jobs:
       - name: Checkout ✅
         uses: actions/checkout@v2
 
+      - name: Unit Test bash Script 📦
+        run: |
+          ./scripts/internal/build/test/jmeter-utils-test.sh 
+
       - name: Install  container-structure-test 📦
         run: |
           curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64

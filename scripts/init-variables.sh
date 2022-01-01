@@ -31,3 +31,12 @@ else
     exit 1
 fi
 echo "Using EXEC_MODE_UP  ($EXEC_MODE_UP ) "
+
+#JMX
+export JMETER_JMX_FINAL="$WORKSPACE_PATH/$JMETER_JMX"
+
+#plugins manager
+export PluginsManagerCMD=$JMETER_HOME/bin/PluginsManagerCMD.sh
+
+#Test Plan Check
+export TestPlanCheck=$JMETER_HOME/bin/TestPlanCheck.sh
