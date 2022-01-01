@@ -35,7 +35,7 @@ prepare_jmx_args() {
 #prepare EXIT_ARG
 prepare_exit_args() {
    if [ "$JMETER_EXIT" == "true" ]; then
-      export EXIT_ARG=" -Jjmeterengine.remote.system.exit=true --remoteexit "
+      export EXIT_ARG="  -Jjmeterengine.remote.system.exit=true --remoteexit "
    fi
 }
 
@@ -78,10 +78,11 @@ prepare_JTL_args() {
 prepare_log_args() {
    if [ ! -z "$JMETER_LOG_FILE" ]; then
       if [[ $@ == *" -j"* ]] || [[ $@ == "-j"* ]] || [[ $@ == *"--jmeterlogfile"* ]]; then
-         if [ "$JMETER_LOG_FILE" ] <>"jmeter.log"; then
+         if [[ "$JMETER_LOG_FILE" != "jmeter.log" ]]; then
             echo "ERROR: LOG file is configured twice using JMETER_LOG_FILE env variable ($JMETER_LOG_FILE), and arguments using -j or --jmeterlogfile in ($@)" 1>&2
             return 1
          fi
+         export LOG_ARG=""
       else
          export LOG_ARG=" --jmeterlogfile $OUTPUT_LOG_PATH/$JMETER_LOG_FILE"
       fi
