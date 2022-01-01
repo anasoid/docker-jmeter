@@ -35,7 +35,7 @@ prepare_jmx_args() {
 #prepare EXIT_ARG
 prepare_exit_args() {
    if [ "$JMETER_EXIT" == "true" ]; then
-      export EXIT_ARG="  -Jjmeterengine.remote.system.exit=true --remoteexit "
+      export EXIT_ARG=" -Jjmeterengine.remote.system.exit=true --remoteexit "
    fi
 }
 
