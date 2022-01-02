@@ -17,13 +17,13 @@ echo "Using WORKSPACE  folder ($WORKSPACE_PATH ) "
 
 #SLAVE/MASTER
 export WORKSPACE_PATH=${PROJECT_PATH}
-if [ "${EXEC_MODE,,}" == "master" ]; then
+if [ "${CONF_EXEC_MODE,,}" == "master" ]; then
     export EXEC_MODE_UP="MASTER"
-elif [ "${EXEC_MODE,,}" == "slave" ]; then
+elif [ "${CONF_EXEC_MODE,,}" == "slave" ]; then
     export EXEC_MODE_UP="SLAVE"
 else
-    echo "Error!  Invalid EXEC_MODE  (${EXEC_MODE}), should be slave or master" 1>&2
-    exit 1
+    echo "Error!  Invalid CONF_EXEC_MODE  (${CONF_EXEC_MODE}), should be slave or master" 1>&2
+    return 1
 fi
 echo "Using EXEC_MODE_UP  ($EXEC_MODE_UP ) "
 
