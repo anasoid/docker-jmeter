@@ -154,7 +154,7 @@ jobs:
       - name: Test Jmeter Project/User Plugin Install with plugin manager (fail)
         if: ${{ matrix.with-plugins != 'true' }}
         run: |
-          docker  run --pull never --rm -v ${PWD}/tests/projects/sample1/:/jmeter/project -v -e JMETER_PLUGINS_MANAGER_INSTALL_LIST="jpgc-dbmon=0.1" -e JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX="true"  ${{ steps.result.outputs.currentImage }} hello
+          docker  run --pull never --rm -v ${PWD}/tests/projects/sample1/:/jmeter/project -e JMETER_PLUGINS_MANAGER_INSTALL_LIST="jpgc-dbmon=0.1" -e JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX="true"  ${{ steps.result.outputs.currentImage }} hello
 
       - name: Test Jmeter Clone Workspace
         run: |
