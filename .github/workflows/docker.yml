@@ -158,7 +158,7 @@ jobs:
           unexpected='hello'
           if [[ $(docker logs t1 | grep $unexpected ) ]];then echo "unexpected $unexpected found";exit 1; else echo "unexpected $unexpected not found";  fi;
           expected='TestPlanCheckTool: JMX is fine'
-          if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else echo "$expected not found"; exit 1; fi;
+          if [[ $(docker logs t1 | grep "$expected" ) ]];then echo "$expected found"; else echo "$expected not found"; exit 1; fi;
           docker commit t1 t1 
           container-structure-test test -v info --image t1 --config tests/container-structure-test/sample1-install-plugins.yaml
           container-structure-test test -v info --image t1 --config tests/container-structure-test/install-plugins-by-manager.yaml
