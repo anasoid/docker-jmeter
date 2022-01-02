@@ -1,17 +1,17 @@
 schemaVersion: "2.0.0"
 fileExistenceTests:
   - name: "User install lib"
-    path: "/jmeter/additional/lib/lib-user.jar"
+    path: "/opt/apache-jmeter/lib/lib-user.jar"
     shouldExist: true
 
   - name: "User install plugin"
-    path: "/jmeter/additional/lib/ext/plugin-user.jar"
+    path: "/opt/apache-jmeter/lib/ext/plugin-user.jar"
     shouldExist: true
 
   - name: "User mvn install plugin"
-    path: "/jmeter/additional/lib/ext/jmeter-plugins-graphs-additional-2.0.jar"
+    path: "/opt/apache-jmeter/lib/ext/jmeter-plugins-graphs-additional-2.0.jar"
     shouldExist: true
 
   - name: "User mvn install plugin"
-    path: "/jmeter/additional/lib/poi-examples-5.1.0.jar"
+    path: "/opt/apache-jmeter/lib/poi-examples-5.1.0.jar"
     shouldExist: true

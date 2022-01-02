@@ -1,17 +1,17 @@
 schemaVersion: "2.0.0"
 fileExistenceTests:
   - name: "Project install lib"
-    path: "/jmeter/additional/lib/lib.jar"
+    path: "/opt/apache-jmeter/lib/lib.jar"
     shouldExist: true
 
   - name: "Project install plugin"
-    path: "/jmeter/additional/lib/ext/plugin.jar"
+    path: "/opt/apache-jmeter/lib/ext/plugin.jar"
     shouldExist: true
 
   - name: "Project mvn install plugin"
-    path: "/jmeter/additional/lib/ext/jmeter-plugins-random-csv-data-set-0.8.jar"
+    path: "/opt/apache-jmeter/lib/ext/jmeter-plugins-random-csv-data-set-0.8.jar"
     shouldExist: true
 
   - name: "Project mvn install plugin"
-    path: "/jmeter/additional/lib/reactive-streams-1.0.3.jar"
+    path: "/opt/apache-jmeter/lib/reactive-streams-1.0.3.jar"
     shouldExist: true
