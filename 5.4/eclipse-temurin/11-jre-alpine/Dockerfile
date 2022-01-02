@@ -142,7 +142,9 @@ RUN    apk update \
 	&& rm -rf /tmp/dependencies \
 	&& rm -rf $DEPENCENCIES_TMP_PATH \
 	&& rm -rf ${SCRIPTS_PATH}/internal/build \
-	&& rm -rf $MAVEN_CONFIG/repository/kg
+	&& rm -rf $MAVEN_CONFIG/repository/kg \
+	&& rm -rf $DEPENCENCIES_PATH \
+	&& rm -rf /jmeter.log
 
 
 

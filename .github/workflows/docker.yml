@@ -121,7 +121,7 @@ jobs:
 
       - name: Test Jmeter Project/User Plugin Install
         run: |
-          docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -v ${PWD}/tests/users/user1/:/jmeter/user ${{ steps.result.outputs.currentImage }} hello
+          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -v ${PWD}/tests/users/user1/:/jmeter/user ${{ steps.result.outputs.currentImage }} hello
           expected='hello'
           expected='after-project-test1'
           if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else "echo $expected not found"; exit 1; fi;
@@ -139,7 +139,7 @@ jobs:
 
       - name: Test Jmeter Clone Workspace
         run: |
-          docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project  -e CONF_COPY_TO_WORKSPACE=true ${{ steps.result.outputs.currentImage }} hello
+          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project  -e CONF_COPY_TO_WORKSPACE=true ${{ steps.result.outputs.currentImage }} hello
           docker commit t1 t1 
           container-structure-test test -v info --image t1 --config tests/container-structure-test/workspace-clone.yaml
           docker rm t1
@@ -147,7 +147,7 @@ jobs:
 
       - name: Test Jmeter don't clone Workspace
         run: |
-          docker  run --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project ${{ steps.result.outputs.currentImage }} hello
+          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project ${{ steps.result.outputs.currentImage }} hello
           docker commit t1 t1 
           container-structure-test test -v info --image t1 --config tests/container-structure-test/workspace-dont-clone.yaml
           docker rm t1

@@ -19,3 +19,7 @@ fileExistenceTests:
   - name: "cmn jar"
     path: "/opt/apache-jmeter/lib/jmeter-plugins-cmn-jmeter-0.7.jar"
     shouldExist: false
+
+  - name: "cmdrunner jar"
+    path: "/opt/apache-jmeter/lib/ext/cmdrunner-2.3.jar"
+    shouldExist: false
