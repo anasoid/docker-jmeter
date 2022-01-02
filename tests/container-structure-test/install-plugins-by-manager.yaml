@@ -1,0 +1,9 @@
+schemaVersion: "2.0.0"
+fileExistenceTests:
+  - name: "dbmon"
+    path: "/opt/apache-jmeter/lib/ext/jmeter-plugins-dbmon-0.1.jar"
+    shouldExist: true
+
+  - name: "Project mvn install plugin"
+    path: "/opt/apache-jmeter/lib/ext/jmeter-plugins-dummy-0.4.jar"
+    shouldExist: true
