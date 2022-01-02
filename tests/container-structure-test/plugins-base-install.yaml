@@ -9,7 +9,6 @@ fileExistenceTests:
     path: "/opt/apache-jmeter/lib/ext/jmeter-plugins-plancheck-2.4.jar"
     shouldExist: true
 
-
   - name: "PluginsManagerCMD install"
     path: "/opt/apache-jmeter/bin/PluginsManagerCMD.sh"
     shouldExist: true
@@ -21,4 +20,8 @@ fileExistenceTests:
 
   - name: "cmn jar"
     path: "/opt/apache-jmeter/lib/jmeter-plugins-cmn-jmeter-0.7.jar"
+    shouldExist: true
+
+  - name: "cmdrunner jar"
+    path: "/opt/apache-jmeter/lib/cmdrunner-2.3.jar"
     shouldExist: true

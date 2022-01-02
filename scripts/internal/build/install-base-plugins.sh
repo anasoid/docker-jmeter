@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-
-plancheck-download.sh
-plugin-manager-download.sh
+mvn-download.sh -f plugins-lib-ext-dependencies.xml -t ${JMETER_HOME}/lib/ext
 mvn-download.sh -f plugins-lib-dependencies.xml -t ${JMETER_HOME}/lib
+cp $DEPENCENCIES_PATH/plugins-sh/*.sh  ${JMETER_HOME}/bin
