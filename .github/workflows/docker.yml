@@ -120,8 +120,9 @@ jobs:
       ## Install plugins many ways
       - name: Test Jmeter Project/User Plugin Install
         run: |
-          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -v ${PWD}/tests/users/user1/:/jmeter/user  -e JMETER_PLUGINS_MANAGER_INSTALL_LIST="jpgc-dbmon=0.1" -e JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX="true"  ${{ steps.result.outputs.currentImage }} hello
+          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -v ${PWD}/tests/users/user1/:/jmeter/user ${{ steps.result.outputs.currentImage }} hello
           expected='hello'
+          if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else "echo $expected not found"; exit 1; fi;
           expected='after-project-test1'
           if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else "echo $expected not found"; exit 1; fi;
           expected='before-project-test1'
@@ -133,9 +134,27 @@ jobs:
           docker commit t1 t1 
           container-structure-test test -v info --image t1 --config tests/container-structure-test/sample1-install-plugins.yaml
           container-structure-test test -v info --image t1 --config tests/container-structure-test/user1-install-plugins.yaml
+          docker rm t1
+          docker rmi t1
+
+      ## Install plugins many ways
+      - name: Test Jmeter Project/User Plugin Install with plugin manager
+        if: ${{ matrix.with-plugins == 'true' }}
+        run: |
+          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -v -e JMETER_PLUGINS_MANAGER_INSTALL_LIST="jpgc-dbmon=0.1" -e JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX="true"  ${{ steps.result.outputs.currentImage }} hello
+          expected='hello'
+          if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else "echo $expected not found"; exit 1; fi;
+          docker commit t1 t1 
+          container-structure-test test -v info --image t1 --config tests/container-structure-test/sample1-install-plugins.yaml
           container-structure-test test -v info --image t1 --config tests/container-structure-test/install-plugins-by-manager.yaml
           docker rm t1
           docker rmi t1
+
+      ## Install plugins many ways
+      - name: Test Jmeter Project/User Plugin Install with plugin manager (fail)
+        if: ${{ matrix.with-plugins != 'true' }}
+        run: |
+          docker  run --pull never --rm -v ${PWD}/tests/projects/sample1/:/jmeter/project -v -e JMETER_PLUGINS_MANAGER_INSTALL_LIST="jpgc-dbmon=0.1" -e JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX="true"  ${{ steps.result.outputs.currentImage }} hello
 
       - name: Test Jmeter Clone Workspace
         run: |
