@@ -23,5 +23,5 @@ fileExistenceTests:
     shouldExist: true
 
   - name: "cmdrunner jar"
-    path: "/opt/apache-jmeter/lib/ext/cmdrunner-2.3.jar"
+    path: "/opt/apache-jmeter/lib/cmdrunner-2.3.jar"
     shouldExist: true
