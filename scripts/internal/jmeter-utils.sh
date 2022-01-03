@@ -16,20 +16,6 @@ prepare_jmx_args() {
             return 1
          fi
       fi
-   else
-      if [[ $@ == *" -t"* ]] || [[ $@ == "-t"* ]]; then
-         echo "Using JMX from arguments"
-         export JMX_ARG=""
-      else
-         if [[ $@ == *" -g"* ]] || [[ $@ == "-g"* ]] || [[ $@ == *"--reportonly"* ]]; then
-            echo "Use report Only"
-         else
-            echo "ERROR: JMX file is not configured using JMETER_JMX env variable ($JMETER_JMX), or arguments using -t or --testfile in ($@)" 1>&2
-            return 1
-         fi
-
-      fi
-
    fi
 }
 
