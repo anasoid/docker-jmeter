@@ -20,18 +20,6 @@ if [ "$CONF_COPY_TO_WORKSPACE" == "true" ]; then
 fi
 echo "Using WORKSPACE  folder ($WORKSPACE_PATH ) "
 
-#SLAVE/MASTER
-export WORKSPACE_PATH=${PROJECT_PATH}
-if [ "${EXEC_MODE,,}" == "master" ]; then
-    export EXEC_MODE_UP="MASTER"
-elif [ "${EXEC_MODE,,}" == "slave" ]; then
-    export EXEC_MODE_UP="SLAVE"
-else
-    echo "Error!  Invalid EXEC_MODE  (${EXEC_MODE}), should be slave or master" 1>&2
-    exit 1
-fi
-echo "Using EXEC_MODE_UP  ($EXEC_MODE_UP ) "
-
 #JMX
 export JMETER_JMX_FINAL="$WORKSPACE_PATH/$JMETER_JMX"
 

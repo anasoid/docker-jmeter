@@ -35,7 +35,7 @@ prepare_jmx_args() {
 #prepare EXIT_ARG
 prepare_exit_args() {
    if [ "$JMETER_EXIT" == "true" ]; then
-      export EXIT_ARG=" -Jjmeterengine.remote.system.exit=true --remoteexit "
+      export EXIT_ARG=" --remoteexit -Gjmeterengine.remote.system.exit=true -Gserver.exitaftertest=true -Gjmeterengine.force.system.exit=true "
    fi
 }
 
@@ -45,7 +45,7 @@ prepare_additional_file_properties() {
       export PROPERTIES_ARG=" "
       for element in $JMETER_PROPERTIES_FILES; do
          if [[ $element != *".properties" ]]; then
-            echo "ERROR: file popeties should end with .properties in ($element) from ($JMETER_PROPERTIES_FILES)" 1>&2
+            echo "ERROR: file properties should end with .properties in ($element) from ($JMETER_PROPERTIES_FILES)" 1>&2
             return 1
          fi
 
@@ -53,7 +53,7 @@ prepare_additional_file_properties() {
          if [ -f "$file" ]; then
             export PROPERTIES_ARG=" -q $file$PROPERTIES_ARG"
          else
-            echo "ERROR: Configured propeties file ($element) not found in  : ($file) " 1>&2
+            echo "ERROR: Configured properties file ($element) not found in  : ($file) " 1>&2
             return 1
          fi
       done
@@ -74,7 +74,7 @@ prepare_JTL_args() {
    fi
 }
 
-#Prapare JTL_ARG
+#Prapare LOG_ARG
 prepare_log_args() {
    if [ ! -z "$JMETER_LOG_FILE" ]; then
       if [[ $@ == *" -j"* ]] || [[ $@ == "-j"* ]] || [[ $@ == *"--jmeterlogfile"* ]]; then
@@ -87,7 +87,7 @@ prepare_log_args() {
          export LOG_ARG=" --jmeterlogfile $OUTPUT_LOG_PATH/$JMETER_LOG_FILE"
       fi
    else
-      echo "Skip config JTL not present"
+      echo "Skip config log not present"
    fi
 }
 
@@ -101,6 +101,14 @@ prepare_report_args() {
          export REPORT_ARG=" -o $OUTPUT_REPORT_PATH/$JMETER_REPORT_NAME"
       fi
    else
-      echo "Skip config JTL not present"
+      echo "Skip config report not present"
    fi
+}
+
+#Prepare CLUSTER_ARG
+prepare_cluster_args() {
+   if [[ "$EXEC_IS_SLAVE" == "true" ]]; then
+      export CLUSTER_ARG=" --server "
+   fi
+
 }

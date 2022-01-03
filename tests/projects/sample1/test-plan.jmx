@@ -34,7 +34,7 @@
           <stringProp name="RESPONSE_MESSAGE">OK</stringProp>
           <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responses
 without actual network activity. This helps debugging tests.</stringProp>
-          <stringProp name="RESPONSE_DATA">JJmmeetteerr</stringProp>
+          <stringProp name="RESPONSE_DATA">${__P(res.out.default,JJmmeetteerr)}</stringProp>
           <stringProp name="RESPONSE_TIME">${__Random(50,500)}</stringProp>
           <stringProp name="LATENCY">${__Random(1,50)}</stringProp>
           <stringProp name="CONNECT">${__Random(1,5)}</stringProp>
@@ -46,7 +46,7 @@ without actual network activity. This helps debugging tests.</stringProp>
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(prev.getResponseDataAsString())</stringProp>
+            <stringProp name="script">println(prev.getResponseDataAsString())</stringProp>
             <stringProp name="scriptLanguage">groovy</stringProp>
           </JSR223PostProcessor>
           <hashTree/>
