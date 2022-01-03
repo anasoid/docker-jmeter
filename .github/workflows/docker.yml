@@ -120,7 +120,7 @@ jobs:
       ## Install plugins many ways
       - name: Test Jmeter Project/User Plugin Install
         run: |
-          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -v ${PWD}/tests/users/user1/:/jmeter/user ${{ steps.result.outputs.currentImage }} 
+          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -v ${PWD}/tests/users/user1/:/jmeter/user  -e JMETER_JMX="test-plan.jmx"  ${{ steps.result.outputs.currentImage }} 
           expected='hello'
           if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else echo "$expected not found"; exit 1; fi;
           expected='after-project-test1'
