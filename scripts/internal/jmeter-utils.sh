@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 #Prapare JMX_ARG
 prepare_jmx_args() {
@@ -23,7 +24,7 @@ prepare_jmx_args() {
          if [[ $@ == *" -g"* ]] || [[ $@ == "-g"* ]] || [[ $@ == *"--reportonly"* ]]; then
             echo "Use report Only"
          else
-            echo "ERROR: JMX file is configured twice using JMETER_JMX env variable ($JMETER_JMX), and arguments using -t or --testfile in ($@)" 1>&2
+            echo "ERROR: JMX file is not configured using JMETER_JMX env variable ($JMETER_JMX), or arguments using -t or --testfile in ($@)" 1>&2
             return 1
          fi
 
