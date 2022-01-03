@@ -56,22 +56,6 @@ test_prepare_jmx_args_success_from_args() {
    assert_equals "$JMX_ARG" "" test_prepare_jmx_args_success
 }
 
-#Missng jmx file config.
-test_prepare_jmx_args_fail_missing_config() {
-   set +e
-
-   WORKSPACE_PATH=$(pwd)/tests/projects/sample1
-   JMETER_JMX=""
-
-   prepare_jmx_args gddgd
-   if [ $? -eq 1 ]; then
-      echo "OK   :test_prepare_jmx_args_fail_missing_config"
-   else
-      echo "FAIL :test_prepare_jmx_args_fail_missing_config"
-      exit 1
-   fi
-}
-
 
 #Missng jmx file config.
 test_prepare_jmx_args_fail_duplicate_config() {
