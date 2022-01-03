@@ -87,10 +87,6 @@ echo "Start  :>>>> test_prepare_jmx_args_success_from_args"
 test_prepare_jmx_args_success_from_args
 echo "Finish :>>>> test_prepare_jmx_args_success_from_args"
 
-echo "Start  :>>>> test_prepare_jmx_args_fail_missing_config"
-test_prepare_jmx_args_fail_missing_config
-echo "Finish :>>>> test_prepare_jmx_args_fail_missing_config"
-
 echo "Start  :>>>> test_prepare_jmx_args_fail_duplicate_config"
 test_prepare_jmx_args_fail_duplicate_config
 echo "Finish :>>>> test_prepare_jmx_args_fail_duplicate_config"
