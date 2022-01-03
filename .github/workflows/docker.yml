@@ -120,7 +120,7 @@ jobs:
       ## Install plugins many ways
       - name: Test Jmeter Project/User Plugin Install
         run: |
-          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -v ${PWD}/tests/users/user1/:/jmeter/user ${{ steps.result.outputs.currentImage }} hello
+          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -v ${PWD}/tests/users/user1/:/jmeter/user ${{ steps.result.outputs.currentImage }} 
           expected='hello'
           if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else echo "$expected not found"; exit 1; fi;
           expected='after-project-test1'
@@ -141,8 +141,8 @@ jobs:
       - name: Test Jmeter Plugin Install with plugin manager
         if: ${{ matrix.with-plugins == 'true' }}
         run: |
-          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -e JMETER_PLUGINS_MANAGER_INSTALL_LIST="jpgc-dbmon=0.1" -e JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX="true"  -e JMETER_JMX="test-plan.jmx" ${{ steps.result.outputs.currentImage }} hello
-          expected='hello'
+          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -e JMETER_PLUGINS_MANAGER_INSTALL_LIST="jpgc-dbmon=0.1" -e JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX="true"  -e JMETER_JMX="test-plan.jmx" ${{ steps.result.outputs.currentImage }} 
+          expected='JJmmeetteerr'
           if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else echo "$expected not found"; exit 1; fi;
           docker commit t1 t1 
           container-structure-test test -v info --image t1 --config tests/container-structure-test/sample1-install-plugins.yaml
@@ -154,8 +154,8 @@ jobs:
       - name: Test Jmeter Plugin Install with plugin manager, check only
         if: ${{ matrix.with-plugins == 'true' }}
         run: |
-          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -e JMETER_CHECK_ONLY=true -e JMETER_PLUGINS_MANAGER_INSTALL_LIST="jpgc-dbmon=0.1" -e JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX="true"  -e JMETER_JMX="test-plan.jmx" ${{ steps.result.outputs.currentImage }} hello
-          unexpected='hello'
+          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -e JMETER_CHECK_ONLY=true -e JMETER_PLUGINS_MANAGER_INSTALL_LIST="jpgc-dbmon=0.1" -e JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX="true"  -e JMETER_JMX="test-plan.jmx" ${{ steps.result.outputs.currentImage }} -Jres.out.default=hheelloo
+          unexpected='hheelloo'
           if [[ $(docker logs t1 | grep $unexpected ) ]];then echo "unexpected $unexpected found";exit 1; else echo "unexpected $unexpected not found";  fi;
           expected='TestPlanCheckTool: JMX is fine'
           if [[ $(docker logs t1 | grep "$expected" ) ]];then echo "$expected found"; else echo "$expected not found"; exit 1; fi;
@@ -167,7 +167,7 @@ jobs:
 
       - name: Test Jmeter Clone Workspace
         run: |
-          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project  -e CONF_COPY_TO_WORKSPACE=true ${{ steps.result.outputs.currentImage }} hello
+          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project  -e CONF_COPY_TO_WORKSPACE=true ${{ steps.result.outputs.currentImage }} 
           docker commit t1 t1 
           container-structure-test test -v info --image t1 --config tests/container-structure-test/workspace-clone.yaml
           docker rm t1
@@ -175,7 +175,7 @@ jobs:
 
       - name: Test Jmeter don't clone Workspace
         run: |
-          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project ${{ steps.result.outputs.currentImage }} hello
+          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project ${{ steps.result.outputs.currentImage }} 
           docker commit t1 t1 
           container-structure-test test -v info --image t1 --config tests/container-structure-test/workspace-dont-clone.yaml
           docker rm t1
