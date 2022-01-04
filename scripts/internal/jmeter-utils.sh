@@ -54,7 +54,7 @@ prepare_JTL_args() {
          echo "ERROR: JTL file is configured twice using JMETER_JTL_FILE env variable ($JMETER_JTL_FILE), and arguments using -l or --logfile in ($@)" 1>&2
          return 1
       else
-         export JTL_ARG=" -t $OUTPUT_JTL_PATH/$JMETER_JTL_FILE"
+         export JTL_ARG=" -l $OUTPUT_JTL_PATH/$JMETER_JTL_FILE"
       fi
    else
       echo "Skip config JTL not present"
