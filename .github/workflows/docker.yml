@@ -157,7 +157,8 @@ jobs:
           -e JMETER_JTL_FILE=out.jtl \
           -e JMETER_LOG_FILE=out.log \
           -e JMETER_REPORT_NAME=html \
-          -e JMETER_JMX="test-plan.jmx" ${{ steps.result.outputs.currentImage }} 
+          -e JMETER_JMX="test-plan.jmx" ${{ steps.result.outputs.currentImage }}
+          ls -la /jmeter 
           ls -la /jmeter/out
           ls -la /jmeter/out/jtl
           ls -la /jmeter/out/log
