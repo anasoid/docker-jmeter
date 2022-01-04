@@ -18,7 +18,7 @@ test_prepare_report_args_success() {
       echo "FAIL :test_prepare_report_args_success"
       exit 1
    fi
-   assert_equals "$REPORT_ARG" " -o $OUTPUT_REPORT_PATH/$JMETER_REPORT_NAME" test_prepare_report_args_success
+   assert_equals "$REPORT_ARG" " -e -o $OUTPUT_REPORT_PATH/$JMETER_REPORT_NAME" test_prepare_report_args_success
 }
 
 
