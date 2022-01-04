@@ -64,7 +64,7 @@ echo "############################################ Execute-Test (START) ########
 sleep $CONF_EXEC_WAIT_BEFORE_TEST
 
 if [[ ! "$JMETER_CHECK_ONLY" == "true" ]]; then
-    timeout 5 echo $@
+    jmeter-exec.sh $@
 fi
 echo "############################################ Execute-Test (END)   ############################################"
 echo

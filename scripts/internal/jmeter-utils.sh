@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 #Prapare JMX_ARG
 prepare_jmx_args() {
@@ -15,27 +16,13 @@ prepare_jmx_args() {
             return 1
          fi
       fi
-   else
-      if [[ $@ == *" -t"* ]] || [[ $@ == "-t"* ]]; then
-         echo "Using JMX from arguments"
-         export JMX_ARG=""
-      else
-         if [[ $@ == *" -g"* ]] || [[ $@ == "-g"* ]] || [[ $@ == *"--reportonly"* ]]; then
-            echo "Use report Only"
-         else
-            echo "ERROR: JMX file is configured twice using JMETER_JMX env variable ($JMETER_JMX), and arguments using -t or --testfile in ($@)" 1>&2
-            return 1
-         fi
-
-      fi
-
    fi
 }
 
 #prepare EXIT_ARG
 prepare_exit_args() {
    if [ "$JMETER_EXIT" == "true" ]; then
-      export EXIT_ARG=" -Jjmeterengine.remote.system.exit=true --remoteexit "
+      export EXIT_ARG=" --remoteexit -Gjmeterengine.remote.system.exit=true -Gserver.exitaftertest=true -Gjmeterengine.force.system.exit=true "
    fi
 }
 
@@ -45,7 +32,7 @@ prepare_additional_file_properties() {
       export PROPERTIES_ARG=" "
       for element in $JMETER_PROPERTIES_FILES; do
          if [[ $element != *".properties" ]]; then
-            echo "ERROR: file popeties should end with .properties in ($element) from ($JMETER_PROPERTIES_FILES)" 1>&2
+            echo "ERROR: file properties should end with .properties in ($element) from ($JMETER_PROPERTIES_FILES)" 1>&2
             return 1
          fi
 
@@ -53,7 +40,7 @@ prepare_additional_file_properties() {
          if [ -f "$file" ]; then
             export PROPERTIES_ARG=" -q $file$PROPERTIES_ARG"
          else
-            echo "ERROR: Configured propeties file ($element) not found in  : ($file) " 1>&2
+            echo "ERROR: Configured properties file ($element) not found in  : ($file) " 1>&2
             return 1
          fi
       done
@@ -67,14 +54,14 @@ prepare_JTL_args() {
          echo "ERROR: JTL file is configured twice using JMETER_JTL_FILE env variable ($JMETER_JTL_FILE), and arguments using -l or --logfile in ($@)" 1>&2
          return 1
       else
-         export JTL_ARG=" -t $OUTPUT_JTL_PATH/$JMETER_JTL_FILE"
+         export JTL_ARG=" -l $OUTPUT_JTL_PATH/$JMETER_JTL_FILE"
       fi
    else
       echo "Skip config JTL not present"
    fi
 }
 
-#Prapare JTL_ARG
+#Prapare LOG_ARG
 prepare_log_args() {
    if [ ! -z "$JMETER_LOG_FILE" ]; then
       if [[ $@ == *" -j"* ]] || [[ $@ == "-j"* ]] || [[ $@ == *"--jmeterlogfile"* ]]; then
@@ -87,7 +74,7 @@ prepare_log_args() {
          export LOG_ARG=" --jmeterlogfile $OUTPUT_LOG_PATH/$JMETER_LOG_FILE"
       fi
    else
-      echo "Skip config JTL not present"
+      echo "Skip config log not present"
    fi
 }
 
@@ -98,9 +85,17 @@ prepare_report_args() {
          echo "ERROR: Report folder is configured twice using JMETER_REPORT_NAME env variable ($JMETER_REPORT_NAME), and arguments using -o or --reportoutputfolder in ($@)" 1>&2
          return 1
       else
-         export REPORT_ARG=" -o $OUTPUT_REPORT_PATH/$JMETER_REPORT_NAME"
+         export REPORT_ARG=" -e -o $OUTPUT_REPORT_PATH/$JMETER_REPORT_NAME"
       fi
    else
-      echo "Skip config JTL not present"
+      echo "Skip config report not present"
    fi
+}
+
+#Prepare CLUSTER_ARG
+prepare_cluster_args() {
+   if [[ "$EXEC_IS_SLAVE" == "true" ]]; then
+      export CLUSTER_ARG=" --server "
+   fi
+
 }

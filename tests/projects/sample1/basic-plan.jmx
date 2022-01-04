@@ -27,30 +27,12 @@
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
       <hashTree>
-        <kg.apc.jmeter.samplers.DummySampler guiclass="kg.apc.jmeter.samplers.DummySamplerGui" testclass="kg.apc.jmeter.samplers.DummySampler" testname="jp@gc - Dummy Sampler" enabled="true">
-          <boolProp name="WAITING">true</boolProp>
-          <boolProp name="SUCCESFULL">true</boolProp>
-          <stringProp name="RESPONSE_CODE">200</stringProp>
-          <stringProp name="RESPONSE_MESSAGE">OK</stringProp>
-          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responses
-without actual network activity. This helps debugging tests.</stringProp>
-          <stringProp name="RESPONSE_DATA">${__P(res.out.default,JJmmeetteerr)}</stringProp>
-          <stringProp name="RESPONSE_TIME">${__Random(50,500)}</stringProp>
-          <stringProp name="LATENCY">${__Random(1,50)}</stringProp>
-          <stringProp name="CONNECT">${__Random(1,5)}</stringProp>
-          <stringProp name="URL"></stringProp>
-          <stringProp name="RESULT_CLASS">org.apache.jmeter.samplers.SampleResult</stringProp>
-        </kg.apc.jmeter.samplers.DummySampler>
-        <hashTree>
-          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">println(prev.getResponseDataAsString())</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223PostProcessor>
-          <hashTree/>
-        </hashTree>
+        <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="true">
+          <boolProp name="displayJMeterProperties">false</boolProp>
+          <boolProp name="displayJMeterVariables">true</boolProp>
+          <boolProp name="displaySystemProperties">false</boolProp>
+        </DebugSampler>
+        <hashTree/>
       </hashTree>
       <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>

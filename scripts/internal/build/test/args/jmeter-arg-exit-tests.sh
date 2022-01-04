@@ -33,7 +33,7 @@ test_prepare_exit_args_not_fill() {
       echo "FAIL :test_prepare_exit_args_not_fill"
       exit 1
    fi
-   assert_equals "$EXIT_ARG" " -Jjmeterengine.remote.system.exit=true --remoteexit "
+   assert_equals "$EXIT_ARG" " --remoteexit -Gjmeterengine.remote.system.exit=true -Gserver.exitaftertest=true -Gjmeterengine.force.system.exit=true "
 }
 
 
