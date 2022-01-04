@@ -130,7 +130,7 @@ jobs:
           expected='before-user-test1'
           if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else echo "$expected not found"; exit 1; fi;
           docker commit t1 t1 
-          container-structure-test test -v info --image t1 --config tests/container-structure-test/sample1-install-plugins.yamliwlwifi+
+          container-structure-test test -v info --image t1 --config tests/container-structure-test/sample1-install-plugins.yaml
           docker rm t1
           docker rmi t1
 
@@ -148,7 +148,7 @@ jobs:
           docker rmi t1
 
         ## Test In Out
-      - name: Test Jmeter Plugin Install with plugin manager
+      - name: Test Plugin folder and out 
         run: |
           docker  run --pull never --name t1 \
           -v ${PWD}/tests/projects/sample1/:/jmeter/project \
