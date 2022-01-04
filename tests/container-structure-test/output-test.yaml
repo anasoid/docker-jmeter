@@ -1,0 +1,11 @@
+schemaVersion: "2.0.0"
+fileExistenceTests:
+  - name: "out jtl"
+    path: "/jmeter/out/jtl/out.jtl"
+    shouldExist: true
+  - name: "out log"
+    path: "/jmeter/out/log/out.log"
+    shouldExist: true
+  - name: "out log"
+    path: "/jmeter/out/dashboard/html/index.html"
+    shouldExist: true

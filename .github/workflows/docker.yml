@@ -130,8 +130,7 @@ jobs:
           expected='before-user-test1'
           if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else echo "$expected not found"; exit 1; fi;
           docker commit t1 t1 
-          container-structure-test test -v info --image t1 --config tests/container-structure-test/sample1-install-plugins.yaml
-          container-structure-test test -v info --image t1 --config tests/container-structure-test/user1-install-plugins.yaml
+          container-structure-test test -v info --image t1 --config tests/container-structure-test/sample1-install-plugins.yamliwlwifi+
           docker rm t1
           docker rmi t1
 
@@ -147,6 +146,28 @@ jobs:
           container-structure-test test -v info --image t1 --config tests/container-structure-test/install-plugins-by-manager.yaml
           docker rm t1
           docker rmi t1
+
+        ## Test In Out
+      - name: Test Jmeter Plugin Install with plugin manager
+        run: |
+          docker  run --pull never --name t1 \
+          -v ${PWD}/tests/projects/sample1/:/jmeter/project \
+          -v ${PWD}/tests/projects/sample1/dummy/:/jmeter/additional/lib/ext \
+          -e JMETER_PROPERTIES_FILES=out.properties \
+          -e JMETER_JTL_FILE=out.jtl \
+          -e JMETER_LOG_FILE=out.log \
+          -e JMETER_REPORT_NAME=html \
+          -e JMETER_JMX="test-plan.jmx" ${{ steps.result.outputs.currentImage }} 
+          ls -la /jmeter/out/jtl
+          ls -la /jmeter/out/log
+          ls -la /jmeter/out/dashboard
+          expected='outout'
+          if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else echo "$expected not found"; exit 1; fi;
+          docker commit t1 t1 
+          container-structure-test test -v info --image t1 --config tests/container-structure-test/output-test.yaml
+          docker rm t1
+          docker rmi t1
+
 
       ## Install plugins many ways
       - name: Test Jmeter Plugin Install with plugin manager, check only
