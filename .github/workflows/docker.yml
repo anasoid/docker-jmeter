@@ -158,13 +158,6 @@ jobs:
           -e JMETER_LOG_FILE=out.log \
           -e JMETER_REPORT_NAME=html \
           -e JMETER_JMX="test-plan.jmx" ${{ steps.result.outputs.currentImage }}
-          pwd
-          ls -la
-          ls -la /jmeter 
-          ls -la /jmeter/out
-          ls -la /jmeter/out/jtl
-          ls -la /jmeter/out/log
-          ls -la /jmeter/out/dashboard
           expected='outout'
           if [[ $(docker logs t1 | grep $expected ) ]];then echo "$expected found"; else echo "$expected not found"; exit 1; fi;
           docker commit t1 t1 
