@@ -18,7 +18,7 @@ test_prepare_jtl_args_success() {
       echo "FAIL "
       exit 1
    fi
-   assert_equals "$JTL_ARG" " -t $OUTPUT_JTL_PATH/$JMETER_JTL_FILE" test_prepare_jtl_args_success
+   assert_equals "$JTL_ARG" " -l $OUTPUT_JTL_PATH/$JMETER_JTL_FILE" test_prepare_jtl_args_success
 }
 
 test_prepare_jtl_args_not_fil_success() {
