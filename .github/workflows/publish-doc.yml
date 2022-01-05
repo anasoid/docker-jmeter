@@ -1,4 +1,4 @@
-name: Publish description to docker hub ⚓
+name: Publish description
 
 on:
   workflow_dispatch:
