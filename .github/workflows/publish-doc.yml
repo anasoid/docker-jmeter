@@ -6,7 +6,7 @@ on:
       comment:
         description: "comment"
         required: true
-        default: "TODO"
+
 
 jobs:
   publish_doc:
