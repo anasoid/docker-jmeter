@@ -162,7 +162,7 @@ ex:
 
 In `project folder` or `user folder` put maven xml file `dependencies/plugins-lib-dependencies.xml`, use exclusion with \* to not download dependencies of jar, only jar referenced in file will be used .
 jar from this file will be downloaded to folder **$JMETER_HOME/lib**.
-Same format used by [plugins](#download-plugins-dependencies-with-maven-format)
+Same format used by [plugins](#download-plugins-with-maven-format)
 
 ### Download dependencies with zip format
 
