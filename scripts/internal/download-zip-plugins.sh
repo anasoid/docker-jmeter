@@ -9,6 +9,7 @@ if [ "$CONF_SKIP_PLUGINS_INSTALL" == "false" ]; then
    # download install plugins
    for file in ${files[@]}; do
       if [ -f "$file" ]; then
+         echo "Downloading from file: $file"
          while IFS= read -r line; do
             echo "Downloading : $line"
             rm -f /tmp/temp.zip
