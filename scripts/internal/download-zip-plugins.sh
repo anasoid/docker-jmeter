@@ -14,7 +14,6 @@ if [ "$CONF_SKIP_PLUGINS_INSTALL" == "false" ]; then
             echo "Downloading : $line"
             rm -f /tmp/temp.zip
             wget $line -O /tmp/temp.zip
-            unzip /tmp/temp.zip
             unzip -o /tmp/temp.zip -d ${JMETER_ADDITIONAL_TARGET}
             rm -f /tmp/temp.zip
          done <"$file"
