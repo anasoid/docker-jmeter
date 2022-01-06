@@ -53,7 +53,7 @@ split_csv_file() {
          fi
       done <"$csvfilefull"
       if [ "$CONF_CSV_SPLITTED_TO_OUT" == "true" ]; then
-         destination_file=$OUTPUT_PATH/$relative_path
+         destination_file=$OUTPUT_CSV_PATH/$relative_path
          folder="$(dirname "$destination_file")"
          if [ ! -d $folder ]; then
             mkdir -p $folder

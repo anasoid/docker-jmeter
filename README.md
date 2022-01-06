@@ -16,17 +16,18 @@
 ## Features:
 
 1. Smallest size with ~100MB.
-2. Download plugin with maven dependencies format.
-3. Download plugin with list of url.
-4. Download plugin with plugin manager (Only plugins versions) .
-5. Use plugins from folders.
-6. Check Jmx Test (Only plugins versions)
-7. Split CSV Data on multi nodes.
-8. Execute pre/post test shell scripts.
-9. Separate Project configuration from node configuration, to separate configuration from execution team and developer teams.
-10. Isolate output folder (logs, jtl files, html report).
-11. Any Jmeter parameter can be used in arguments.
-12. No limitation is introduced by this image, jmeter can be used directly if custom input parameters are not used.
+2. Timeout for execution, after timeout docker will be stopped even test is not finished, this is helpfull to force stop jmeter docker after a timeout.
+3. Download plugin with maven dependencies format.
+4. Download plugin with list of url.
+5. Download plugin with plugin manager (Only plugins versions) .
+6. Use plugins from folders.
+7. Check Jmx Test (Only plugins versions)
+8. Split CSV Data on multi nodes.
+9. Execute pre/post test shell scripts.
+10. Separate Project configuration from node configuration, to separate configuration from execution team and developer teams.
+11. Isolate output folder (logs, jtl files, html report).
+12. Any Jmeter parameter can be used in arguments.
+13. No limitation is introduced by this image, jmeter can be used directly if custom input parameters are not used.
 
 # Image Variants
 
@@ -48,64 +49,69 @@ This image is based on the popular [Alpine Linux project](https://alpinelinux.or
 
 ## Image Folder structure:
 
-| Folder/files           | description            |     |     |     |
-| ---------------------- | ---------------------- | --- | --- | --- |
-| /opt/apache-jmeter     | JMETER_HOME            |     |     |     |
-| /jmeter/additional     | JMETER_ADDITIONAL_HOME |     |     |     |
-| /jmeter/additional/lib | JMETER_ADDITIONAL_LIB  |     |     |     |
-| /jmeter/additional/ext | JMETER_ADDITIONAL_EXT  |     |     |     |
-| /jmeter/project        | PROJECT_PATH           |     |     |     |
-| /jmeter/user           | USER_PATH              |     |     |     |
-| /jmeter/workspace      | WORKSPACE_TARGET       |     |     |     |
-| /jmeter/out            | OUTPUT_PATH            |     |     |     |
-| /jmeter/out/jtl        | OUTPUT_JTL_PATH        |     |     |     |
-| /jmeter/out/log        | OUTPUT_LOG_PATH        |     |     |     |
-| /jmeter/out/dashboard  | OUTPUT_REPORT_PATH     |     |     |     |
+| Folder/files           | Environnement variable | Description                                                                                                                                                                                                                                        |     |     |
+| ---------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- | --- |
+| /opt/apache-jmeter     | JMETER_HOME            | Installation of Jmeter                                                                                                                                                                                                                             |     |     |
+| /jmeter/additional/lib | JMETER_ADDITIONAL_LIB  | Additional lib for jmeter folder using property [plugin_dependency_paths](https://jmeter.apache.org/usermanual/properties_reference.html#classpath)                                                                                                |     |     |
+| /jmeter/additional/ext | JMETER_ADDITIONAL_EXT  | Additional plugins for jmeter folder using property [search_paths](https://jmeter.apache.org/usermanual/properties_reference.html#classpath)                                                                                                       |     |     |
+| /jmeter/project        | PROJECT_PATH           | Project folder, where jmx file should be present.                                                                                                                                                                                                  |     |     |
+| /jmeter/workspace      | WORKSPACE_TARGET       | If choose duplicate project folder by ( **$CONF_COPY_TO_WORKSPACE** ), this will be the target folder. **$WORKSPACE_PATH** will be the workspace folder depend on duplicating project or not it will be **$WORKSPACE_TARGET** or **$PROJECT_PATH** |     |     |
+| /jmeter/user           | USER_PATH              | Second folder to be used to configure project execution.                                                                                                                                                                                           |     |     |
+| /jmeter/out/jtl        | OUTPUT_JTL_PATH        | Default JTL destination folder                                                                                                                                                                                                                     |     |     |
+| /jmeter/out/log        | OUTPUT_LOG_PATH        | Default log destination folder                                                                                                                                                                                                                     |     |     |
+| /jmeter/out/csv        | OUTPUT_CSV_PATH        | Default spllited csv destination folder, only for debugging.                                                                                                                                                                                       |     |     |
+| /jmeter/out/dashboard  | OUTPUT_REPORT_PATH     | Default Report base folder                                                                                                                                                                                                                         |     |     |
 
 ## Project Folder structure:
 
-| Folder/files                                  | Description |     |     |     |
-| --------------------------------------------- | ----------- | --- | --- | --- |
-| lib                                           |             |     |     |     |
-| plugins                                       |             |     |     |     |
-| dependencies/url.txt                          |             |     |     |     |
-| dependencies/settings.xml                     |             |     |     |     |
-| dependencies/plugins-lib-dependencies.xml     |             |     |     |     |
-| dependencies/plugins-lib-ext-dependencies.xml |             |     |     |     |
-| scripts/after-test.sh                         |             |     |     |     |
-| scripts/before-test.sh                        |             |     |     |     |
-| jmeter.properties                             |             |     |     |     |
+| Folder/files                                  | Description                                                                                                 |     |     |     |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | --- | --- | --- |
+| lib                                           | lib folder, file in this folder will be copied to $JMETER_HOME/lib                                          |     |     |     |
+| plugins                                       | plugins folder, file in this folder will be copied to $JMETER_HOME/lib/ext                                  |     |     |     |
+| dependencies/url.txt                          | urls in this file will be download and extracted to $JMETER_HOME                                            |     |     |     |
+| dependencies/settings.xml                     | settings.xml used by maven, if there is any need to not authentication for maven repository or a custom one |     |     |     |
+| dependencies/plugins-lib-dependencies.xml     | Dependencies                                                                                                |     |     |     |
+| dependencies/plugins-lib-ext-dependencies.xml |                                                                                                             |     |     |     |
+| scripts/after-test.sh                         |                                                                                                             |     |     |     |
+| scripts/before-test.sh                        |                                                                                                             |     |     |     |
+| jmeter.properties                             |                                                                                                             |     |     |     |
 
 ## Env Variables:
 
-| Folder/files                           | default value     | Description |     |     |
-| -------------------------------------- | ----------------- | ----------- | --- | --- |
-| CONF_SKIP_PLUGINS_INSTALL              | false             |             |     |     |
-| CONF_SKIP_PRE_ACTION                   | false             |             |     |     |
-| CONF_SKIP_POST_ACTION                  | false             |             |     |     |
-| CONF_COPY_TO_WORKSPACE                 | false             |             |     |     |
-| EXEC_IS_SLAVE                          | false             |             |     |     |
-| CONF_EXEC_WORKER_COUNT                 | 1                 |             |     |     |
-| CONF_EXEC_WORKER_NUMBER                | 1                 |             |     |     |
-| CONF_EXEC_WAIT_BEFORE_TEST             | 0                 |             |     |     |
-| CONF_EXEC_WAIT_AFTER_TEST              | 1                 |             |     |     |
-| CONF_EXEC_TIMEOUT                      | 18144000          |             |     |     |
-| CONF_CSV_SPLIT                         | false             |             |     |     |
-| CONF_CSV_SPLIT_PATTERN                 | \*\*              |             |     |     |
-| CONF_CSV_WITH_HEADER                   | true              |             |     |     |
-| CONF_CSV_SPLITTED_TO_OUT               | true              |             |     |     |
-| JMETER_JMX                             |                   |             |     |     |
-| JMETER_EXIT                            | false             |             |     |     |
-| JMETER_PROPERTIES_FILES                | jmeter.properties |             |     |     |
-| JMETER_JTL_FILE                        |                   |             |     |     |
-| JMETER_LOG_FILE                        | jmeter.log        |             |     |     |
-| JMETER_REPORT_NAME                     |                   |             |     |     |
-| JMETER_JVM_ARGS                        |                   |             |     |     |
-| JMETER_JVM_EXTRA_ARGS                  |                   |             |     |     |
-| JMETER_DEFAULT_ARGS                    | --nongui          |             |     |     |
-| JMETER_CHECK_ONLY                      | false             |             |     |     |
-| JMETER_PLUGINS_MANAGER_INSTALL_LIST    |                   |             |     |     |
-| JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX | false             |             |     |     |
+| Folder/files                           | default value     | Description                                                                                                                                                                                                                                                                                                                                                     |     |     |
+| -------------------------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- | --- |
+| CONF_SKIP_PLUGINS_INSTALL              | false             | Skip plugin installation from maven, and url.txt and folder.                                                                                                                                                                                                                                                                                                    |     |     |
+| CONF_SKIP_PRE_ACTION                   | false             | Skip Execution of after-test.sh                                                                                                                                                                                                                                                                                                                                 |     |     |
+| CONF_SKIP_POST_ACTION                  | false             | Skip Execution of before-test.sh                                                                                                                                                                                                                                                                                                                                |     |     |
+| CONF_COPY_TO_WORKSPACE                 | false             | Copy project to **$WORKSPACE_TARGET**, before executing test, this feature can be used with **$CONF_CSV_SPLIT** to not change file on project folder who can be shared with multiple slave.                                                                                                                                                                     |     |     |
+| CONF_EXEC_IS_SLAVE                     | false             | True, to be slave node, this will add " --server " as argument for jmeter, this variable can be also used on scripts to choose if action can be executed also on slave or only master.                                                                                                                                                                          |     |     |
+| CONF_EXEC_WORKER_COUNT                 | 1                 | Total jmeter slave count. This value is used only to split CSV file.                                                                                                                                                                                                                                                                                            |     |     |
+| CONF_EXEC_WORKER_NUMBER                | 1                 | Number of current slave. This value is used only to split CSV file.                                                                                                                                                                                                                                                                                             |     |     |
+| CONF_EXEC_WAIT_BEFORE_TEST             | 0                 | Wait in second before start Jmeter.                                                                                                                                                                                                                                                                                                                             |     |     |
+| CONF_EXEC_WAIT_AFTER_TEST              | 1                 | Wait in second after stopping Jmeter.                                                                                                                                                                                                                                                                                                                           |     |     |
+| CONF_EXEC_TIMEOUT                      | 2592000           | Default timeout in second, after this duration Jmeter adn docker container wil be stopped, default (30 days)                                                                                                                                                                                                                                                    |     |     |
+| CONF_CSV_SPLIT                         | false             | Split csv file on **$CONF_EXEC_WORKER_COUNT** and take the part **CONF_EXEC_WORKER_COUNT**                                                                                                                                                                                                                                                                      |     |     |
+| CONF_CSV_SPLIT_PATTERN                 | \*\*              | Pattern used to choose csv file to be spllited, a default filter (\*.csv) is already used so only csv file are concerned by this split, the pattern is applied relative path for file, so patten can be applied on folder or file name. (Ex : "./data/_.csv" for csv file in data folder, ./data/_\_split.csv for csv files in data folder with suffix \_split) |     |     |
+| CONF_CSV_WITH_HEADER                   | true              | Split CSV file has header or not.                                                                                                                                                                                                                                                                                                                               |     |     |
+| CONF_CSV_SPLITTED_TO_OUT               | true              | Copy splitted files to **$OUTPUT_CSV_PATH**, only for debugging.                                                                                                                                                                                                                                                                                                |     |     |
+| JMETER_JMX                             |                   | JMX test file.                                                                                                                                                                                                                                                                                                                                                  |     |     |
+| JMETER_EXIT                            | false             | Force exit after test on all node.                                                                                                                                                                                                                                                                                                                              |     |     |
+| JMETER_PROPERTIES_FILES                | jmeter.properties | List of properties file to be used as additional properties, ex :"size.properties preprod.properties"                                                                                                                                                                                                                                                           |     |     |
+| JMETER_JTL_FILE                        |                   | Name of jtl result file , will be saved in folder **$OUTPUT_JTL_PATH**                                                                                                                                                                                                                                                                                          |     |     |
+| JMETER_LOG_FILE                        | jmeter.log        | Jmeter log file name **$OUTPUT_LOG_PATH**                                                                                                                                                                                                                                                                                                                       |     |     |
+| JMETER_REPORT_NAME                     |                   | Html report name , will be saved in folder **$OUTPUT_REPORT_PATH**                                                                                                                                                                                                                                                                                              |     |     |
+| JMETER_JVM_ARGS                        |                   | Jmeter jvm arguments, can configure JVM with Xmx Xms, ..                                                                                                                                                                                                                                                                                                        |     |     |
+| JMETER_JVM_EXTRA_ARGS                  |                   | A second Parameter to configure jvm arguments.                                                                                                                                                                                                                                                                                                                  |     |     |
+| JMETER_DEFAULT_ARGS                    | --nongui          | A default arguments, by default jmeter is executed in anon gui mode.                                                                                                                                                                                                                                                                                            |     |     |
+| JMETER_CHECK_ONLY                      | false             | Don't execute test but only do a check with [test plan check tool](https://jmeter-plugins.org/wiki/TestPlanCheckTool/) , available only on (variant plugins)                                                                                                                                                                                                    |     |     |
+| JMETER_PLUGINS_MANAGER_INSTALL_LIST    |                   | Install list of plugins using [plugins manager](https://jmeter-plugins.org/wiki/PluginsManagerAutomated/) (Ex : "jpgc-json=2.2,jpgc-casutg=2.0"),                                                                                                                                                                                                               |     |     |
+| JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX | false             | Install needed plugins for jmx file automatically using [plugins manager](https://jmeter-plugins.org/wiki/PluginsManagerAutomated/)                                                                                                                                                                                                                             |     |     |
+
+## Download Dependencies :
+
+### Download Dependencies with Maven format:
+
+### Download Dependencies with zip format:
 
 ## Image on Folder Structure:
 

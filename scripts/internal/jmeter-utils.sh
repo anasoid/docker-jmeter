@@ -94,7 +94,7 @@ prepare_report_args() {
 
 #Prepare CLUSTER_ARG
 prepare_cluster_args() {
-   if [[ "$EXEC_IS_SLAVE" == "true" ]]; then
+   if [[ "$CONF_EXEC_IS_SLAVE" == "true" ]]; then
       export CLUSTER_ARG=" --server "
    fi
 
