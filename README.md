@@ -29,6 +29,31 @@
 12. Any Jmeter parameter can be used in arguments.
 13. No limitation is introduced by this image, jmeter can be used directly if custom input parameters are not used.
 
+## Content
+
+- [docker-jmeter](#docker-jmeter)
+- [Quick reference](#quick-reference)
+  - [Image version](#image-version)
+  - [Features:](#features)
+  - [Content](#content)
+- [Image Variants](#image-variants)
+  - [`jmeter:<jmeter-version>-plugins-*`](#jmeterjmeter-version-plugins-)
+  - [`Jmeter:<version>-alpine`](#jmeterversion-alpine)
+- [Folder structure](#folder-structure)
+  - [Image Folder structure](#image-folder-structure)
+  - [Project folder structure](#project-folder-structure)
+  - [User Folder structure](#user-folder-structure)
+  - [Environement Variables](#environement-variables)
+  - [Plugins](#plugins)
+    - [Download plugins with Maven format](#download-plugins-with-maven-format)
+    - [Download Plugins dependencies with Maven format](#download-plugins-dependencies-with-maven-format)
+    - [Download dependencies with zip format](#download-dependencies-with-zip-format)
+    - [Download dependencies automatically with plugin manager](#download-dependencies-automatically-with-plugin-manager)
+    - [Download dependencies list with plugin manager](#download-dependencies-list-with-plugin-manager)
+    - [Use plugins and dependencies from project or user folder](#use-plugins-and-dependencies-from-project-or-user-folder)
+    - [Use plugins and dependencies as additional lib.](#use-plugins-and-dependencies-as-additional-lib)
+  - [Credits](#credits)
+
 # Image Variants
 
 The `Jmeter` images come in many flavors, each designed for a specific use case.
@@ -47,22 +72,24 @@ This is image contain pre-installed [plugins manager](https://jmeter-plugins.org
 
 This image is based on the popular [Alpine Linux project](https://alpinelinux.org), available in [the `alpine` official image](https://hub.docker.com/_/alpine). Alpine Linux is much smaller than most distribution base images (~5MB), and thus leads to much slimmer images in general.
 
-## Image Folder structure:
+# Folder structure
 
-| Folder/files             | Environnement variable  | Description                                                                                                                                                                                                                                        |
-| ------------------------ | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/opt/apache-jmeter`     | `JMETER_HOME`           | Installation of Jmeter                                                                                                                                                                                                                             |
-| `/jmeter/additional/lib` | `JMETER_ADDITIONAL_LIB` | Additional lib for jmeter folder using property [plugin_dependency_paths](https://jmeter.apache.org/usermanual/properties_reference.html#classpath)                                                                                                |
-| `/jmeter/additional/ext` | `JMETER_ADDITIONAL_EXT` | Additional plugins for jmeter folder using property [search_paths](https://jmeter.apache.org/usermanual/properties_reference.html#classpath)                                                                                                       |
-| `/jmeter/project`        | `PROJECT_PATH`          | Project folder, where jmx file should be present.                                                                                                                                                                                                  |
-| `/jmeter/workspace`      | `WORKSPACE_TARGET`      | If choose duplicate project folder by ( **$CONF_COPY_TO_WORKSPACE** ), this will be the target folder. **$WORKSPACE_PATH** will be the workspace folder depend on duplicating project or not it will be **$WORKSPACE_TARGET** or **$PROJECT_PATH** |
-| `/jmeter/user`           | `USER_PATH`             | Second folder to be used to configure project execution.                                                                                                                                                                                           |
-| `/jmeter/out/jtl`        | `OUTPUT_JTL_PATH`       | Default JTL destination folder                                                                                                                                                                                                                     |
-| `/jmeter/out/log`        | `OUTPUT_LOG_PATH`       | Default log destination folder                                                                                                                                                                                                                     |
-| `/jmeter/out/csv`        | `OUTPUT_CSV_PATH`       | Default spllited csv destination folder, only for debugging.                                                                                                                                                                                       |
-| `/jmeter/out/dashboard`  | `OUTPUT_REPORT_PATH`    | Default Report base folder                                                                                                                                                                                                                         |
+## Image Folder structure
 
-## Project Folder structure:
+| Folder/files                 | Environnement variable  | Description                                                                                                                                                                                                                                        |
+| ---------------------------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/opt/apache-jmeter`         | `JMETER_HOME`           | Installation of Jmeter                                                                                                                                                                                                                             |
+| `/jmeter/additional/lib`     | `JMETER_ADDITIONAL_LIB` | Additional lib for jmeter folder using property [plugin_dependency_paths](https://jmeter.apache.org/usermanual/properties_reference.html#classpath)                                                                                                |
+| `/jmeter/additional/lib/ext` | `JMETER_ADDITIONAL_EXT` | Additional plugins for jmeter folder using property [search_paths](https://jmeter.apache.org/usermanual/properties_reference.html#classpath)                                                                                                       |
+| `/jmeter/project`            | `PROJECT_PATH`          | Project folder, where jmx file should be present.                                                                                                                                                                                                  |
+| `/jmeter/workspace`          | `WORKSPACE_TARGET`      | If choose duplicate project folder by ( **$CONF_COPY_TO_WORKSPACE** ), this will be the target folder. **$WORKSPACE_PATH** will be the workspace folder depend on duplicating project or not it will be **$WORKSPACE_TARGET** or **$PROJECT_PATH** |
+| `/jmeter/user`               | `USER_PATH`             | Second folder to be used to configure project execution.                                                                                                                                                                                           |
+| `/jmeter/out/jtl`            | `OUTPUT_JTL_PATH`       | Default JTL destination folder                                                                                                                                                                                                                     |
+| `/jmeter/out/log`            | `OUTPUT_LOG_PATH`       | Default log destination folder                                                                                                                                                                                                                     |
+| `/jmeter/out/csv`            | `OUTPUT_CSV_PATH`       | Default spllited csv destination folder, only for debugging.                                                                                                                                                                                       |
+| `/jmeter/out/dashboard`      | `OUTPUT_REPORT_PATH`    | Default Report base folder                                                                                                                                                                                                                         |
+
+## Project folder structure
 
 | Folder/files                                    | Description                                                                                                                                      |
 | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -76,11 +103,13 @@ This image is based on the popular [Alpine Linux project](https://alpinelinux.or
 | `scripts/before-test.sh`                        | This script will be executed before jmeter start                                                                                                 |
 | `jmeter.properties`                             | default value properties file.                                                                                                                   |
 
-## User Folder structure:
+## User Folder structure
 
 Same as project folder, the only different jmx file is not used from this folder.
 
-## Env Variables:
+## Environement Variables
+
+This environement variable are input to configure jmeter and execution:
 
 | Folder/files                             | default value       | Description                                                                                                                                                                                                                                                                                                                                                     |
 | ---------------------------------------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -166,65 +195,41 @@ Same format used by [plugins](#download-plugins-with-maven-format)
 
 ### Download dependencies with zip format
 
-## Image on Folder Structure
+In `project folder` or `user folder` put file `dependencies/url.txt` with list of zip urls, zip use the same jmeter structure with lib and lib/ext folder, the download zip links from website https://jmeter-plugins.org/ are compatible with this file.
 
-Docker image for [Apache JMeter](http://jmeter.apache.org).
-This Docker image can be run as the `jmeter` command.
-Find Images of this repo on [Docker Hub](https://hub.docker.com/r/anasoid/jmeter).
+**N.B** : zip file from https://jmeter-plugins.org/ contain also jmeter plugin manager and other common jars, this jars can be duplicated when using multiple plugins.
 
-## Building
+### Download dependencies automatically with plugin manager
 
-With the script [build.sh](build.sh) the Docker image can be build
-from the [Dockerfile](Dockerfile) but this is not really necessary as
-
-### Build Options
-
-## Running
-
-The Docker image will accept the same parameters as `jmeter` itself, assuming
-you run JMeter non-GUI with `-n`.
-
-There is a shorthand [run.sh](run.sh) command.
-See [test.sh](test.sh) for an example of how to call [run.sh](run.sh).
-
-## User Defined Variables
-
-This is a standard facility of JMeter: settings in a JMX test script
-may be defined symbolically and substituted at runtime via the commandline.
-These are called JMeter User Defined Variables or UDVs.
-
-## Installing JMeter plugins
-
-To run the container with custom JMeter plugins installed you need to mount a volume /plugins with the .jar files. For example:
+Use [version with plugins](#jmeterjmeter-version-plugins-) to have pre-configured plugin manager.
+Use env variable JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX to download plugin before starting jmeter with [plugins manager](https://jmeter-plugins.org/wiki/PluginsManagerAutomated/):
 
 ```sh
-sudo docker run --name ${NAME} -i -v ${LOCAL_PLUGINS_FOLDER}:/plugins -v ${LOCAL_JMX_WORK_DIR}:${CONTAINER_JMX_WORK_DIR} -w ${PWD} ${IMAGE} $@
+docker run --rm -v ${PWD}/tests/projects/sample1/:/jmeter/project -e JMETER_JMX="test-plan.jmx" -e JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX="true" anasoid/jmeter:latest-plugins
 ```
 
-## Specifics
+### Download dependencies list with plugin manager
 
-The Docker image built from the
-[Dockerfile](Dockerfile) inherits from the [Alpine Linux](https://www.alpinelinux.org) distribution:
+Use [version with plugins](#jmeterjmeter-version-plugins-) to have pre-configured plugin manager.
+Use env variable JMETER_PLUGINS_MANAGER_INSTALL_LIST to download plugin before starting jmeter with [plugins manager](https://jmeter-plugins.org/wiki/PluginsManagerAutomated/):
 
-> "Alpine Linux is built around musl libc and busybox. This makes it smaller
-> and more resource efficient than traditional GNU/Linux distributions.
-> A container requires no more than 8 MB and a minimal installation to disk
-> requires around 130 MB of storage.
-> Not only do you get a fully-fledged Linux environment but a large selection of packages from the repository."
-
-See https://hub.docker.com/_/alpine/ for Alpine Docker images.
-
-The Docker image will install (via Alpine `apk`) several required packages most specificly
-the `OpenJDK Java JRE`. JMeter is installed by simply downloading/unpacking a `.tgz` archive
-from http://mirror.serversupportforum.de/apache/jmeter/binaries within the Docker image.
-
-A generic [entrypoint.sh](entrypoint.sh) is copied into the Docker image and
-will be the script that is run when the Docker container is run. The
-[entrypoint.sh](entrypoint.sh) simply calls `jmeter` passing all argumets provided
-to the Docker container, see [run.sh](run.sh) script:
-
+```sh
+docker run --rm -v ${PWD}/tests/projects/sample1/:/jmeter/project -e JMETER_JMX="test-plan.jmx" -e JMETER_PLUGINS_MANAGER_INSTALL_LIST="jpgc-json=2.2,jpgc-casutg=2.0" anasoid/jmeter:latest-plugins
 ```
-sudo docker run --name ${NAME} -i -v ${WORK_DIR}:${WORK_DIR} -w ${WORK_DIR} ${IMAGE} $@
+
+### Use plugins and dependencies from project or user folder
+
+before starting jmeter the folders `/jmeter/project/plugins` and `/jmeter/user/plugins` are copied to $JMETER_HOME/lib/ext, and folders `/jmeter/project/lib` and `/jmeter/user/lib` are copied to $JMETER_HOME/lib.
+
+### Use plugins and dependencies as additional lib.
+
+Folder `/jmeter/additional/lib` is used as additional lib folder for jmeter and `/jmeter/additional/lib/ext` is used as additional folder for lib/ext folder in jmeter, files on those folders are not copied.
+
+ex of use :
+On the host machine prepare folder `/mylib` with additional libraries and a sub folder ext with plugins:
+
+```sh
+docker run --rm -v ${PWD}/tests/projects/sample1/:/jmeter/project -v /mylib/:/jmeter/additional/lib  -e JMETER_JMX="test-plan.jmx" anasoid/jmeter:latest-plugins
 ```
 
 ## Credits
