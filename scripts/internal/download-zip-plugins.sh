@@ -10,7 +10,7 @@ if [ "$CONF_SKIP_PLUGINS_INSTALL" == "false" ]; then
    for file in ${files[@]}; do
       if [ -f "$file" ]; then
          echo "Downloading from file: $file"
-         while IFS= read -r line; do
+         while IFS="" read -r line || [ -n "$line" ]; do
             echo "Downloading : $line"
             rm -f /tmp/temp.zip
             wget $line -O /tmp/temp.zip
