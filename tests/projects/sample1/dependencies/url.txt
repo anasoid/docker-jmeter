@@ -1,0 +1,2 @@
+https://jmeter-plugins.org/files/packages/jpgc-ffw-2.0.zip
+https://jmeter-plugins.org/files/packages/jpgc-tst-2.5.zip
