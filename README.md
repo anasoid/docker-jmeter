@@ -64,17 +64,21 @@ This image is based on the popular [Alpine Linux project](https://alpinelinux.or
 
 ## Project Folder structure:
 
-| Folder/files                                    | Description                                                                                                 |
-| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `lib`                                           | lib folder, file in this folder will be copied to $JMETER_HOME/lib                                          |
-| `plugins`                                       | plugins folder, file in this folder will be copied to $JMETER_HOME/lib/ext                                  |
-| `dependencies/url.txt`                          | urls in this file will be download and extracted to $JMETER_HOME                                            |
-| `dependencies/settings.xml`                     | settings.xml used by maven, if there is any need to not authentication for maven repository or a custom one |
-| `dependencies/plugins-lib-dependencies.xml`     | Dependencies                                                                                                |
-| `dependencies/plugins-lib-ext-dependencies.xml` |                                                                                                             |
-| `scripts/after-test.sh`                         |                                                                                                             |
-| `scripts/before-test.sh`                        |                                                                                                             |
-| `jmeter.properties`                             |                                                                                                             |
+| Folder/files                                    | Description                                                                                                                                      |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `lib`                                           | lib folder, file in this folder will be copied to $JMETER_HOME/lib                                                                               |
+| `plugins`                                       | plugins folder, file in this folder will be copied to $JMETER_HOME/lib/ext                                                                       |
+| `dependencies/url.txt`                          | urls in this file will be download and extracted to $JMETER_HOME                                                                                 |
+| `dependencies/settings.xml`                     | settings.xml used by maven, if there is any need to not authentication for maven repository or a custom one                                      |
+| `dependencies/plugins-lib-dependencies.xml`     | Dependencies plugins, jar present in this file will be copied to folder "lib" in jmeter.                                                         |
+| `dependencies/plugins-lib-ext-dependencies.xml` | Plugins, jar present in this file will be copied to folder "lib/ext" in jmeter.                                                                  |
+| `scripts/after-test.sh`                         | This script will be executed after jmeter test end , To be executed after test in slave jmeter should be stopped after test wth **$JMETER_EXIT** |
+| `scripts/before-test.sh`                        | This script will be executed before jmeter start                                                                                                 |
+| `jmeter.properties`                             | default value properties file.                                                                                                                   |
+
+## User Folder structure:
+
+Same as project folder, the only different jmx file is not used from this folder.
 
 ## Env Variables:
 
@@ -96,7 +100,7 @@ This image is based on the popular [Alpine Linux project](https://alpinelinux.or
 | `CONF_CSV_SPLITTED_TO_OUT`               | `true`              | Copy splitted files to **$OUTPUT_CSV_PATH**, only for debugging.                                                                                                                                                                                                                                                                                                |
 | `JMETER_JMX`                             |                     | JMX test file.                                                                                                                                                                                                                                                                                                                                                  |
 | `JMETER_EXIT`                            | `false`             | Force exit after test on all node.                                                                                                                                                                                                                                                                                                                              |
-| `JMETER_PROPERTIES_FILES`                | `jmeter.properties` | List of properties file to be used as additional properties, ex :"size.properties preprod.properties"                                                                                                                                                                                                                                                           |
+| `JMETER_PROPERTIES_FILES`                | `jmeter.properties` | List of properties file to be used as additional properties, (ex :"size.properties preprod.properties") this list will be add from project and user folder if file is present.                                                                                                                                                                                  |
 | `JMETER_JTL_FILE`                        |                     | Name of jtl result file , will be saved in folder **$OUTPUT_JTL_PATH**                                                                                                                                                                                                                                                                                          |
 | `JMETER_LOG_FILE`                        | `jmeter.log`        | Jmeter log file name **$OUTPUT_LOG_PATH**                                                                                                                                                                                                                                                                                                                       |
 | `JMETER_REPORT_NAME`                     |                     | Html report name , will be saved in folder **$OUTPUT_REPORT_PATH**                                                                                                                                                                                                                                                                                              |
@@ -107,13 +111,62 @@ This image is based on the popular [Alpine Linux project](https://alpinelinux.or
 | `JMETER_PLUGINS_MANAGER_INSTALL_LIST`    |                     | Install list of plugins using [plugins manager](https://jmeter-plugins.org/wiki/PluginsManagerAutomated/) (Ex : "jpgc-json=2.2,jpgc-casutg=2.0"),                                                                                                                                                                                                               |
 | `JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX` | `false`             | Install needed plugins for jmx file automatically using [plugins manager](https://jmeter-plugins.org/wiki/PluginsManagerAutomated/)                                                                                                                                                                                                                             |
 
-## Download Dependencies :
+## Plugins
 
-### Download Dependencies with Maven format:
+Plugins can be provided in many ways.
+We distinguish two type of lib dependencies, the plugins and plugins dependencies. In Jmeter they are in different folders lib/ext and lib respectively.
 
-### Download Dependencies with zip format:
+### Download plugins with Maven format
 
-## Image on Folder Structure:
+In `project folder` or `user folder` put maven xml file `dependencies/plugins-lib-ext-dependencies.xml`, use exclusion with \* to not download dependencies of jar, only jar referenced in file will be used .
+jar from this file will be downloed to folder **$JMETER_HOME/lib/ext**.
+ex:
+
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.anasoid.jmeter.docker</groupId>
+  <version>1</version>anlaanlahnjml.lanla
+  <packaging>pom</packaging>
+
+  <artifactId>sample-lib-ext</artifactId>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.blazemeter</groupId>
+      <artifactId>jmeter-plugins-random-csv-data-set</artifactId>
+      <version>0.8</version>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>kg.apc</groupId>
+      <artifactId>jmeter-plugins-graphs-additional</artifactId>
+      <version>2.0</version>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+  </dependencies>
+</project>
+```
+
+### Download Plugins dependencies with Maven format
+
+In `project folder` or `user folder` put maven xml file `dependencies/plugins-lib-dependencies.xml`, use exclusion with \* to not download dependencies of jar, only jar referenced in file will be used .
+jar from this file will be downloaded to folder **$JMETER_HOME/lib**.
+Same format used by [plugins](#download-plugins-dependencies-with-maven-format)
+
+### Download dependencies with zip format
+
+## Image on Folder Structure
 
 Docker image for [Apache JMeter](http://jmeter.apache.org).
 This Docker image can be run as the `jmeter` command.
