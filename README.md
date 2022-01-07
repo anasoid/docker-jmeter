@@ -15,19 +15,20 @@
 
 ## Features:
 
-1. Smallest size with ~100MB.
-2. Timeout for execution, after timeout docker will be stopped even test is not finished, this is helpfull to force stop jmeter docker after a timeout.
-3. Download plugin with maven dependencies format.
-4. Download plugin with list of url.
-5. Download plugin with plugin manager (Only plugins versions) .
-6. Use plugins from folders.
-7. Check Jmx Test (Only plugins versions)
-8. Split CSV Data on multi nodes.
-9. Execute pre/post test shell scripts.
-10. Separate Project configuration from node configuration, to separate configuration from execution team and developer teams.
-11. Isolate output folder (logs, jtl files, html report).
-12. Any Jmeter parameter can be used in arguments.
-13. No limitation is introduced by this image, jmeter can be used directly if custom input parameters are not used.
+1. Smallest size with ~110MB.
+2. Two version : Native Jmeter version and Jmeter version with pre-configured plugin manager.
+3. Timeout for execution, after timeout docker will be stopped even test is not finished, this is helpful to force stop jmeter docker after a timeout.
+4. Download plugin with maven dependencies format.
+5. Download plugin with list of url.
+6. Download plugin with plugin manager (Only plugins versions) .
+7. Use plugins from folders.
+8. Check Jmx Test (Only plugins versions)
+9. Split CSV Data on multi nodes.
+10. Execute pre/post test shell scripts.
+11. Separate Project configuration from node configuration, to separate configuration from execution team and developer teams.
+12. Isolate output folder (logs, jtl files, html report).
+13. Any Jmeter parameter can be used in arguments.
+14. No limitation is introduced by this image, jmeter can be used directly if custom input parameters are not used.
 
 ## Content
 
@@ -43,15 +44,17 @@
   - [Project folder structure](#project-folder-structure)
   - [User Folder structure](#user-folder-structure)
   - [Environement Variables](#environement-variables)
-  - [Plugins](#plugins)
+- [Plugins installation](#plugins-installation)
     - [Download plugins with Maven format](#download-plugins-with-maven-format)
-    - [Download Plugins dependencies with Maven format](#download-plugins-dependencies-with-maven-format)
-    - [Download dependencies with zip format](#download-dependencies-with-zip-format)
-    - [Download dependencies automatically with plugin manager](#download-dependencies-automatically-with-plugin-manager)
-    - [Download dependencies list with plugin manager](#download-dependencies-list-with-plugin-manager)
-    - [Use plugins and dependencies from project or user folder](#use-plugins-and-dependencies-from-project-or-user-folder)
-    - [Use plugins and dependencies as additional lib.](#use-plugins-and-dependencies-as-additional-lib)
-  - [Credits](#credits)
+  - [Download Plugins dependencies with Maven format](#download-plugins-dependencies-with-maven-format)
+  - [Download dependencies with zip format](#download-dependencies-with-zip-format)
+  - [Download dependencies automatically with plugin manager](#download-dependencies-automatically-with-plugin-manager)
+  - [Download dependencies list with plugin manager](#download-dependencies-list-with-plugin-manager)
+  - [Use plugins and dependencies from project or user folder](#use-plugins-and-dependencies-from-project-or-user-folder)
+  - [Use plugins and dependencies as additional lib.](#use-plugins-and-dependencies-as-additional-lib)
+- [Test plan check](#test-plan-check)
+- [Split CSV files](#split-csv-files)
+- [Credits](#credits)
 
 # Image Variants
 
@@ -120,7 +123,7 @@ This environement variable are input to configure jmeter and execution:
 | `CONF_CSV_SPLIT`                         | `false`             | Split csv file on `$CONF_EXEC_WORKER_COUNT` and take the part `CONF_EXEC_WORKER_COUNT`                                                                                                                                                                                                                                                                          |
 | `CONF_CSV_SPLIT_PATTERN`                 | `\*\*`              | Pattern used to choose csv file to be spllited, a default filter (\*.csv) is already used so only csv file are concerned by this split, the pattern is applied relative path for file, so patten can be applied on folder or file name. (Ex : "./data/_.csv" for csv file in data folder, ./data/_\_split.csv for csv files in data folder with suffix \_split) |
 | `CONF_CSV_WITH_HEADER`                   | `true`              | Split CSV file has header or not.                                                                                                                                                                                                                                                                                                                               |
-| `CONF_CSV_SPLITTED_TO_OUT`               | `true`              | Copy splitted files to `$OUTPUT_CSV_PATH`, only for debugging.                                                                                                                                                                                                                                                                                                  |
+| `CONF_CSV_DIVIDED_TO_OUT`                | `true`              | Copy divided files to `$OUTPUT_CSV_PATH`, only for debugging.                                                                                                                                                                                                                                                                                                   |
 | `JMETER_JMX`                             |                     | JMX test file.                                                                                                                                                                                                                                                                                                                                                  |
 | `JMETER_EXIT`                            | `false`             | Force exit after test on all node.                                                                                                                                                                                                                                                                                                                              |
 | `JMETER_PROPERTIES_FILES`                | `jmeter.properties` | List of properties file to be used as additional properties, (ex :"size.properties preprod.properties") this list will be add from project and user folder if file is present.                                                                                                                                                                                  |
@@ -134,7 +137,7 @@ This environement variable are input to configure jmeter and execution:
 | `JMETER_PLUGINS_MANAGER_INSTALL_LIST`    |                     | Install list of plugins using [plugins manager](https://jmeter-plugins.org/wiki/PluginsManagerAutomated/) (Ex : "jpgc-json=2.2,jpgc-casutg=2.0"),                                                                                                                                                                                                               |
 | `JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX` | `false`             | Install needed plugins for jmx file automatically using [plugins manager](https://jmeter-plugins.org/wiki/PluginsManagerAutomated/)                                                                                                                                                                                                                             |
 
-## Plugins
+# Plugins installation
 
 Plugins can be provided in many ways.
 We distinguish two type of lib dependencies, the plugins and plugins dependencies. In Jmeter they are in different folders lib/ext and lib respectively.
@@ -181,19 +184,19 @@ ex:
 </project>
 ```
 
-### Download Plugins dependencies with Maven format
+## Download Plugins dependencies with Maven format
 
 In `project folder` or `user folder` put maven xml file `dependencies/plugins-lib-dependencies.xml`, use exclusion with \* to not download dependencies of jar, only jar referenced in file will be used .
 jar from this file will be downloaded to folder `$JMETER_HOME/lib`.
 Same format used by [plugins](#download-plugins-with-maven-format)
 
-### Download dependencies with zip format
+## Download dependencies with zip format
 
 In `project folder` or `user folder` put file `dependencies/url.txt` with list of zip urls, zip use the same jmeter structure with lib and lib/ext folder, the download zip links from website https://jmeter-plugins.org/ are compatible with this file.
 
 **N.B** : zip file from https://jmeter-plugins.org/ contain also jmeter plugin manager and other common jars, this jars can be duplicated when using multiple plugins.
 
-### Download dependencies automatically with plugin manager
+## Download dependencies automatically with plugin manager
 
 Use [version with plugins](#jmeterjmeter-version-plugins-) to have pre-configured plugin manager.
 Use env variable JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX to download plugin before starting jmeter with [plugins manager](https://jmeter-plugins.org/wiki/PluginsManagerAutomated/):
@@ -206,7 +209,7 @@ docker run --rm \
 anasoid/jmeter:latest-plugins
 ```
 
-### Download dependencies list with plugin manager
+## Download dependencies list with plugin manager
 
 Use [version with plugins](#jmeterjmeter-version-plugins-) to have pre-configured plugin manager.
 Use env variable JMETER_PLUGINS_MANAGER_INSTALL_LIST to download plugin before starting jmeter with [plugins manager](https://jmeter-plugins.org/wiki/PluginsManagerAutomated/):
@@ -219,11 +222,11 @@ docker run --rm \
 anasoid/jmeter:latest-plugins
 ```
 
-### Use plugins and dependencies from project or user folder
+## Use plugins and dependencies from project or user folder
 
 before starting jmeter the folders `/jmeter/project/plugins` and `/jmeter/user/plugins` are copied to `$JMETER_HOME/lib/ext`, and folders `/jmeter/project/lib` and `/jmeter/user/lib` are copied to `$JMETER_HOME/lib`.
 
-### Use plugins and dependencies as additional lib.
+## Use plugins and dependencies as additional lib.
 
 Folder `/jmeter/additional/lib` is used as additional lib folder for jmeter and `/jmeter/additional/lib/ext` is used as additional folder for lib/ext folder in jmeter, files on those folders are not copied.
 
@@ -238,6 +241,45 @@ docker run --rm \
 anasoid/jmeter:latest-plugins
 ```
 
-## Credits
+# Test plan check
+
+Use [version with plugins](#jmeterjmeter-version-plugins-) to have pre-configured test plan check.
+[Test plan check tool](https://jmeter-plugins.org/wiki/TestPlanCheckTool/) can verify test plan without executing test :
+Ex
+
+```sh
+docker run --rm \
+-v ${PWD}/tests/projects/sample1/:/jmeter/project \
+-e JMETER_JMX="test-plan.jmx" \
+-e JMETER_CHECK_ONLY="true" \
+anasoid/jmeter:latest-plugins
+```
+
+# Split CSV files
+
+Many case when we need that jmeter cluster don't use duplicate data (like logged user, ..), this can be possible to split csv files on the number of salves.
+
+To do this you can follow the following steps :
+
+1. You have to identify csv files that you want to be divided by a pattern `CONF_CSV_SPLIT_PATTERN`,for example use a prefix on all files (\*\_split.csv: login_split.csv)
+1. You have to know the total of slaves `CONF_EXEC_WORKER_COUNT` and identify each slave by number `CONF_EXEC_WORKER_NUMBER`.
+1. csv file will be replaced by the divided one, so if project folder should not be modified, use option copy to workspace space `CONF_COPY_TO_WORKSPACE`, to duplicate project folder before starting execution.
+1. You can also copy the divided files to out folder for debugging raison to check divided data `CONF_CSV_DIVIDED_TO_OUT`
+
+Ex
+
+```sh
+docker run --rm \
+-v ${PWD}/tests/projects/sample1/:/jmeter/project \
+-e JMETER_JMX="test-plan.jmx" \
+-e CONF_COPY_TO_WORKSPACE="true" \
+-e CONF_EXEC_WORKER_COUNT="5" \
+-e CONF_EXEC_WORKER_NUMBER="1" \
+-e CONF_CSV_SPLIT_PATTERN="**_split.csv"
+-e CONF_CSV_DIVIDED_TO_OUT="true" \
+anasoid/jmeter:latest
+```
+
+# Credits
 
 Thanks to https://github.com/justb4/docker-jmeter for providing the Dockerfiles that inspired me.
