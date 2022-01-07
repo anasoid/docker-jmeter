@@ -4,10 +4,10 @@
 
 # Quick reference
 
-- **Where to get help**:  
-  [Issues](https://github.com/anasoid/docker-jmeter/issues)  
-  [Discussions](https://github.com/anasoid/docker-jmeter/discussions)
-  [Documentation](https://github.com/anasoid/docker-jmeter)
+- **Where to get help**:
+  - [Issues](https://github.com/anasoid/docker-jmeter/issues)
+  - [Discussions](https://github.com/anasoid/docker-jmeter/discussions)
+  - [Documentation](https://github.com/anasoid/docker-jmeter)
 
 ## Image version
 
