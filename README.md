@@ -10,8 +10,8 @@
 
 ## Image version
 
-- [`latest`, `5.4`, `5.4-11-jre`, `5.4-eclipse-temurin-11-jre-alpine`, `5.4-eclipse-temurin-11-jre`, `5.4.3`, `5.4.3-11-jre`, `5.4.3-eclipse-temurin-11-jre-alpine`, `5.4.3-eclipse-temurin-11-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.4/eclipse-temurin/11-jre-alpine/Dockerfile)
-- [`latest-plugins`, `5.4-plugins`, `5.4-plugins-11-jre`, `5.4-plugins-eclipse-temurin-11-jre-alpine`, `5.4-plugins-eclipse-temurin-11-jre`, `5.4.3-plugins`, `5.4.3-plugins-11-jre`, `5.4.3-plugins-eclipse-temurin-11-jre-alpine`, `5.4.3-plugins-eclipse-temurin-11-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.4/eclipse-temurin/11-jre-alpine/Dockerfile)
+- [`latest`, `5.4`, `5.4-11-jre`,`5.4.3`, `5.4.3-11-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`latest-plugins`, `5.4-plugins`, `5.4-plugins-11-jre`, `5.4.3-plugins`, `5.4.3-plugins-11-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
 
 ## Features:
 
@@ -38,7 +38,6 @@
   - [Content](#content)
 - [Image Variants](#image-variants)
   - [`jmeter:<jmeter-version>-plugins-*`](#jmeterjmeter-version-plugins-)
-  - [`Jmeter:<version>-alpine`](#jmeterversion-alpine)
 - [Folder structure](#folder-structure)
   - [Image Folder structure](#image-folder-structure)
   - [Project folder structure](#project-folder-structure)
@@ -61,16 +60,11 @@ The images version are based on component used to build image :
 
 1. **Jmeter Version** : 5.4.3 -> default for 5.4.
 2. **JVM Version** : Ex :(eclipse-temurin-11-jre, default for 11-jre)
-3. **Image base** : alpine is the default image.
-4. **plugins** : Pre-installed [plugins manager](https://jmeter-plugins.org/wiki/PluginsManagerAutomated/) and [test plan check tool](https://jmeter-plugins.org/wiki/TestPlanCheckTool/). This give image to use feature to check JMX file and download plugins with plugin manager.
+3. **plugins** : Pre-installed [plugins manager](https://jmeter-plugins.org/wiki/PluginsManagerAutomated/) and [test plan check tool](https://jmeter-plugins.org/wiki/TestPlanCheckTool/). This give image to use feature to check JMX file and download plugins with plugin manager.
 
 ## `jmeter:<jmeter-version>-plugins-*`
 
 This is image contain pre-installed [plugins manager](https://jmeter-plugins.org/wiki/PluginsManagerAutomated/) and [test plan check tool](https://jmeter-plugins.org/wiki/TestPlanCheckTool/). This give image to use feature to check JMX file and download plugins with plugin manager.
-
-## `Jmeter:<version>-alpine`
-
-This image is based on the popular [Alpine Linux project](https://alpinelinux.org), available in [the `alpine` official image](https://hub.docker.com/_/alpine). Alpine Linux is much smaller than most distribution base images (~5MB), and thus leads to much slimmer images in general.
 
 # Folder structure
 

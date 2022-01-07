@@ -13,14 +13,16 @@ jobs:
         include:
           - jmeter-version: "5.4.3"
             with-plugins: "true"
-            jvm-version: "eclipse-temurin/11-jre-alpine"
+            jvm-version: "11-jre-alpine"
+            folder: "5.x/eclipse-temurin"
             jmeter-branch: 5.4
             jvm-version-label: "11-jre"
             tags-latest: "latest"
 
           - jmeter-version: "5.4.3"
             with-plugins: "false"
-            jvm-version: "eclipse-temurin/11-jre-alpine"
+            jvm-version: "11-jre-alpine"
+            folder: "5.x/eclipse-temurin"
             jmeter-branch: 5.4
             jvm-version-label: "11-jre"
             tags-latest: "latest"
@@ -43,8 +45,9 @@ jobs:
       - name: Config 📦
         run: |
           echo jmeter-branch=${{ matrix.jmeter-branch }}
-          echo jmeter-version=${{ matrix.jmeter-version }}
           echo jvm-version=${{ matrix.jvm-version }}
+          echo jmeter-version=${{ matrix.jmeter-version }}
+          echo folder=${{ matrix.folder }}
           echo tags-latest=${{ matrix.tags-latest }}
           echo with-plugins=${{ matrix.with-plugins }}
 
@@ -78,12 +81,13 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ${{ matrix.jmeter-branch }}/${{ matrix.jvm-version }}/Dockerfile
+          file: ${{ matrix.jvm-folder }}/Dockerfile
           load: true
           push: false
           build-args: |
             JMETER_VERSION=${{ matrix.jmeter-version }}
             WITH_BASE_PLUGINS=${{ matrix.with-plugins }}
+            JVM_VERSION=${{ matrix.jvm-version }}
 
           tags: |
             ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}${{ steps.prep.outputs.suffix }}
