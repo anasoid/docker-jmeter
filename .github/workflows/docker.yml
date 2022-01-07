@@ -190,7 +190,7 @@ jobs:
 
       - name: Test Jmeter Clone Workspace
         run: |
-          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project  -e CONF_COPY_TO_WORKSPACE=true ${{ steps.result.outputs.currentImage }} 
+          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project  -e CONF_COPY_TO_WORKSPACE=true  -e JMETER_JMX="basic-plan.jmx" ${{ steps.result.outputs.currentImage }} 
           docker commit t1 t1 
           container-structure-test test -v info --image t1 --config tests/container-structure-test/workspace-clone.yaml
           docker rm t1
@@ -198,7 +198,7 @@ jobs:
 
       - name: Test Jmeter don't clone Workspace
         run: |
-          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project ${{ steps.result.outputs.currentImage }} 
+          docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -e JMETER_JMX="basic-plan.jmx" ${{ steps.result.outputs.currentImage }} 
           docker commit t1 t1 
           container-structure-test test -v info --image t1 --config tests/container-structure-test/workspace-dont-clone.yaml
           docker rm t1
