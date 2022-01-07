@@ -199,7 +199,11 @@ Use [version with plugins](#jmeterjmeter-version-plugins-) to have pre-configure
 Use env variable JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX to download plugin before starting jmeter with [plugins manager](https://jmeter-plugins.org/wiki/PluginsManagerAutomated/):
 
 ```sh
-docker run --rm -v ${PWD}/tests/projects/sample1/:/jmeter/project -e JMETER_JMX="test-plan.jmx" -e JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX="true" anasoid/jmeter:latest-plugins
+docker run --rm \
+-v ${PWD}/tests/projects/sample1/:/jmeter/project \
+-e JMETER_JMX="test-plan.jmx" \
+-e JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX="true" \
+anasoid/jmeter:latest-plugins
 ```
 
 ### Download dependencies list with plugin manager
@@ -208,7 +212,11 @@ Use [version with plugins](#jmeterjmeter-version-plugins-) to have pre-configure
 Use env variable JMETER_PLUGINS_MANAGER_INSTALL_LIST to download plugin before starting jmeter with [plugins manager](https://jmeter-plugins.org/wiki/PluginsManagerAutomated/):
 
 ```sh
-docker run --rm -v ${PWD}/tests/projects/sample1/:/jmeter/project -e JMETER_JMX="test-plan.jmx" -e JMETER_PLUGINS_MANAGER_INSTALL_LIST="jpgc-json=2.2,jpgc-casutg=2.0" anasoid/jmeter:latest-plugins
+docker run --rm \
+-v ${PWD}/tests/projects/sample1/:/jmeter/project \
+-e JMETER_JMX="test-plan.jmx" \
+-e JMETER_PLUGINS_MANAGER_INSTALL_LIST="jpgc-json=2.2,jpgc-casutg=2.0" \
+anasoid/jmeter:latest-plugins
 ```
 
 ### Use plugins and dependencies from project or user folder
@@ -223,7 +231,11 @@ ex of use :
 On the host machine prepare folder `/mylib` with additional libraries and a sub folder ext with plugins:
 
 ```sh
-docker run --rm -v ${PWD}/tests/projects/sample1/:/jmeter/project -v /mylib/:/jmeter/additional/lib  -e JMETER_JMX="test-plan.jmx" anasoid/jmeter:latest-plugins
+docker run --rm \
+-v ${PWD}/tests/projects/sample1/:/jmeter/project \
+-v /mylib/:/jmeter/additional/lib  \
+-e JMETER_JMX="test-plan.jmx" \
+anasoid/jmeter:latest-plugins
 ```
 
 ## Credits
