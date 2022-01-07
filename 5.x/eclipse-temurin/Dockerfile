@@ -1,8 +1,9 @@
-# Example of custom Java runtime using jlink in a multi-stage container build
+ARG  JVM_VERSION=11-jre-alpine
+#use Maven image to install maven
 FROM maven:3.8-eclipse-temurin-11-alpine  as maven-install-build
 
-# Define your base image
-FROM eclipse-temurin:11-jre-alpine
+# Use JVM base
+FROM eclipse-temurin:${JVM_VERSION}
 
 LABEL org.opencontainers.image.authors="Anas OUFDOU <oufdou.anas@gmail.com>"
 
