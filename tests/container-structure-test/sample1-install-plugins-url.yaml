@@ -1,0 +1,9 @@
+schemaVersion: "2.0.0"
+fileExistenceTests:
+  - name: "Project install lib"
+    path: "/opt/apache-jmeter/lib/ext/jmeter-plugins-ffw-2.0.jar"
+    shouldExist: true
+
+  - name: "Project install plugin"
+    path: "/opt/apache-jmeter/lib/ext/jmeter-plugins-tst-2.5.jar"
+    shouldExist: true

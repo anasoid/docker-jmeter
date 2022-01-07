@@ -1,8 +1,9 @@
-# Example of custom Java runtime using jlink in a multi-stage container build
+ARG  JVM_VERSION=11-jre-alpine
+#use Maven image to install maven
 FROM maven:3.8-eclipse-temurin-11-alpine  as maven-install-build
 
-# Define your base image
-FROM eclipse-temurin:11-jre-alpine
+# Use JVM base
+FROM eclipse-temurin:${JVM_VERSION}
 
 LABEL org.opencontainers.image.authors="Anas OUFDOU <oufdou.anas@gmail.com>"
 
@@ -37,13 +38,14 @@ ENV WORKSPACE_TARGET /jmeter/workspace
 ENV OUTPUT_PATH /jmeter/out
 ENV OUTPUT_JTL_PATH $OUTPUT_PATH/jtl
 ENV OUTPUT_LOG_PATH $OUTPUT_PATH/log
+ENV OUTPUT_CSV_PATH $OUTPUT_PATH/csv
 ENV OUTPUT_REPORT_PATH $OUTPUT_PATH/dashboard
 
 #USER
 ENV USER_DEPENCENCIES_PATH $USER_PATH/dependencies
 ENV USER_PLUGINS_PATH $USER_PATH/plugins
 ENV USER_LIB_PATH $USER_PATH/lib
-ENV USER_PLUGINS_URL_FILE $USER_PATH/url.txt
+ENV USER_PLUGINS_URL_FILE $USER_DEPENCENCIES_PATH/url.txt
 ENV USER_MAVEN_SETTINGS $USER_DEPENCENCIES_PATH/settings.xml
 
 
@@ -51,7 +53,7 @@ ENV USER_MAVEN_SETTINGS $USER_DEPENCENCIES_PATH/settings.xml
 ENV PROJECT_DEPENCENCIES_PATH $PROJECT_PATH/dependencies
 ENV PROJECT_PLUGINS_PATH $PROJECT_PATH/plugins
 ENV PROJECT_LIB_PATH $PROJECT_PATH/lib
-ENV PROJECT_PLUGINS_URL_FILE $PROJECT_PLUGINS_PATH/url.txt
+ENV PROJECT_PLUGINS_URL_FILE $PROJECT_DEPENCENCIES_PATH/url.txt
 ENV PROJECT_MAVEN_SETTINGS $PROJECT_DEPENCENCIES_PATH/settings.xml
 
 
@@ -62,12 +64,12 @@ ENV CONF_SKIP_POST_ACTION false
 ENV CONF_COPY_TO_WORKSPACE false
 
 #EXECUTION
-ENV EXEC_IS_SLAVE false
+ENV CONF_EXEC_IS_SLAVE false
 ENV CONF_EXEC_WORKER_COUNT 1
 ENV CONF_EXEC_WORKER_NUMBER 1
 ENV CONF_EXEC_WAIT_BEFORE_TEST 0
 ENV CONF_EXEC_WAIT_AFTER_TEST 1
-ENV CONF_EXEC_TIMEOUT 18144000
+ENV CONF_EXEC_TIMEOUT 2592000
 
 #DATA
 ENV CONF_CSV_SPLIT false
@@ -117,6 +119,7 @@ RUN    apk update \
 	&& mkdir -p $OUTPUT_JTL_PATH  \
 	&& mkdir -p $OUTPUT_LOG_PATH  \
 	&& mkdir -p $OUTPUT_REPORT_PATH  \
+	&& mkdir -p $OUTPUT_CSV_PATH \
 	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Installing Jmeter ${JMETER_VERSION} %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
 	&& mkdir -p /tmp/dependencies  \
 	&& echo ${PATH}  \

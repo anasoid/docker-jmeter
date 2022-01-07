@@ -37,11 +37,21 @@ prepare_additional_file_properties() {
          fi
 
          file="$WORKSPACE_PATH/$element"
+         fileuser="$USER_PATH/$element"
          if [ -f "$file" ]; then
             export PROPERTIES_ARG=" -q $file$PROPERTIES_ARG"
+            if [ -f "$fileuser" ]; then
+               export PROPERTIES_ARG=" -q $fileuser$PROPERTIES_ARG"
+            fi
          else
-            echo "ERROR: Configured properties file ($element) not found in  : ($file) " 1>&2
-            return 1
+            if [ -f "$fileuser" ]; then
+               export PROPERTIES_ARG=" -q $fileuser$PROPERTIES_ARG"
+            else
+               if [[ $element != "jmeter.properties" ]]; then
+                  echo "ERROR: Configured properties file ($element) not found in  : ($file) or ($fileuser) " 1>&2
+                  return 1
+               fi
+            fi
          fi
       done
    fi
@@ -94,7 +104,7 @@ prepare_report_args() {
 
 #Prepare CLUSTER_ARG
 prepare_cluster_args() {
-   if [[ "$EXEC_IS_SLAVE" == "true" ]]; then
+   if [[ "$CONF_EXEC_IS_SLAVE" == "true" ]]; then
       export CLUSTER_ARG=" --server "
    fi
 
