@@ -397,6 +397,3 @@ docker run --rm \
 anasoid/jmeter:latest -t /myprojet/test.jmx -Jthread=50 -q /myproject/prop.properties
 ```
 
-# Credits
-
-Thanks to <https://github.com/justb4/docker-jmeter> for providing the Dockerfiles that inspired me.
