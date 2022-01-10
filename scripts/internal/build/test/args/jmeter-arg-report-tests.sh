@@ -9,7 +9,7 @@ test_prepare_report_args_success() {
    set -e
 
    REPORT_ARG=""
-   OUTPUT_REPORT_PATH=/outreport
+   OUTPUT_REPORT_PATH=$(pwd)/jmeter/outreport
    JMETER_REPORT_NAME=dashboard
    prepare_report_args -fdfdfdfd dfd-tfd
    if [ $? -eq 0 ]; then
@@ -26,7 +26,7 @@ test_prepare_report_args_not_fil_success() {
    set -e
 
    REPORT_ARG=""
-   OUTPUT_REPORT_PATH=/outreport
+   OUTPUT_REPORT_PATH=$(pwd)/jmeter/outreport
    JMETER_REPORT_NAME=
    prepare_report_args -jfdfdfdfd dfd-tfd
    if [ $? -eq 0 ]; then
@@ -43,7 +43,7 @@ test_prepare_report_args_fail() {
    set +e
 
    REPORT_ARG=""
-   OUTPUT_REPORT_PATH=/outreport
+   OUTPUT_REPORT_PATH=$(pwd)/jmeter/outreport
    JMETER_REPORT_NAME=report.report
    prepare_report_args dfd -o ddf
    if [ $? -eq 1 ]; then

@@ -64,6 +64,9 @@ prepare_JTL_args() {
          echo "ERROR: JTL file is configured twice using JMETER_JTL_FILE env variable ($JMETER_JTL_FILE), and arguments using -l or --logfile in ($@)" 1>&2
          return 1
       else
+         if [ ! -d $OUTPUT_JTL_PATH ]; then
+            mkdir -p $OUTPUT_JTL_PATH
+         fi
          export JTL_ARG=" -l $OUTPUT_JTL_PATH/$JMETER_JTL_FILE"
       fi
    else
@@ -81,6 +84,9 @@ prepare_log_args() {
          fi
          export LOG_ARG=""
       else
+         if [ ! -d $OUTPUT_LOG_PATH ]; then
+            mkdir -p $OUTPUT_LOG_PATH
+         fi
          export LOG_ARG=" --jmeterlogfile $OUTPUT_LOG_PATH/$JMETER_LOG_FILE"
       fi
    else
@@ -95,6 +101,9 @@ prepare_report_args() {
          echo "ERROR: Report folder is configured twice using JMETER_REPORT_NAME env variable ($JMETER_REPORT_NAME), and arguments using -o or --reportoutputfolder in ($@)" 1>&2
          return 1
       else
+         if [ ! -d $OUTPUT_REPORT_PATH ]; then
+            mkdir -p $OUTPUT_REPORT_PATH
+         fi
          export REPORT_ARG=" -e -o $OUTPUT_REPORT_PATH/$JMETER_REPORT_NAME"
       fi
    else
