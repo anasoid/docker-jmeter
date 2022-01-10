@@ -65,7 +65,6 @@ You can find image on [Docker Hub](https://hub.docker.com/r/anasoid/jmeter)
   - [Generate jtl , html report and log file](#generate-jtl--html-report-and-log-file)
   - [Using additional raw Jmeter parameter](#using-additional-raw-jmeter-parameter)
   - [Using raw Jmeter parameter](#using-raw-jmeter-parameter)
-- [Credits](#credits)
 
 # Image Variants
 
@@ -111,9 +110,13 @@ This is image contain pre-installed [plugins manager](https://jmeter-plugins.org
 | `scripts/before-test.sh`                        | This script will be executed before jmeter start                                                                                               |
 | `jmeter.properties`                             | default value properties file.                                                                                                                 |
 
+Example of project folder : (<https://github.com/anasoid/docker-jmeter/tree/develop/tests/projects/sample1>)
+
 ## User Folder structure
 
 Same as project folder, the only different jmx file is not used from this folder.
+
+Example of User folder : (<https://github.com/anasoid/docker-jmeter/tree/develop/tests/users/user1>)
 
 ## Environement Variables
 
@@ -396,4 +399,3 @@ docker run --rm \
 -v ${PWD}/tests/projects/sample1/:/myproject \
 anasoid/jmeter:latest -t /myprojet/test.jmx -Jthread=50 -q /myproject/prop.properties
 ```
-
