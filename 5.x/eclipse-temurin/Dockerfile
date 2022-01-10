@@ -18,6 +18,8 @@ ENV WITH_BASE_PLUGINS ${WITH_BASE_PLUGINS}
 ENV	JMETER_DOWNLOAD_URL  https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz
 ENV JAVA_HOME=/opt/java/openjdk
 
+ENV JMETER_HOME /opt/apache-jmeter
+
 #TMP ENV
 ENV SCRIPTS_PATH /scripts
 ENV DEPENCENCIES_TMP_PATH /tmp/dependencies 
@@ -26,7 +28,7 @@ ENV DEPENCENCIES_PATH /jmeter/internal/dependencies
 
 
 #JMETER
-ENV JMETER_HOME /opt/apache-jmeter
+
 ENV JMETER_ADDITIONAL_HOME /jmeter/additional
 ENV JMETER_ADDITIONAL_LIB $JMETER_ADDITIONAL_HOME/lib
 ENV JMETER_ADDITIONAL_EXT $JMETER_ADDITIONAL_LIB/ext
@@ -36,25 +38,6 @@ ENV PROJECT_PATH /jmeter/project
 ENV WORKSPACE_TARGET /jmeter/workspace
 
 ENV OUTPUT_PATH /jmeter/out
-ENV OUTPUT_JTL_PATH $OUTPUT_PATH/jtl
-ENV OUTPUT_LOG_PATH $OUTPUT_PATH/log
-ENV OUTPUT_CSV_PATH $OUTPUT_PATH/csv
-ENV OUTPUT_REPORT_PATH $OUTPUT_PATH/dashboard
-
-#USER
-ENV USER_DEPENCENCIES_PATH $USER_PATH/dependencies
-ENV USER_PLUGINS_PATH $USER_PATH/plugins
-ENV USER_LIB_PATH $USER_PATH/lib
-ENV USER_PLUGINS_URL_FILE $USER_DEPENCENCIES_PATH/url.txt
-ENV USER_MAVEN_SETTINGS $USER_DEPENCENCIES_PATH/settings.xml
-
-
-#PROJECT
-ENV PROJECT_DEPENCENCIES_PATH $PROJECT_PATH/dependencies
-ENV PROJECT_PLUGINS_PATH $PROJECT_PATH/plugins
-ENV PROJECT_LIB_PATH $PROJECT_PATH/lib
-ENV PROJECT_PLUGINS_URL_FILE $PROJECT_DEPENCENCIES_PATH/url.txt
-ENV PROJECT_MAVEN_SETTINGS $PROJECT_DEPENCENCIES_PATH/settings.xml
 
 
 #CONFIG
@@ -114,12 +97,6 @@ RUN    apk update \
 	&& apk add --update  curl unzip bash \
 	&& apk add --no-cache nss \
 	&& rm -rf /var/cache/apk/* \
-	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Prepare folers %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
-	&& mkdir -p $OUTPUT_PATH  \
-	&& mkdir -p $OUTPUT_JTL_PATH  \
-	&& mkdir -p $OUTPUT_LOG_PATH  \
-	&& mkdir -p $OUTPUT_REPORT_PATH  \
-	&& mkdir -p $OUTPUT_CSV_PATH \
 	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Installing Jmeter ${JMETER_VERSION} %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
 	&& mkdir -p /tmp/dependencies  \
 	&& echo ${PATH}  \

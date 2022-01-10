@@ -9,7 +9,7 @@ test_prepare_jtl_args_success() {
    set -e
 
    JTL_ARG=""
-   OUTPUT_JTL_PATH=/outjtl
+   OUTPUT_JTL_PATH=$(pwd)/jmeter/outjtl
    JMETER_JTL_FILE=result.jtl
    prepare_JTL_args -jfdfdfdfd dfd-tfd
    if [ $? -eq 0 ]; then
@@ -25,7 +25,7 @@ test_prepare_jtl_args_not_fil_success() {
    set -e
 
    JTL_ARG=""
-   OUTPUT_JTL_PATH=/outjtl
+   OUTPUT_JTL_PATH=$(pwd)/jmeter/outjtl
    JMETER_JTL_FILE=
    prepare_JTL_args -jfdfdfdfd dfd-tfd
    if [ $? -eq 0 ]; then
@@ -42,7 +42,7 @@ test_prepare_jtl_args_fail() {
    set +e
 
    JTL_ARG=""
-   OUTPUT_JTL_PATH=/outjtl
+   OUTPUT_JTL_PATH=$(pwd)/jmeter/outjtl
    JMETER_JTL_FILE=result.jtl
    prepare_JTL_args dfd -l ddf
    if [ $? -eq 1 ]; then
