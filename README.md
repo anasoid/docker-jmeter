@@ -65,7 +65,7 @@ You can find image on [Docker Hub](https://hub.docker.com/r/anasoid/jmeter)
   - [Generate jtl , html report and log file](#generate-jtl--html-report-and-log-file)
   - [Using additional raw Jmeter parameter](#using-additional-raw-jmeter-parameter)
   - [Using raw Jmeter parameter](#using-raw-jmeter-parameter)
-- [Credits](#credits)
+- [Best Practice](#best-practice)
 
 # Image Variants
 
@@ -111,9 +111,13 @@ This is image contain pre-installed [plugins manager](https://jmeter-plugins.org
 | `scripts/before-test.sh`                        | This script will be executed before jmeter start                                                                                               |
 | `jmeter.properties`                             | default value properties file.                                                                                                                 |
 
+Example of project folder : (<https://github.com/anasoid/docker-jmeter/tree/develop/tests/projects/sample1>)
+
 ## User Folder structure
 
 Same as project folder, the only different jmx file is not used from this folder.
+
+Example of User folder : (<https://github.com/anasoid/docker-jmeter/tree/develop/tests/users/user1>)
 
 ## Environement Variables
 
@@ -389,7 +393,7 @@ The pre-configured folder structure can be ignored, and jmeter can be used as st
 The following argument will be by default add:
 
 1. `--nongui` from `JMETER_DEFAULT_ARGS`
-2. ' --jmeterlogfile /jmeter/out/log/jmeter.log' from value `JMETER_LOG_FILE`, if `JMETER_LOG_FILE` is empty or a custom `--jmeterlogfile` or `-j` to have new jmeeter log file this arguments will be not add to jmeter.
+2. ' --jmeterlogfile /jmeter/out/log/jmeter.log' from value `JMETER_LOG_FILE`, if `JMETER_LOG_FILE` is empty or a custom `--jmeterlogfile` or `-j` to have new jmeter log file this arguments will be not add to jmeter.
 
 ```sh
 docker run --rm \
@@ -397,3 +401,10 @@ docker run --rm \
 anasoid/jmeter:latest -t /myprojet/test.jmx -Jthread=50 -q /myproject/prop.properties
 ```
 
+# Best Practice
+
+1. Use container instance by execution.
+2. Force exit container after execution , use `JMETER_EXIT` to force remote exit after test execution.
+3. In environement when container has a like (AWS Fargate, Azure container instance, Google cloud run) and there is a risk for Jmeter will not stopped correctly (for any raison like slave are started but master fail ..) than use timeout execution `CONF_EXEC_TIMEOUT` ins second, be careful timeout should be greater than the max duration possible for test.
+4. Adapt memory needed by the JVM using `JMETER_JVM_ARGS` and don't use a huge Memory instance, it's preferable to have smallest one : less than 8GB.
+5. Always use properties to parameterising tests (<https://jmeter.apache.org/usermanual/best-practices.html#parameterising_tests>) , than you can save multi pre-configured properties files to be used with `JMETER_PROPERTIES_FILES`.
