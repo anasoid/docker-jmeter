@@ -46,7 +46,7 @@ You can find image on [Docker Hub](https://hub.docker.com/r/anasoid/jmeter)
   - [Image Folder structure](#image-folder-structure)
   - [Project folder structure](#project-folder-structure)
   - [User Folder structure](#user-folder-structure)
-  - [Environement Variables](#environement-variables)
+  - [Environment Variables](#environment-variables)
 - [Plugins installation](#plugins-installation)
   - [Download plugins with Maven format](#download-plugins-with-maven-format)
   - [Download Plugins dependencies with Maven format](#download-plugins-dependencies-with-maven-format)
@@ -120,9 +120,9 @@ Same as project folder, the only different jmx file is not used from this folder
 
 Example of User folder : (<https://github.com/anasoid/docker-jmeter/tree/develop/tests/users/user1>)
 
-## Environement Variables
+## Environment Variables
 
-This environement variable are input to configure jmeter and execution:
+This environment variable are input to configure jmeter and execution:
 
 | Folder/files                             | default value       | Description                                                                                                                                                                                                                                                                                                                                                    |
 | ---------------------------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -161,7 +161,7 @@ We distinguish two type of lib dependencies, the plugins and plugins dependencie
 ## Download plugins with Maven format
 
 In `project folder` or `user folder` put maven xml file `dependencies/plugins-lib-ext-dependencies.xml`, use exclusion with \* to not download dependencies of jar, only jar referenced in file will be used .
-jar from this file will be downloed to folder `$JMETER_HOME/lib/ext`.
+jar from this file will be downloaded to folder `$JMETER_HOME/lib/ext`.
 ex:
 
 ```xml
@@ -406,6 +406,6 @@ anasoid/jmeter:latest -t /myprojet/test.jmx -Jthread=50 -q /myproject/prop.prope
 
 1. Use container instance by execution.
 2. Force exit container after execution , use `JMETER_EXIT` to force remote exit after test execution.
-3. In environement when container has a like (AWS Fargate, Azure container instance, Google cloud run) and there is a risk for Jmeter will not stopped correctly (for any raison like slave are started but master fail ..) than use timeout execution `CONF_EXEC_TIMEOUT` ins second, be careful timeout should be greater than the max duration possible for test.
+3. In environment when container has a like (AWS Fargate, Azure container instance, Google cloud run) and there is a risk for Jmeter will not stopped correctly (for any raison like slave are started but master fail ..) than use timeout execution `CONF_EXEC_TIMEOUT` ins second, be careful timeout should be greater than the max duration possible for test.
 4. Adapt memory needed by the JVM using `JMETER_JVM_ARGS` and don't use a huge Memory instance, it's preferable to have smallest one : less than 8GB.
-5. Always use properties to parameterising tests (<https://jmeter.apache.org/usermanual/best-practices.html#parameterising_tests>) , than you can save multi pre-configured properties files to be used with `JMETER_PROPERTIES_FILES`.
+5. Always use properties to parameterize tests (<https://jmeter.apache.org/usermanual/best-practices.html#parameterising_tests>) , than you can save multi pre-configured properties files to be used with `JMETER_PROPERTIES_FILES`.
