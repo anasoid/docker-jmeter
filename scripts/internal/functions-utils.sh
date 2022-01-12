@@ -18,12 +18,14 @@ execute_scripts_from_folders() {
 }
 
 execute_scripts_before_test() {
-   execute_scripts_from_folders "scripts/before-test.sh"
+   if [ "$CONF_SKIP_PRE_ACTION" == "false" ]; then
+      execute_scripts_from_folders "scripts/before-test.sh"
+   fi
 
 }
 
 execute_scripts_after_test() {
-   execute_scripts_from_folders "scripts/after-test.sh"
-
+   if [ "$CONF_SKIP_POST_ACTION" == "false" ]; then
+      execute_scripts_from_folders "scripts/after-test.sh"
+   fi
 }
-
