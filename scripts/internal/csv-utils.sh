@@ -27,10 +27,10 @@ split_csv_file() {
    relative_path=$5
 
    #valdate
-   if [ "$slave_count" -lt "1" ] || [ "$slave_num" -lt "1" ] || [ "$slave_count" -lt "$slave_num" ]; then
+   if [ "$slave_count" -lt "1" ] || [ "$slave_num" -lt "0" ] || [ "$slave_count" -lt "$slave_num" ]; then
       echo "Worker count : $slave_count"
       echo "Worker number : $slave_num"
-      echo "Error : Config worker not correct, Worker count should be greater or equal than worker number, and they should be geater than 1" 1>&2
+      echo "Error : Config worker not correct, Worker count should be greater or equal than worker number, and they should be geater than 0" 1>&2
       exit 1
    fi
 
