@@ -47,7 +47,7 @@ You can find image on [Docker Hub](https://hub.docker.com/r/anasoid/jmeter)
   - [Project folder structure](#project-folder-structure)
   - [User Folder structure](#user-folder-structure)
   - [Environment Variables](#environment-variables)
-  - [Exposed Port](#exposed-port)
+- [Exposed Port](#exposed-port)
 - [Plugins installation](#plugins-installation)
   - [Download plugins with Maven format](#download-plugins-with-maven-format)
   - [Download Plugins dependencies with Maven format](#download-plugins-dependencies-with-maven-format)
@@ -154,7 +154,7 @@ This environment variable are input to configure JMeter and execution:
 | `JMETER_PLUGINS_MANAGER_INSTALL_LIST`    |                     | Install list of plugins using [plugins manager](https://jmeter-plugins.org/wiki/PluginsManagerAutomated/) (e.g. : "jpgc-json=2.2,jpgc-casutg=2.0"),                                                                                                                                                                                                                              |
 | `JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX` | `false`             | Install needed plugins for jmx file automatically using [plugins manager](https://jmeter-plugins.org/wiki/PluginsManagerAutomated/)                                                                                                                                                                                                                                              |
 
-## Exposed Port
+# Exposed Port
 
 The exposed RMI port is 1099.
 See doc on <https://jmeter.apache.org/usermanual/remote-test.html>
