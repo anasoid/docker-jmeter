@@ -134,4 +134,6 @@ RUN    apk update \
 
 WORKDIR	${JMETER_HOME}
 
+EXPOSE 1099
+
 ENTRYPOINT ["entrypoint.sh"]
