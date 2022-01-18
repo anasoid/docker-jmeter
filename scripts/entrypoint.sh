@@ -36,7 +36,7 @@ echo "############################################ Download URL dependencies (EN
 echo
 
 echo "############################################ Prepare WORKSPACE (START) ############################################"
-prepare-workspace.sh
+. prepare-workspace.sh
 echo "############################################ Prepare WORKSPACE (END)   ############################################"
 echo
 
