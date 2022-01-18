@@ -10,4 +10,5 @@ if [ "$CONF_COPY_TO_WORKSPACE" == "true" ]; then
     cp -rv "$PROJECT_PATH"/. $WORKSPACE_PATH
 fi
 
+cd $WORKSPACE_PATH
 echo "Using WORKSPACE  folder ($WORKSPACE_PATH ) "
