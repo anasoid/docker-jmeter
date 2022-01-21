@@ -12,7 +12,7 @@ execute_scripts_from_folders() {
          chmod +x $file
          $file
       else
-         echo "Skip execute : $file, note found"
+         echo "Skip execute : $file, not found"
       fi
    done
 }
