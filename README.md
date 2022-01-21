@@ -374,6 +374,7 @@ docker run --rm \
 -e JMETER_JTL_FILE=out.jtl \
 -e JMETER_LOG_FILE=out.log \
 -e JMETER_REPORT_NAME=myreport \
+-e JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX="true" \
 anasoid/jmeter:latest
 ```
 
@@ -392,6 +393,7 @@ docker run --rm \
 -e JMETER_JTL_FILE=out.jtl \
 -e JMETER_LOG_FILE=out.log \
 -e JMETER_REPORT_NAME=myreport \
+-e JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX="true" \
 anasoid/jmeter:latest -Jserver.rmi.ssl.disable=true -Jnumberthread=500
 ```
 
