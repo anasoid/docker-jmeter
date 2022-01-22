@@ -10,7 +10,7 @@ execute_scripts_from_folders() {
       if [ -f "$file" ]; then
          echo "Execute : $file "
          chmod +x $file
-         $file
+         source $file
       else
          echo "Skip execute : $file, not found"
       fi

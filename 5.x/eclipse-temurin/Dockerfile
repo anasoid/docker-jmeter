@@ -84,8 +84,7 @@ COPY scripts  $SCRIPTS_PATH
 COPY dependencies $DEPENCENCIES_PATH
 
 # Install extra packages
-# Set TimeZone, See: https://github.com/gliderlabs/docker-alpine/issues/136#issuecomment-612751142
-ARG TZ="Europe/Amsterdam"
+ARG TZ="Etc/GMT-0"
 ENV TZ ${TZ}
 
 ENV PATH "${SCRIPTS_PATH}:${SCRIPTS_PATH}/internal:${SCRIPTS_PATH}/internal/build:${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${JMETER_HOME}/bin:${PATH}"
