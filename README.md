@@ -58,6 +58,7 @@ You can find image on [Docker Hub](https://hub.docker.com/r/anasoid/jmeter)
   - [Use plugins and dependencies as additional lib](#use-plugins-and-dependencies-as-additional-lib)
 - [Test plan check](#test-plan-check)
 - [Split CSV files](#split-csv-files)
+- [Timezone](#timezone)
 - [Examples](#examples)
   - [Change JVM Memory size](#change-jvm-memory-size)
   - [Use additional properties files](#use-additional-properties-files)
@@ -306,6 +307,28 @@ docker run --rm \
 anasoid/jmeter:latest
 ```
 
+# Timezone
+
+Default timezone is GMT, if you need to change timezone to have correct time on jmeter log, you can set environment variables **TZ**, list of timezone are available here <https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>.
+
+Example to change timezone :
+
+```sh
+docker run --rm \
+-v ${PWD}/tests/projects/sample1/:/jmeter/project \
+-e JMETER_JMX="basic-plan.jmx" \
+-e TZ="Africa/Casablanca" \
+anasoid/jmeter:latest
+```
+
+Timezone can also changed in file before-test.sh
+
+```sh
+
+export TZ="Africa/Casablanca"
+
+```
+
 # Examples
 
 ## Change JVM Memory size
@@ -315,7 +338,7 @@ You can change memory size using `JMETER_JVM_ARGS` or `JMETER_JVM_EXTRA_ARGS`, e
 ```sh
 docker run --rm \
 -v ${PWD}/tests/projects/sample1/:/jmeter/project \
--e JMETER_JMX="test-plan.jmx" \
+-e JMETER_JMX="basic-plan.jmx" \
 -e JMETER_JVM_ARGS=" -Xmx2G -Xms1G " \
 anasoid/jmeter:latest
 ```
@@ -370,11 +393,10 @@ For example: generate JTL and dashboard with a name chosen as _myreport_
 ```sh
 docker run --rm \
 -v ${PWD}/tests/projects/sample1/:/jmeter/project \
--e JMETER_JMX="test-plan.jmx" \
+-e JMETER_JMX="basic-plan.jmx" \
 -e JMETER_JTL_FILE=out.jtl \
 -e JMETER_LOG_FILE=out.log \
 -e JMETER_REPORT_NAME=myreport \
--e JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX="true" \
 anasoid/jmeter:latest
 ```
 
@@ -389,11 +411,10 @@ For example: disable RMI SSL, and add custom properties `numberthread`
 ```sh
 docker run --rm \
 -v ${PWD}/tests/projects/sample1/:/jmeter/project \
--e JMETER_JMX="test-plan.jmx" \
+-e JMETER_JMX="basic-plan.jmx" \
 -e JMETER_JTL_FILE=out.jtl \
 -e JMETER_LOG_FILE=out.log \
 -e JMETER_REPORT_NAME=myreport \
--e JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX="true" \
 anasoid/jmeter:latest -Jserver.rmi.ssl.disable=true -Jnumberthread=500
 ```
 
