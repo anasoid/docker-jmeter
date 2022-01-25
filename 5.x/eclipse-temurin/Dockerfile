@@ -96,6 +96,7 @@ RUN    apk update \
 	&& apk add --update  curl unzip bash \
 	&& apk add --no-cache nss \
 	&& rm -rf /var/cache/apk/* \
+	&& mkdir -p $PROJECT_PATH  \
 	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Installing Jmeter ${JMETER_VERSION} %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
 	&& mkdir -p /tmp/dependencies  \
 	&& echo ${PATH}  \
