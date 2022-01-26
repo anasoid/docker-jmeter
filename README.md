@@ -32,7 +32,7 @@ You can find image on [Docker Hub](https://hub.docker.com/r/anasoid/jmeter)
 12. Isolate output folder (logs, jtl files, html report).
 13. Any JMeter parameter can be used in arguments.
 14. No limitation is introduced by this image, JMeter can be used directly, if custom input parameters are not used.
-15. A wait until ready can done using check on file.
+15. A delay can be performed using the check on the existence of a file.
 
 ## Content
 
@@ -47,7 +47,7 @@ You can find image on [Docker Hub](https://hub.docker.com/r/anasoid/jmeter)
   - [Image Folder structure](#image-folder-structure)
   - [Project folder structure](#project-folder-structure)
   - [User Folder structure](#user-folder-structure)
-  - [Environment Variables](#environment-variables)
+  - [Configuration](#configuration)
 - [Exposed Port](#exposed-port)
 - [Plugins installation](#plugins-installation)
   - [Download plugins with Maven format](#download-plugins-with-maven-format)
@@ -124,7 +124,7 @@ Same as project folder, the only different JMX file is not used from this folder
 
 Example of User folder: (<https://github.com/anasoid/docker-jmeter/tree/develop/tests/users/user1>)
 
-## Environment Variables
+## Configuration
 
 This environment variable are input to configure JMeter and execution:
 
@@ -140,8 +140,8 @@ This environment variable are input to configure JMeter and execution:
 | `CONF_EXEC_WAIT_BEFORE_TEST`             | `0`                 | Wait in second before start JMeter.                                                                                                                                                                                                                                                                                                                                              |
 | `CONF_EXEC_WAIT_AFTER_TEST`              | `1`                 | Wait in second after stopping JMeter.                                                                                                                                                                                                                                                                                                                                            |
 | `CONF_EXEC_TIMEOUT`                      | `2592000`           | Default timeout in second, after this duration JMeter and docker container wil be stopped, default (30 days)                                                                                                                                                                                                                                                                     |
-| `CONF_READY_WAIT_FILE`                   |                     | File to wait until exists to start execution, if file start with `/` file will be considered as absolute path, if not it will be considered as relative path to `PROJECT_PATH`, this option is useful when we need to start container than copy project to container without using mount specially on Kubernetes.                                                                |
-| `CONF_READY_WAIT_TIMEOUT`                | `1200`              | Default timeout fir waiting to be ready in seconds                                                                                                                                                                                                                                                                                                                               |
+| `CONF_READY_WAIT_FILE`                   |                     | The file to wait until exists to start execution, if file start with `/` the file will be considered as absolute path, if not it will be considered as relative path to `PROJECT_PATH`, this option is useful when we need to start container than copy project to container without using mount specially on Kubernetes.                                                        |
+| `CONF_READY_WAIT_TIMEOUT`                | `1200`              | Default timeout for waiting the ready file to be present in seconds                                                                                                                                                                                                                                                                                                              |
 | `CONF_CSV_SPLIT`                         | `false`             | Split csv file on `$CONF_EXEC_WORKER_COUNT` and take the part `CONF_EXEC_WORKER_COUNT`                                                                                                                                                                                                                                                                                           |
 | `CONF_CSV_SPLIT_PATTERN`                 | `**`                | Pattern used to choose csv file to be divided, a default filter (\*.csv) is already used so only CSV files are concerned by this split, the pattern is applied relative path for file, so patten can be applied on folder or file name. (e.g.: "./data/\*.csv" for csv file in "data" folder, "./data/\*\_split.csv" for csv files in "data" folder with suffix "\*\_split.csv") |
 | `CONF_CSV_WITH_HEADER`                   | `true`              | Split CSV file has header or not.                                                                                                                                                                                                                                                                                                                                                |
