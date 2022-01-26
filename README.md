@@ -455,7 +455,7 @@ docker run --name jmeter \
  #Copy test to container
  docker cp ${PWD}/tests/projects/sample1/basic-plan.jmx jmeter:/jmeter/project
 
-#Start test by ready
+#Start test by creation of file ready.txt
  docker exec jmeter touch /jmeter/project/ready.txt
 
 ```
