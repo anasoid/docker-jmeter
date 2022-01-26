@@ -32,6 +32,7 @@ You can find image on [Docker Hub](https://hub.docker.com/r/anasoid/jmeter)
 12. Isolate output folder (logs, jtl files, html report).
 13. Any JMeter parameter can be used in arguments.
 14. No limitation is introduced by this image, JMeter can be used directly, if custom input parameters are not used.
+15. A delay can be performed using the check on the existence of a file.
 
 ## Content
 
@@ -46,7 +47,7 @@ You can find image on [Docker Hub](https://hub.docker.com/r/anasoid/jmeter)
   - [Image Folder structure](#image-folder-structure)
   - [Project folder structure](#project-folder-structure)
   - [User Folder structure](#user-folder-structure)
-  - [Environment Variables](#environment-variables)
+  - [Configuration](#configuration)
 - [Exposed Port](#exposed-port)
 - [Plugins installation](#plugins-installation)
   - [Download plugins with Maven format](#download-plugins-with-maven-format)
@@ -67,6 +68,7 @@ You can find image on [Docker Hub](https://hub.docker.com/r/anasoid/jmeter)
   - [Generate JTL, HTML report and log file](#generate-jtl-html-report-and-log-file)
   - [Using additional raw JMeter parameter](#using-additional-raw-jmeter-parameter)
   - [Using raw JMeter parameter](#using-raw-jmeter-parameter)
+  - [Using wait to be Ready](#using-wait-to-be-ready)
 - [Best Practice](#best-practice)
 
 # Image Variants
@@ -122,7 +124,7 @@ Same as project folder, the only different JMX file is not used from this folder
 
 Example of User folder: (<https://github.com/anasoid/docker-jmeter/tree/develop/tests/users/user1>)
 
-## Environment Variables
+## Configuration
 
 This environment variable are input to configure JMeter and execution:
 
@@ -138,6 +140,8 @@ This environment variable are input to configure JMeter and execution:
 | `CONF_EXEC_WAIT_BEFORE_TEST`             | `0`                 | Wait in second before start JMeter.                                                                                                                                                                                                                                                                                                                                              |
 | `CONF_EXEC_WAIT_AFTER_TEST`              | `1`                 | Wait in second after stopping JMeter.                                                                                                                                                                                                                                                                                                                                            |
 | `CONF_EXEC_TIMEOUT`                      | `2592000`           | Default timeout in second, after this duration JMeter and docker container wil be stopped, default (30 days)                                                                                                                                                                                                                                                                     |
+| `CONF_READY_WAIT_FILE`                   |                     | The file to wait until exists to start execution, if file start with `/` the file will be considered as absolute path, if not it will be considered as relative path to `PROJECT_PATH`, this option is useful when we need to start container than copy project to container without using mount specially on Kubernetes.                                                        |
+| `CONF_READY_WAIT_TIMEOUT`                | `1200`              | Default timeout for waiting the ready file to be present in seconds                                                                                                                                                                                                                                                                                                              |
 | `CONF_CSV_SPLIT`                         | `false`             | Split csv file on `$CONF_EXEC_WORKER_COUNT` and take the part `CONF_EXEC_WORKER_COUNT`                                                                                                                                                                                                                                                                                           |
 | `CONF_CSV_SPLIT_PATTERN`                 | `**`                | Pattern used to choose csv file to be divided, a default filter (\*.csv) is already used so only CSV files are concerned by this split, the pattern is applied relative path for file, so patten can be applied on folder or file name. (e.g.: "./data/\*.csv" for csv file in "data" folder, "./data/\*\_split.csv" for csv files in "data" folder with suffix "\*\_split.csv") |
 | `CONF_CSV_WITH_HEADER`                   | `true`              | Split CSV file has header or not.                                                                                                                                                                                                                                                                                                                                                |
@@ -431,6 +435,29 @@ The following arguments will be added by default:
 docker run --rm \
 -v ${PWD}/tests/projects/sample1/:/myproject \
 anasoid/jmeter:latest -t /myprojet/test.jmx -Jthread=50 -q /myproject/prop.properties
+```
+
+## Using wait to be Ready
+
+Container can be started and wait until ready fie will be present.
+
+The following arguments will be added by default:
+
+1. `--nongui` from `JMETER_DEFAULT_ARGS`
+2. ' --jmeterlogfile /jmeter/out/log/jmeter.log' from value `JMETER_LOG_FILE`, if `JMETER_LOG_FILE` is empty or a custom `--jmeterlogfile` or `-j` to have new JMeter log file this arguments will be not add to JMeter.
+
+```sh
+docker run --name jmeter \
+-e CONF_READY_WAIT_FILE="ready.txt" \
+-e JMETER_JMX="basic-plan.jmx" \
+ anasoid/jmeter:latest
+
+ #Copy test to container
+ docker cp ${PWD}/tests/projects/sample1/basic-plan.jmx jmeter:/jmeter/project
+
+#Start test by creation of file ready.txt
+ docker exec jmeter touch /jmeter/project/ready.txt
+
 ```
 
 # Best Practice
