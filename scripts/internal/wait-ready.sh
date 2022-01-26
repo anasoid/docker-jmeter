@@ -25,8 +25,8 @@ if [ ! -z "$CONF_READY_WAIT_FILE" ]; then
    done
    echo " $(date) : End  waiting for file ($FILE_READY) to be ready"
    if [ ! -f "$FILE_READY" ]; then
-      echo " $(date) :Error : Ready file not found ($FILE_READY)"
-      return 1
+      echo " $(date) >>> Error : Ready file not found ($FILE_READY)"
+      exit 1
    fi
 
 else
