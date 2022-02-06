@@ -18,9 +18,11 @@ prepare_log_args
 prepare_report_args
 #Prepare CLUSTER_ARG
 prepare_cluster_args
+#prepare JOLOKIA_JAR
+prepare_jolokia_jar
 
 
-export JVM_ARGS=" $JMETER_JVM_ARGS $JMETER_JVM_EXTRA_ARGS "
+export JVM_ARGS=" $JOLOKIA_ARG $JMETER_JVM_ARGS $JMETER_JVM_EXTRA_ARGS "
 
 
 echo "JVM_ARGS=${JVM_ARGS}"
