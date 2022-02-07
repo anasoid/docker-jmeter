@@ -12,19 +12,23 @@ jobs:
       matrix:
         include:
           - jmeter-version: "5.4.3"
-            with-plugins: "true"
+            with-plugins: "false"
+            suffix: ""
+            suffix2: "-11-jre"
             jvm-version: "11-jre-alpine"
             folder: "5.x/eclipse-temurin"
             jmeter-branch: 5.4
-            jvm-version-label: "11-jre"
+            jvm-version-label: "-11-jre"
             tags-latest: "latest"
 
           - jmeter-version: "5.4.3"
-            with-plugins: "false"
+            with-plugins: "true"
+            suffix: "-plugins"
+            suffix2: "-11-jre"
             jvm-version: "11-jre-alpine"
             folder: "5.x/eclipse-temurin"
             jmeter-branch: 5.4
-            jvm-version-label: "11-jre"
+            jvm-version-label: "-11-jre"
             tags-latest: "latest"
 
     # v2 https://github.com/docker/build-push-action/blob/master/UPGRADE.md
@@ -59,7 +63,6 @@ jobs:
           echo ::set-output name=image::${DOCKER_IMAGE}
           echo ::set-output name=version::${VERSION}
           echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
-          if [[ "${{ matrix.with-plugins }}" == "true" ]];then   echo ::set-output name=suffix::-plugins; else   echo ::set-output name=suffix::; fi;
 
       - name: Show Image Settings 📦
         run: echo "IMAGE=${{ steps.prep.outputs.image }} VERSION=${{ steps.prep.outputs.version }} TAGS=${{ steps.prep.outputs.tags }}"
@@ -90,13 +93,12 @@ jobs:
             JVM_VERSION=${{ matrix.jvm-version }}
 
           tags: |
-            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}${{ steps.prep.outputs.suffix }}
-            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}${{ steps.prep.outputs.suffix }}-${{ matrix.jvm-version-label }}
-            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}${{ steps.prep.outputs.suffix }}
-            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}${{ steps.prep.outputs.suffix }}-${{ matrix.jvm-version-label }}
+            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}${{ matrix.suffix }}
+            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}${{ matrix.suffix }}${{ matrix.suffix2 }}
+            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}${{ matrix.suffix }}
+            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}${{ matrix.suffix }}${{ matrix.suffix2 }}
 
-
-            ${{ steps.prep.outputs.image }}:${{ matrix.tags-latest }}${{ steps.prep.outputs.suffix }}
+            ${{ steps.prep.outputs.image }}:${{ matrix.tags-latest }}${{ matrix.suffix }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}

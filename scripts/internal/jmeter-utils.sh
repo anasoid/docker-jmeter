@@ -129,7 +129,8 @@ prepare_jolokia_jar() {
          return 1
       fi
       export JOLOKIA_JAR="$JOLOKIA_LIB/$jolokia_jar"
-      export JOLOKIA_ARG=" -javaagent:$JOLOKIA_JAR=config=$JOLOKIA_PATH/jolokia.properties "
+      export JOLOKIA_CONFIG="$JOLOKIA_PATH/jolokia.properties"
+      export JOLOKIA_ARG=" -javaagent:$JOLOKIA_JAR=config=$JOLOKIA_CONFIG "
       echo JOLOKIA_ARG=$JOLOKIA_ARG
    else
       echo "Skip Jolokia, not enabled : "
