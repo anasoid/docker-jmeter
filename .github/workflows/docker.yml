@@ -108,7 +108,7 @@ jobs:
       - name: Result 📦
         id: result
         run: |
-          echo ::set-output name=currentImage::${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}${{ steps.prep.outputs.suffix }}
+          echo ::set-output name=currentImage::${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}${{ matrix.suffix }}
 
       - name: Test Jmeter Install
         run: |
