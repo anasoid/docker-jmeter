@@ -14,7 +14,9 @@ You can find image on [Docker Hub](https://hub.docker.com/r/anasoid/jmeter)
 ## Image version
 
 - [`latest`, `5.4`, `5.4-11-jre`,`5.4.3`, `5.4.3-11-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`latest-11-jdk`, `5.4-11-jdk`,`5.4.3-11-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
 - [`latest-plugins`, `5.4-plugins`, `5.4-plugins-11-jre`, `5.4.3-plugins`, `5.4.3-plugins-11-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`latest-plugins-11-jdk`, `5.4-plugins-11-jdk`, `5.4.3-plugins-11-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
 
 ## Features
 
@@ -33,6 +35,7 @@ You can find image on [Docker Hub](https://hub.docker.com/r/anasoid/jmeter)
 13. Any JMeter parameter can be used in arguments.
 14. No limitation is introduced by this image, JMeter can be used directly, if custom input parameters are not used.
 15. A delay can be performed using the check on the existence of a file.
+16. Monitoring Jmx with Jolokia (Work only with JDK image).
 
 ## Content
 
@@ -161,8 +164,8 @@ This environment variable are input to configure JMeter and execution:
 
 # Exposed Port
 
-The exposed RMI port is 1099.
-See doc on <https://jmeter.apache.org/usermanual/remote-test.html>
+1. The exposed RMI port is 1099. See doc on <https://jmeter.apache.org/usermanual/remote-test.html>
+2. Jolokia pot 8778.
 
 # Plugins installation
 
