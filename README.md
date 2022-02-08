@@ -63,6 +63,7 @@ You can find image on [Docker Hub](https://hub.docker.com/r/anasoid/jmeter)
 - [Test plan check](#test-plan-check)
 - [Split CSV files](#split-csv-files)
 - [Timezone](#timezone)
+- [JMX Monitoring (Jolokia)](#jmx-monitoring-jolokia)
 - [Examples](#examples)
   - [Change JVM Memory size](#change-jvm-memory-size)
   - [Use additional properties files](#use-additional-properties-files)
@@ -80,7 +81,7 @@ The `JMeter` images come in many flavors, each designed for a specific use case.
 The images version are based on component used to build image:
 
 1. **JMeter Version**: 5.4.3 -> default for 5.4.
-2. **JVM Version**: e.g.: (eclipse-temurin-11-jre, default for 11-jre)
+2. **JVM Version**: e.g.: (-11-jre, default for 11-jre),a nd default JVM is `eclipse-temurin`.
 3. **plugins** : Pre-installed [plugins manager](https://jmeter-plugins.org/wiki/PluginsManagerAutomated/) and [test plan check tool](https://jmeter-plugins.org/wiki/TestPlanCheckTool/). This will provide the image with the feature to check JMX file and download plugins with plugin manager.
 
 ## `jmeter:<jmeter-version>-plugins-*`
@@ -91,19 +92,20 @@ This is the image containing pre-installed [plugins manager](https://jmeter-plug
 
 ## Image Folder structure
 
-| Folder/files                 | Environnement variable  | Description                                                                                                                                                                                                                                      |
-| ---------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `/opt/apache-jmeter`         | `JMETER_HOME`           | Installation of JMeter                                                                                                                                                                                                                           |
-| `/jmeter/additional/lib`     | `JMETER_ADDITIONAL_LIB` | Additional lib for JMeter folder using property [plugin_dependency_paths](https://jmeter.apache.org/usermanual/properties_reference.html#classpath)                                                                                              |
-| `/jmeter/additional/lib/ext` | `JMETER_ADDITIONAL_EXT` | Additional plugins for JMeter folder using property [search_paths](https://jmeter.apache.org/usermanual/properties_reference.html#classpath)                                                                                                     |
-| `/jmeter/project`            | `PROJECT_PATH`          | Project folder, where JMX file should be present.                                                                                                                                                                                                |
-| `/jmeter/workspace`          | `WORKSPACE_TARGET`      | If duplicate project folder by ( `$CONF_COPY_TO_WORKSPACE` ) is chosen, this will be the target folder. `$WORKSPACE_PATH` will be the workspace folder depending on duplicating project or not it will be `$WORKSPACE_TARGET` or `$PROJECT_PATH` |
-| `/jmeter/user`               | `USER_PATH`             | Second folder to be used to configure project execution.                                                                                                                                                                                         |
-| `/jmeter/out`                | `OUTPUT_PATH`           | Base output folder                                                                                                                                                                                                                               |
-| `$OUTPUT_PATH/jtl`           | `OUTPUT_JTL_PATH`       | Default JTL destination folder                                                                                                                                                                                                                   |
-| `$OUTPUT_PATH/log`           | `OUTPUT_LOG_PATH`       | Default log destination folder                                                                                                                                                                                                                   |
-| `$OUTPUT_PATH/csv`           | `OUTPUT_CSV_PATH`       | Default divided csv destination folder, only for debugging.                                                                                                                                                                                      |
-| `$OUTPUT_PATH/dashboard`     | `OUTPUT_REPORT_PATH`    | Default Report base folder                                                                                                                                                                                                                       |
+| Folder/files                      | Environnement variable  | Description                                                                                                                                                                                                                                      |
+| --------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `/opt/apache-jmeter`              | `JMETER_HOME`           | Installation of JMeter                                                                                                                                                                                                                           |
+| `/jmeter/additional/lib`          | `JMETER_ADDITIONAL_LIB` | Additional lib for JMeter folder using property [plugin_dependency_paths](https://jmeter.apache.org/usermanual/properties_reference.html#classpath)                                                                                              |
+| `/jmeter/additional/lib/ext`      | `JMETER_ADDITIONAL_EXT` | Additional plugins for JMeter folder using property [search_paths](https://jmeter.apache.org/usermanual/properties_reference.html#classpath)                                                                                                     |
+| `/jmeter/project`                 | `PROJECT_PATH`          | Project folder, where JMX file should be present.                                                                                                                                                                                                |
+| `/jmeter/workspace`               | `WORKSPACE_TARGET`      | If duplicate project folder by ( `$CONF_COPY_TO_WORKSPACE` ) is chosen, this will be the target folder. `$WORKSPACE_PATH` will be the workspace folder depending on duplicating project or not it will be `$WORKSPACE_TARGET` or `$PROJECT_PATH` |
+| `/jmeter/user`                    | `USER_PATH`             | Second folder to be used to configure project execution.                                                                                                                                                                                         |
+| `/jmeter/out`                     | `OUTPUT_PATH`           | Base output folder                                                                                                                                                                                                                               |
+| `$OUTPUT_PATH/jtl`                | `OUTPUT_JTL_PATH`       | Default JTL destination folder                                                                                                                                                                                                                   |
+| `$OUTPUT_PATH/log`                | `OUTPUT_LOG_PATH`       | Default log destination folder                                                                                                                                                                                                                   |
+| `$OUTPUT_PATH/csv`                | `OUTPUT_CSV_PATH`       | Default divided csv destination folder, only for debugging.                                                                                                                                                                                      |
+| `$OUTPUT_PATH/dashboard`          | `OUTPUT_REPORT_PATH`    | Default Report base folder                                                                                                                                                                                                                       |
+| `/opt/jolokia/jolokia.properties` | `JOLOKIA_CONFIG`        | Jolokia configuration file : <https://jolokia.org/reference/html/agents.html#agents-jvm>                                                                                                                                                         |
 
 ## Project folder structure
 
@@ -131,12 +133,13 @@ Example of User folder: (<https://github.com/anasoid/docker-jmeter/tree/develop/
 
 This environment variable are input to configure JMeter and execution:
 
-| Folder/files                             | default value       | Description                                                                                                                                                                                                                                                                                                                                                                      |
+| Environment variables                    | default value       | Description                                                                                                                                                                                                                                                                                                                                                                      |
 | ---------------------------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `CONF_SKIP_PLUGINS_INSTALL`              | `false`             | Skip plugin installation from maven, and url.txt and folder.                                                                                                                                                                                                                                                                                                                     |
 | `CONF_SKIP_PRE_ACTION`                   | `false`             | Skip Execution of after-test.sh                                                                                                                                                                                                                                                                                                                                                  |
 | `CONF_SKIP_POST_ACTION`                  | `false`             | Skip Execution of before-test.sh                                                                                                                                                                                                                                                                                                                                                 |
 | `CONF_COPY_TO_WORKSPACE`                 | `false`             | Copy project to `$WORKSPACE_TARGET`, before executing test, this feature can be used with `$CONF_CSV_SPLIT` to not change file on project folder which can be shared with multiple slave.                                                                                                                                                                                        |
+| `CONF_WITH_JOLOKIA`                      | `false`             | Enable Jolokia for JMX monitoring, This featue work only with JDK version                                                                                                                                                                                                                                                                                                        |
 | `CONF_EXEC_IS_SLAVE`                     | `false`             | True, to be slave node, this will add " --server " as argument for JMeter, this variable can be also used on scripts to choose if action can be executed also on slave or only master.                                                                                                                                                                                           |
 | `CONF_EXEC_WORKER_COUNT`                 | `1`                 | Total JMeter slave count. This value is used only to split CSV file.                                                                                                                                                                                                                                                                                                             |
 | `CONF_EXEC_WORKER_NUMBER`                | `1`                 | Number of current slave. This value is used only to split CSV file.                                                                                                                                                                                                                                                                                                              |
@@ -165,7 +168,7 @@ This environment variable are input to configure JMeter and execution:
 # Exposed Port
 
 1. The exposed RMI port is 1099. See doc on <https://jmeter.apache.org/usermanual/remote-test.html>
-2. Jolokia pot 8778.
+2. Jolokia port 8778.
 
 # Plugins installation
 
@@ -326,6 +329,27 @@ docker run --rm \
 -e JMETER_JMX="basic-plan.jmx" \
 -e TZ="Africa/Casablanca" \
 anasoid/jmeter:latest
+```
+
+Timezone can also changed in file before-test.sh
+
+```sh
+
+export TZ="Africa/Casablanca"
+
+```
+
+# JMX Monitoring (Jolokia)
+
+Enable Jolokia for Jmx monitoring, on port 8778, it's mandatory to use jdk version image with Jolokia.
+
+```sh
+docker run --rm \
+-p 8778:8778
+-v ${PWD}/tests/projects/sample1/:/jmeter/project \
+-e JMETER_JMX="basic-plan.jmx" \
+-e CONF_WITH_JOLOKIA="true" \
+anasoid/jmeter:latest-plugins-11-jdk
 ```
 
 Timezone can also changed in file before-test.sh
