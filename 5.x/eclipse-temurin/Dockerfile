@@ -75,6 +75,11 @@ ENV JMETER_CHECK_ONLY "false"
 ENV JMETER_PLUGINS_MANAGER_INSTALL_LIST ""
 ENV JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX "false"
 
+#JOLOKIA
+ENV JOLOKIA_PATH /opt/jolokia
+ENV JOLOKIA_CONFIG $JOLOKIA_PATH/jolokia.properties
+ENV JOLOKIA_LIB $JOLOKIA_PATH/lib
+ENV CONF_WITH_JOLOKIA false
 #INPUT ENV
 
 
@@ -112,6 +117,8 @@ RUN    apk update \
 	&& rm -rf ${JMETER_HOME}/docs \
 	&& rm -rf ${JMETER_HOME}/licenses \
 	&& rm -rf ${JMETER_HOME}/printable_docs \
+	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Installing Jolokia %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
+	&& install-jolokia.sh\
 	&& echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Installing Jmeter Plugins %%%%%%%%%%%%%%%%%%%%%%%%%%%%" \
 	&& if [[ "$WITH_BASE_PLUGINS" == "true" ]];then install-base-plugins.sh; else echo "without install-base-plugins";  fi \
 	&& mkdir -p $JMETER_ADDITIONAL_LIB  \
@@ -134,6 +141,6 @@ RUN    apk update \
 
 WORKDIR	${JMETER_HOME}
 
-EXPOSE 1099
+EXPOSE 1099 8778
 
 ENTRYPOINT ["entrypoint.sh"]
