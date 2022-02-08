@@ -3,7 +3,6 @@ set -e
 
 . jmeter-utils.sh
 
-
 #Prapare JMX_ARG
 prepare_jmx_args
 #prepare EXIT_ARG
@@ -18,10 +17,22 @@ prepare_log_args
 prepare_report_args
 #Prepare CLUSTER_ARG
 prepare_cluster_args
+#prepare JOLOKIA_JAR
+prepare_jolokia_jar
 
+if [[ "$CONF_EXEC_IS_SLAVE" == "true" ]]; then
+    if [ ! -d $OUTPUT_LOG_PATH ]; then
+        mkdir -p $OUTPUT_LOG_PATH
+    fi
+    (
+        sleep 10
+        java -jar $JOLOKIA_JAR --config $JOLOKIA_CONFIG start Jmeter >$OUTPUT_LOG_PATH/jolokia.log
+    ) &
+else
+    JVM_ARGS="$JVM_ARGS $JOLOKIA_ARG "
+fi
 
-export JVM_ARGS=" $JMETER_JVM_ARGS $JMETER_JVM_EXTRA_ARGS "
-
+export JVM_ARGS=" $JVM_ARGS $JMETER_JVM_ARGS $JMETER_JVM_EXTRA_ARGS "
 
 echo "JVM_ARGS=${JVM_ARGS}"
 
@@ -31,8 +42,8 @@ echo "FULL_ARGS=$FULL_ARGS"
 
 echo "jmeter ALL ARGS=$FULL_ARGS $@"
 
-echo "START Running Jmeter on (`date`) with timeout ($CONF_EXEC_TIMEOUT)"
+echo "START Running Jmeter on ($(date)) with timeout ($CONF_EXEC_TIMEOUT)"
 
 timeout -s 9 $CONF_EXEC_TIMEOUT jmeter $FULL_ARGS $@
 
-echo "End   Running Jmeter on (`date`) "
+echo "End   Running Jmeter on ($(date)) "

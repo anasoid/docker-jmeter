@@ -118,3 +118,20 @@ prepare_cluster_args() {
    fi
 
 }
+
+#Prepare JOLOKIA_ARG
+prepare_jolokia_jar() {
+   if [[ "$CONF_WITH_JOLOKIA" == "true" ]]; then
+      jolokia_jar=$(ls $JOLOKIA_LIB)
+      if [ -z "$jolokia_jar" ]; then
+         echo "ERROR: Jolokia jar notfound ($jolokia_jar)"
+         ls -la $JOLOKIA_LIB
+         return 1
+      fi
+      export JOLOKIA_JAR="$JOLOKIA_LIB/$jolokia_jar"
+      export JOLOKIA_ARG=" -javaagent:$JOLOKIA_JAR=config=$JOLOKIA_CONFIG "
+      echo JOLOKIA_ARG=$JOLOKIA_ARG
+   else
+      echo "Skip Jolokia, not enabled : "
+   fi
+}
