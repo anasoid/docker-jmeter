@@ -352,14 +352,6 @@ docker run --rm \
 anasoid/jmeter:latest-plugins-11-jdk
 ```
 
-Timezone can also changed in file before-test.sh
-
-```sh
-
-export TZ="Africa/Casablanca"
-
-```
-
 # Examples
 
 ## Change JVM Memory size
