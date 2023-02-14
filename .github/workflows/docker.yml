@@ -133,7 +133,7 @@ jobs:
 
       - name: Docker Build only - retain local Image 📦
         id: build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ${{ matrix.folder }}/Dockerfile
