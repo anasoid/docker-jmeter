@@ -13,10 +13,14 @@ You can find image on [Docker Hub](https://hub.docker.com/r/anasoid/jmeter)
 
 ## Image version
 
-- [`latest`, `5.4`, `5.4-11-jre`,`5.4.3`, `5.4.3-11-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
-- [`latest-11-jdk`, `5.4-11-jdk`,`5.4.3-11-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
-- [`latest-plugins`, `5.4-plugins`, `5.4-plugins-11-jre`, `5.4.3-plugins`, `5.4.3-plugins-11-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
-- [`latest-plugins-11-jdk`, `5.4-plugins-11-jdk`, `5.4.3-plugins-11-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`latest`, `5.5`, `5.5-11-jre`,`5.5.0`, `5.5.0-11-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`latest-11-jdk`, `5.5-11-jdk`,`5.5.0-11-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`latest-plugins`, `5.5-plugins`, `5.5-plugins-11-jre`, `5.5.0-plugins`, `5.5.0-plugins-11-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`latest-plugins-11-jdk`, `5.5-plugins-11-jdk`, `5.5.3-plugins-11-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`5.4`, `5.4-11-jre`,`5.4.3`, `5.4.3-11-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`5.4-11-jdk`,`5.4.3-11-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`5.4-plugins`, `5.4-plugins-11-jre`, `5.4.3-plugins`, `5.4.3-plugins-11-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`5.4-plugins-11-jdk`, `5.4.3-plugins-11-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
 
 ## Features
 
