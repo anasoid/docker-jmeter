@@ -11,6 +11,42 @@ jobs:
     strategy:
       matrix:
         include:
+          - jmeter-version: "5.5"
+            with-plugins: "false"
+            suffix: ""
+            suffix2: "-11-jre"
+            jvm-version: "11-jre-alpine"
+            folder: "5.x/eclipse-temurin"
+            jmeter-branch: 5.5
+            tags-latest: "latest"
+
+          - jmeter-version: "5.5"
+            with-plugins: "true"
+            suffix: "-plugins"
+            suffix2: "-11-jre"
+            jvm-version: "11-jre-alpine"
+            folder: "5.x/eclipse-temurin"
+            jmeter-branch: 5.5
+            tags-latest: "latest"
+
+          - jmeter-version: "5.5"
+            with-plugins: "false"
+            suffix: "-11-jdk"
+            suffix2: ""
+            jvm-version: "11-jdk-alpine"
+            folder: "5.x/eclipse-temurin"
+            jmeter-branch: 5.5
+            tags-latest: "latest"
+
+          - jmeter-version: "5.5"
+            with-plugins: "true"
+            suffix: "-plugins-11-jdk"
+            suffix2: ""
+            jvm-version: "11-jdk-alpine"
+            folder: "5.x/eclipse-temurin"
+            jmeter-branch: 5.5
+            tags-latest: "latest"
+
           - jmeter-version: "5.4.3"
             with-plugins: "false"
             suffix: ""

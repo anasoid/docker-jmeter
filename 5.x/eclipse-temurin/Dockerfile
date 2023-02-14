@@ -12,7 +12,7 @@ ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 ENV MVN_OPTION="-DoverWriteReleases=true -DoverWriteSnapshots=true -DoverWriteIfNewer=true -DexcludeTransitive=true"
 
-ARG JMETER_VERSION="5.4.3"
+ARG JMETER_VERSION="5.5"
 ARG WITH_BASE_PLUGINS="true"
 ENV WITH_BASE_PLUGINS ${WITH_BASE_PLUGINS}
 ENV	JMETER_DOWNLOAD_URL  https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz

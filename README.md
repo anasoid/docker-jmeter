@@ -13,10 +13,14 @@ You can find image on [Docker Hub](https://hub.docker.com/r/anasoid/jmeter)
 
 ## Image version
 
-- [`latest`, `5.4`, `5.4-11-jre`,`5.4.3`, `5.4.3-11-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
-- [`latest-11-jdk`, `5.4-11-jdk`,`5.4.3-11-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
-- [`latest-plugins`, `5.4-plugins`, `5.4-plugins-11-jre`, `5.4.3-plugins`, `5.4.3-plugins-11-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
-- [`latest-plugins-11-jdk`, `5.4-plugins-11-jdk`, `5.4.3-plugins-11-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`latest`, `5.5`, `5.5-11-jre`,`5.5.0`, `5.5.0-11-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`latest-11-jdk`, `5.5-11-jdk`,`5.5.0-11-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`latest-plugins`, `5.5-plugins`, `5.5-plugins-11-jre`, `5.5.0-plugins`, `5.5.0-plugins-11-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`latest-plugins-11-jdk`, `5.5-plugins-11-jdk`, `5.5.3-plugins-11-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`5.4`, `5.4-11-jre`,`5.4.3`, `5.4.3-11-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`5.4-11-jdk`,`5.4.3-11-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`5.4-plugins`, `5.4-plugins-11-jre`, `5.4.3-plugins`, `5.4.3-plugins-11-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`5.4-plugins-11-jdk`, `5.4.3-plugins-11-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
 
 ## Features
 
@@ -80,7 +84,7 @@ You can find image on [Docker Hub](https://hub.docker.com/r/anasoid/jmeter)
 The `JMeter` images come in many flavors, each designed for a specific use case.
 The images version are based on component used to build image:
 
-1. **JMeter Version**: 5.4.3 -> default for 5.4.
+1. **JMeter Version**: 5.5.0 -> default for 5.5.
 2. **JVM Version**: e.g.: (-11-jre, default for 11-jre),a nd default JVM is `eclipse-temurin`.
 3. **plugins** : Pre-installed [plugins manager](https://jmeter-plugins.org/wiki/PluginsManagerAutomated/) and [test plan check tool](https://jmeter-plugins.org/wiki/TestPlanCheckTool/). This will provide the image with the feature to check JMX file and download plugins with plugin manager.
 
