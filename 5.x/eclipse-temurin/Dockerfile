@@ -1,6 +1,6 @@
-ARG  JVM_VERSION=11-jre-alpine
+ARG  JVM_VERSION=11.0.19_7-jre-alpine
 #use Maven image to install maven
-FROM maven:3.8-eclipse-temurin-11-alpine  as maven-install-build
+FROM maven:3.9-eclipse-temurin-11-alpine  as maven-install-build
 
 # Use JVM base
 FROM eclipse-temurin:${JVM_VERSION}
@@ -65,6 +65,7 @@ ENV CONF_CSV_DIVIDED_TO_OUT true
 ENV JMETER_JMX ""
 ENV JMETER_EXIT "false"
 ENV JMETER_PROPERTIES_FILES "jmeter.properties"
+ENV JMETER_PROPERTIES_OPTIONAL "false"
 ENV JMETER_JTL_FILE ""
 ENV JMETER_LOG_FILE "jmeter.log"
 ENV JMETER_REPORT_NAME ""
