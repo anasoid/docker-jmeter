@@ -8,6 +8,7 @@ set -e
 test_prepare_properties_args_success() {
    set -e
 
+   JMETER_PROPERTIES_OPTIONAL="false"
    PROPERTIES_ARG=""
    WORKSPACE_PATH=$(pwd)/tests/projects/sample1
    JMETER_PROPERTIES_FILES=jmeter.properties
@@ -24,6 +25,7 @@ test_prepare_properties_args_success() {
 test_prepare_properties_args_success_user() {
    set -e
 
+   JMETER_PROPERTIES_OPTIONAL="false"
    PROPERTIES_ARG=""
    WORKSPACE_PATH=$(pwd)/tests/projects/sample1
    USER_PATH=$(pwd)/tests/users/user1
@@ -42,6 +44,7 @@ test_prepare_properties_args_success_user() {
 test_prepare_properties_args_with_default_file_success() {
    set -e
 
+   JMETER_PROPERTIES_OPTIONAL="false"
    PROPERTIES_ARG=""
    WORKSPACE_PATH=$(pwd)/tests/
    USER_PATH=$(pwd)/tests/
@@ -59,6 +62,7 @@ test_prepare_properties_args_with_default_file_success() {
 test_prepare_properties_args_withoutfile_success() {
    set -e
 
+   JMETER_PROPERTIES_OPTIONAL="false"
    PROPERTIES_ARG=""
    WORKSPACE_PATH=$(pwd)/tests/projects/sample1
    JMETER_PROPERTIES_FILES=
@@ -75,6 +79,7 @@ test_prepare_properties_args_withoutfile_success() {
 test_prepare_properties_args_multi_file_success() {
    set -e
 
+   JMETER_PROPERTIES_OPTIONAL="false"
    PROPERTIES_ARG=""
    WORKSPACE_PATH=$(pwd)/tests/projects/sample1
    JMETER_PROPERTIES_FILES="jmeter.properties jmeter.properties"
@@ -91,7 +96,7 @@ test_prepare_properties_args_multi_file_success() {
 #test given file not found.
 test_prepare_properties_args_fail_file_notfound() {
    set +e
-
+   JMETER_PROPERTIES_OPTIONAL="false"
    PROPERTIES_ARG=""
    WORKSPACE_PATH=$(pwd)/tests/projects/sample1
    JMETER_PROPERTIES_FILES=not.properties
@@ -106,10 +111,28 @@ test_prepare_properties_args_fail_file_notfound() {
    fi
 }
 
+test_prepare_properties_args_fail_file_notfound_optional() {
+   set +e
+   JMETER_PROPERTIES_OPTIONAL="true"
+   PROPERTIES_ARG=""
+   WORKSPACE_PATH=$(pwd)/tests/projects/sample1
+   JMETER_PROPERTIES_FILES=not.properties
+
+   prepare_additional_file_properties -jfdfdfdfd dfd-tfd
+
+   if [ $? -eq 0 ]; then
+      echo "OK   "
+   else
+      echo "FAIL "
+      exit 1
+   fi
+}
+
 #test given file not found.
 test_prepare_properties_args_fail_file_format() {
    set +e
 
+   JMETER_PROPERTIES_OPTIONAL="false"
    PROPERTIES_ARG=""
    WORKSPACE_PATH=$(pwd)/tests/projects/sample1
    JMETER_PROPERTIES_FILES=test-plan.jmx
@@ -149,6 +172,10 @@ echo "Finish :>>>> test_prepare_properties_args_multi_file_success"
 echo "Start  :>>>> test_prepare_properties_args_fail_file_notfound"
 test_prepare_properties_args_fail_file_notfound
 echo "Finish :>>>> test_prepare_properties_args_fail_file_notfound"
+
+echo "Start  :>>>> test_prepare_properties_args_fail_file_notfound_optional"
+test_prepare_properties_args_fail_file_notfound_optional
+echo "Finish :>>>> test_prepare_properties_args_fail_file_notfound_optional"
 
 echo "Start  :>>>> test_prepare_properties_args_fail_file_format"
 test_prepare_properties_args_fail_file_format
