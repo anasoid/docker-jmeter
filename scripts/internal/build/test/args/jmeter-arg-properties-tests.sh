@@ -35,7 +35,7 @@ test_prepare_properties_args_success_user() {
       echo "FAIL "
       exit 1
    fi
-   assert_equals "$PROPERTIES_ARG" "  -q $USER_PATH/jmeter.properties  -q $WORKSPACE_PATH/jmeter.properties "
+   assert_equals "$PROPERTIES_ARG" "  -q $WORKSPACE_PATH/jmeter.properties  -q $USER_PATH/jmeter.properties "
    USER_PATH=""
 }
 
