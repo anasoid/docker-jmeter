@@ -28,33 +28,40 @@ prepare_exit_args() {
 
 #prepare PROPERTIES_FILES_ARG
 prepare_additional_file_properties() {
-   if [ ! -z "$JMETER_PROPERTIES_FILES" ]; then
-      export PROPERTIES_ARG=" "
-      for element in $JMETER_PROPERTIES_FILES; do
-         if [[ $element != *".properties" ]]; then
-            echo "ERROR: file properties should end with .properties in ($element) from ($JMETER_PROPERTIES_FILES)" 1>&2
-            return 1
-         fi
+  echo prepare_additional_file_properties
+  if [ ! -z "$JMETER_PROPERTIES_FILES" ]; then
+    export PROPERTIES_ARG=" "
+    for element in $JMETER_PROPERTIES_FILES; do
+      if [[ $element != *".properties" ]]; then
+        echo "ERROR: file properties should end with .properties in ($element) from ($JMETER_PROPERTIES_FILES)" 1>&2
+        return 1
+      fi
 
-         file="$WORKSPACE_PATH/$element"
-         fileuser="$USER_PATH/$element"
-         if [ -f "$file" ]; then
-            export PROPERTIES_ARG=" -q $file$PROPERTIES_ARG"
-            if [ -f "$fileuser" ]; then
-               export PROPERTIES_ARG=" -q $fileuser$PROPERTIES_ARG"
-            fi
-         else
-            if [ -f "$fileuser" ]; then
-               export PROPERTIES_ARG=" -q $fileuser$PROPERTIES_ARG"
+      file="$WORKSPACE_PATH/$element"
+      fileuser="$USER_PATH/$element"
+      if [ -f "$file" ]; then
+        export PROPERTIES_ARG="$PROPERTIES_ARG -q $file "
+        if [ -f "$fileuser" ]; then
+          export PROPERTIES_ARG="$PROPERTIES_ARG -q $fileuser "
+        fi
+      else
+        if [ -f "$fileuser" ]; then
+          export PROPERTIES_ARG="$PROPERTIES_ARG -q $fileuser "
+        else
+          if [[ $element != "jmeter.properties" ]]; then
+            if [[ "$JMETER_PROPERTIES_OPTIONAL" == "false" ]]; then
+              echo "ERROR: Configured properties file ($element) not found in  : ($file) or ($fileuser) " 1>&2
+              return 1
             else
-               if [[ $element != "jmeter.properties" ]]; then
-                  echo "ERROR: Configured properties file ($element) not found in  : ($file) or ($fileuser) " 1>&2
-                  return 1
-               fi
+              echo "Skip optional configured properties file ($element) not found in  : ($file) or ($fileuser) "
             fi
-         fi
-      done
-   fi
+          else
+            echo "Skip optional configured properties file ($element) not found in  : ($file) or ($fileuser) "
+          fi
+        fi
+      fi
+    done
+  fi
 }
 
 #Prapare JTL_ARG
