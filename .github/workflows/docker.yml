@@ -86,7 +86,7 @@ jobs:
     # v2 https://github.com/docker/build-push-action/blob/master/UPGRADE.md
     steps:
       - name: Checkout ✅
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Unit Test bash Script 📦
         run: |
