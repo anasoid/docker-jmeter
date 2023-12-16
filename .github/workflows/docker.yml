@@ -74,6 +74,14 @@ jobs:
           echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
           echo ::set-output name=jvm-version::${{ matrix.jvm-version }}
           echo ::set-output name=jmeter-branch::${{ matrix.jmeter-branch }}
+          echo ::set-output name=jmeter-version::${{ matrix.jmeter-version }}
+          echo ::set-output name=with-plugins::${{ matrix.with-plugins }}
+          
+          echo ::set-output name=tag-v1::${{ matrix.jmeter-version }}${{ matrix.suffix }}
+          echo ::set-output name=tag-v2::${{ matrix.jmeter-version }}${{ matrix.suffix }}${{ matrix.suffix2 }}
+          echo ::set-output name=tag-b1::${{ steps.prep.outputs.jmeter-branch }}${{ matrix.suffix }}
+          echo ::set-output name=tag-b2::${{ steps.prep.outputs.jmeter-branch }}${{ matrix.suffix }}${{ matrix.suffix2 }}
+          echo ::set-output name=tag-latest::${{ matrix.tags-latest == 'latest' && 'latest' || matrix.jmeter-branch }}${{ matrix.suffix }}
 
       - name: Show Image Settings 📦
         run: echo "IMAGE=${{ steps.prep.outputs.image }} VERSION=${{ steps.prep.outputs.version }} TAGS=${{ steps.prep.outputs.tags }}"
@@ -99,17 +107,17 @@ jobs:
           load: true
           push: false
           build-args: |
-            JMETER_VERSION=${{ matrix.jmeter-version }}
-            WITH_BASE_PLUGINS=${{ matrix.with-plugins }}
+            JMETER_VERSION=${{ steps.prep.outputs.jmeter-version }}
+            WITH_BASE_PLUGINS=${{ steps.prep.outputs.with-plugins }}
             JVM_VERSION=${{ steps.prep.outputs.jvm-version }}
 
           tags: |
-            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}${{ matrix.suffix }}
-            ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}${{ matrix.suffix }}${{ matrix.suffix2 }}
-            ${{ steps.prep.outputs.image }}:${{ steps.prep.outputs.jmeter-branch }}${{ matrix.suffix }}
-            ${{ steps.prep.outputs.image }}:${{ steps.prep.outputs.jmeter-branch }}${{ matrix.suffix }}${{ matrix.suffix2 }}
+            ${{ steps.prep.outputs.image }}:${{ steps.prep.outputs.tag-v1 }}
+            ${{ steps.prep.outputs.image }}:${{ steps.prep.outputs.tag-v2 }}
+            ${{ steps.prep.outputs.image }}:${{ steps.prep.outputs.tag-b1 }}
+            ${{ steps.prep.outputs.image }}:${{ steps.prep.outputs.tag-b2 }}
 
-            ${{ steps.prep.outputs.image }}:${{ matrix.tags-latest == 'latest' && 'latest' || steps.prep.outputs.jmeter-branch }}${{ matrix.suffix }}
+            ${{ steps.prep.outputs.image }}:${{ steps.prep.outputs.tag-latest }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
@@ -119,19 +127,19 @@ jobs:
       - name: Result 📦
         id: result
         run: |
-          echo ::set-output name=currentImage::${{ steps.prep.outputs.image }}:${{ steps.prep.outputs.jmeter-branch }}${{ matrix.suffix }}
+          echo ::set-output name=currentImage::${{ steps.prep.outputs.image }}:${{ steps.prep.outputs.tag-b1 }}
 
       - name: Test Jmeter Install
         run: |
           container-structure-test test -v info --image ${{ steps.result.outputs.currentImage }} --config tests/container-structure-test/jmeter-install.yaml
 
       - name: Test Jmeter base Plugin Install
-        if: ${{ matrix.with-plugins == 'true' }}
+        if: ${{ steps.prep.outputs.with-plugins == 'true' }}
         run: |
           container-structure-test test -v info --image ${{ steps.result.outputs.currentImage }} --config tests/container-structure-test/plugins-base-install.yaml
 
       - name: Test Jmeter base Plugin Not Install
-        if: ${{ matrix.with-plugins == 'false' }}
+        if: ${{ steps.prep.outputs.with-plugins == 'false' }}
         run: |
           container-structure-test test -v info --image ${{ steps.result.outputs.currentImage }} --config tests/container-structure-test/plugins-base-not-install.yaml
 
@@ -157,7 +165,7 @@ jobs:
 
       ## Install plugins many ways
       - name: Test Jmeter Plugin Install with plugin manager
-        if: ${{ matrix.with-plugins == 'true' }}
+        if: ${{ steps.prep.outputs.with-plugins == 'true' }}
         run: |
           docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -e JMETER_PLUGINS_MANAGER_INSTALL_LIST="jpgc-dbmon=0.1" -e JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX="true"  -e JMETER_JMX="test-plan.jmx" ${{ steps.result.outputs.currentImage }} 
           expected='JJmmeetteerr'
@@ -188,7 +196,7 @@ jobs:
 
       ## Install plugins many ways
       - name: Test Jmeter Plugin Install with plugin manager, check only
-        if: ${{ matrix.with-plugins == 'true' }}
+        if: ${{ steps.prep.outputs.with-plugins == 'true' }}
         run: |
           docker  run --pull never --name t1 -v ${PWD}/tests/projects/sample1/:/jmeter/project -e JMETER_CHECK_ONLY=true -e JMETER_PLUGINS_MANAGER_INSTALL_LIST="jpgc-dbmon=0.1" -e JMETER_PLUGINS_MANAGER_INSTALL_FOR_JMX="true"  -e JMETER_JMX="test-plan.jmx" ${{ steps.result.outputs.currentImage }} -Jres.out.default=hheelloo
           unexpected='hheelloo'
