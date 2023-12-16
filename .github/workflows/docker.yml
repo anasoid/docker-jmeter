@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        folder: [5.x/eclipse-temurin]
-        with-plugins: [false , true]
         jmeter-branch: [5.4, 5.5]
+        with-plugins: [false , true]
         jvm-version: [11-jdk-alpine,11-jre-alpine,17-jdk-alpine,17-jre-alpine]
         include:
+          - folder: "5.x/eclipse-temurin"
           - jvm-version: "11-jdk-alpine"
             suffix: "-11-jdk"
             suffix2: ""
@@ -84,7 +84,7 @@ jobs:
           echo ::set-output name=tag-latest::${{ matrix.tags-latest == 'latest' && 'latest' || matrix.jmeter-branch }}${{ matrix.suffix }}
 
       - name: Show Image Settings 📦
-        run: echo "IMAGE=${{ steps.prep.outputs.image }} VERSION=${{ steps.prep.outputs.version }} TAGS=${{ steps.prep.outputs.tags }}"
+        run: echo "IMAGE=${{ steps.prep.outputs.image }} VERSION=${{ steps.prep.outputs.version }} TAGS=${{ steps.prep.outputs.tag-latest }}"
 
       - name: Set up Docker Buildx 📦
         id: buildx
