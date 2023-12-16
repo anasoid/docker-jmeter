@@ -79,8 +79,8 @@ jobs:
           
           echo ::set-output name=tag-v1::${{ matrix.jmeter-version }}${{ matrix.suffix }}
           echo ::set-output name=tag-v2::${{ matrix.jmeter-version }}${{ matrix.suffix }}${{ matrix.suffix2 }}
-          echo ::set-output name=tag-b1::${{ steps.prep.outputs.jmeter-branch }}${{ matrix.suffix }}
-          echo ::set-output name=tag-b2::${{ steps.prep.outputs.jmeter-branch }}${{ matrix.suffix }}${{ matrix.suffix2 }}
+          echo ::set-output name=tag-b1::${{ matrix.jmeter-branch }}${{ matrix.suffix }}
+          echo ::set-output name=tag-b2::${{ matrix.jmeter-branch }}${{ matrix.suffix }}${{ matrix.suffix2 }}
           echo ::set-output name=tag-latest::${{ matrix.tags-latest == 'latest' && 'latest' || matrix.jmeter-branch }}${{ matrix.suffix }}
 
       - name: Show Image Settings 📦
