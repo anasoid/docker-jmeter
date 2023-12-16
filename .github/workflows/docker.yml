@@ -13,7 +13,7 @@ jobs:
         folder: [5.x/eclipse-temurin]
         with-plugins: [false , true]
         jmeter-branch: [5.4, 5.5, 5.6]
-        jvm-version: [11-jdk-alpine,11-jre-alpine,17-jdk-alpine,17-jre-alpine]
+        jvm-version: [11-jdk-alpine,11-jre-alpine,17-jdk-jammy,17-jre-jammy]
         include:
           - jvm-version: "11-jdk-alpine"
             suffix: "-11-jdk"
@@ -21,6 +21,13 @@ jobs:
           - jvm-version: "11-jre-alpine"
             suffix: ""
             suffix2: "-11-jre"
+          - jvm-version: "17-jdk-jammy"
+            suffix: "-17-jdk"
+            suffix2: ""
+          - jvm-version: "17-jre-jammy"
+            suffix: ""
+            suffix2: "-17-jre"
+
           - jmeter-branch: 5.6
             jmeter-version: 5.6.2
             tags-latest: latest
@@ -30,9 +37,9 @@ jobs:
             jmeter-version: 5.4.3
         exclude:
           - jmeter-branch: 5.4
-            jvm-version: 17-jdk-alpine
+            jvm-version: 17-jdk-jammy
           - jmeter-branch: 5.4
-            jvm-version: 17-jre-alpine
+            jvm-version: 17-jre-jammy
           - jmeter-branch: 5.6
             jvm-version: 11-jdk-alpine
           - jmeter-branch: 5.6
@@ -98,7 +105,7 @@ jobs:
           build-args: |
             JMETER_VERSION=${{ matrix.jmeter-version }}
             WITH_BASE_PLUGINS=${{ matrix.with-plugins }}
-            JVM_VERSION=${{ matrix.jvm-version }}
+            JVM_VERSION=${{ steps.prep.outputs.jvm-version }}
 
           tags: |
             ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}${{ matrix.suffix }}
