@@ -12,14 +12,15 @@ jobs:
       matrix:
         with-plugins: [false , true]
         jmeter-branch: [5.4, 5.5]
+        jvm-version: [11-jdk-alpine,11-jre-alpine]
         include:
           - folder: "5.x/eclipse-temurin"
-          - jvm-version: "11-jre-alpine"
-            suffix: ""
-            suffix2: "-11-jre"
           - jvm-version: "11-jdk-alpine"
             suffix: "-11-jdk"
             suffix2: ""
+          - jvm-version: "11-jre-alpine"
+            suffix: ""
+            suffix2: "-11-jre"
           - jmeter-branch: 5.5
             jmeter-version: 5.5
             tags-latest: latest
