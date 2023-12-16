@@ -86,11 +86,11 @@ jobs:
           echo "steps.prep.outputs.tag-v2=${{ steps.prep.outputs.tag-v2 }} "
           echo "steps.prep.outputs.tag-b2=${{ steps.prep.outputs.tag-b2 }} "     
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx 📦
         id: buildx
         uses: docker/setup-buildx-action@v3
-        with:
-          platform: linux/amd64,linux/arm64
 
       - name: Inspect builder
         run: |
@@ -108,6 +108,7 @@ jobs:
           file: ${{ matrix.folder }}/Dockerfile
           load: true
           push: false
+          platform: linux/amd64,linux/arm64
           build-args: |
             JMETER_VERSION=${{ steps.prep.outputs.jmeter-version }}
             WITH_BASE_PLUGINS=${{ steps.prep.outputs.with-plugins }}
