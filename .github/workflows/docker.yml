@@ -227,6 +227,9 @@ jobs:
           docker rm t1
           docker rmi t1
 
+      - name: docker images ☁️
+        run: docker images
+
       #Publish on master
       - name: Login to DockerHub 📦
         if: ${{ github.ref_name == 'master' }}
