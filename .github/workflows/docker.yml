@@ -66,7 +66,6 @@ jobs:
           echo "created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
           echo "jvm-version=${{ matrix.jvm-version }}-${{ matrix.jvm-type }}-${{ matrix.jvm-os }}" >> $GITHUB_OUTPUT
           echo "jmeter-branch=${{ matrix.jmeter-branch }}" >> $GITHUB_OUTPUT
-          echo "jmeter-version=${{ matrix.jmeter-version }}" >> $GITHUB_OUTPUT
           echo "with-plugins=${{ matrix.with-plugins }}" >> $GITHUB_OUTPUT
           
           echo "tag-v1=${{ matrix.jmeter-version }}${SUFFIX}" >> $GITHUB_OUTPUT
@@ -76,7 +75,16 @@ jobs:
           echo "tag-latest=${{ matrix.tags-latest == 'latest' && 'latest' || matrix.jmeter-branch }}${{ matrix.suffix }}" >> $GITHUB_OUTPUT
 
       - name: Show Image Settings 📦
-        run: echo "IMAGE=${{ steps.prep.outputs.image }} VERSION=${{ steps.prep.outputs.version }} TAGS=${{ steps.prep.outputs.tag-latest }}"
+        run: |
+          echo "IMAGE=${{ steps.prep.outputs.image }} VERSION=${{ steps.prep.outputs.version }} TAGS=${{ steps.prep.outputs.tag-latest }}"
+          echo "steps.prep.outputs.created=${{ steps.prep.outputs.created }} "
+          echo "steps.prep.outputs.jvm-version=${{ steps.prep.outputs.jvm-version }} "
+          echo "steps.prep.outputs.jmeter-branch=${{ steps.prep.outputs.jmeter-branch }} "
+          echo "steps.prep.outputs.with-plugins=${{ steps.prep.outputs.with-plugins }} "
+          echo "steps.prep.outputs.tag-v1=${{ steps.prep.outputs.tag-v1 }} "
+          echo "steps.prep.outputs.tag-b1=${{ steps.prep.outputs.tag-b1 }} "
+          echo "steps.prep.outputs.tag-v2=${{ steps.prep.outputs.tag-v2 }} "
+          echo "steps.prep.outputs.tag-b2=${{ steps.prep.outputs.tag-b2 }} "     
 
       - name: Set up Docker Buildx 📦
         id: buildx
