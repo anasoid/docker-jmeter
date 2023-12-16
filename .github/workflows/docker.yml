@@ -12,7 +12,7 @@ jobs:
       matrix:
         folder: [5.x/eclipse-temurin]
         with-plugins: [false , true]
-        jmeter-version: [5.4.3, 5.5]
+        jmeter-version: [5.4.3, 5.5, 5.6.2]
         jvm-version: [11-jdk-alpine,11-jre-alpine]
         include:
           - jvm-version: "11-jdk-alpine"
@@ -21,9 +21,11 @@ jobs:
           - jvm-version: "11-jre-alpine"
             suffix: ""
             suffix2: "-11-jre"
+          - jmeter-version: 5.6.2
+            jmeter-branch: 5.6
+            tags-latest: latest
           - jmeter-version: 5.5
             jmeter-branch: 5.5
-            tags-latest: latest
           - jmeter-version: 5.4.3
             jmeter-branch: 5.4
 
@@ -91,6 +93,7 @@ jobs:
             WITH_BASE_PLUGINS=${{ matrix.with-plugins }}
             JVM_VERSION=${{ matrix.jvm-version }}
 
+          platforms: linux/amd64,linux/arm64
           tags: |
             ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}${{ matrix.suffix }}
             ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}${{ matrix.suffix }}${{ matrix.suffix2 }}
