@@ -105,6 +105,7 @@ jobs:
           file: ${{ matrix.folder }}/Dockerfile
           load: true
           push: false
+          platforms: linux/amd64,linux/arm64
           build-args: |
             JMETER_VERSION=${{ steps.prep.outputs.jmeter-version }}
             WITH_BASE_PLUGINS=${{ steps.prep.outputs.with-plugins }}
