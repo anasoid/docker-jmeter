@@ -93,7 +93,6 @@ jobs:
             WITH_BASE_PLUGINS=${{ matrix.with-plugins }}
             JVM_VERSION=${{ matrix.jvm-version }}
 
-          platforms: linux/amd64,linux/arm64
           tags: |
             ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}${{ matrix.suffix }}
             ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-version }}${{ matrix.suffix }}${{ matrix.suffix2 }}
