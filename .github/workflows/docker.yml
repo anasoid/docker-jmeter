@@ -13,7 +13,7 @@ jobs:
         folder: [5.x/eclipse-temurin]
         with-plugins: [false , true]
         jmeter-branch: [5.4, 5.5, 5.6]
-        jvm-version: [11-jdk-alpine,11-jre-alpine,17-jdk-jammy,17-jre-jammy]
+        jvm-version: [11-jdk-alpine,11-jre-alpine,17-jdk-alpine,17-jre-alpine]
         include:
           - jvm-version: "11-jdk-alpine"
             suffix: "-11-jdk"
@@ -21,10 +21,10 @@ jobs:
           - jvm-version: "11-jre-alpine"
             suffix: ""
             suffix2: "-11-jre"
-          - jvm-version: "17-jdk-jammy"
+          - jvm-version: "17-jdk-alpine"
             suffix: "-17-jdk"
             suffix2: ""
-          - jvm-version: "17-jre-jammy"
+          - jvm-version: "17-jre-alpine"
             suffix: ""
             suffix2: "-17-jre"
 
@@ -37,9 +37,9 @@ jobs:
             jmeter-version: 5.4.3
         exclude:
           - jmeter-branch: 5.4
-            jvm-version: 17-jdk-jammy
+            jvm-version: 17-jdk-alpine
           - jmeter-branch: 5.4
-            jvm-version: 17-jre-jammy
+            jvm-version: 17-jre-alpine
           - jmeter-branch: 5.6
             jvm-version: 11-jdk-alpine
           - jmeter-branch: 5.6
