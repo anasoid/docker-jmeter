@@ -59,8 +59,8 @@ jobs:
         run: |
           DOCKER_IMAGE=anasoid/jmeter
           VERSION="${{ matrix.jmeter-version }}"
-          SUFFIX="${{ matrix.jvm-type == 'jdk' && matrix.jmeter-branch || '' }}${{ matrix.jvm-type == 'jdk' && '-jdk' || '' }}"
-          SUFFIX2="${{ matrix.jvm-type == 'jre' && matrix.jmeter-branch || '' }}${{ matrix.jvm-type == 'jre' && '-jre' || '' }}"
+          SUFFIX="${{ matrix.jvm-type == 'jdk' && matrix.jvm-version || '' }}${{ matrix.jvm-type == 'jdk' && '-jdk' || '' }}"
+          SUFFIX2="${{ matrix.jvm-type == 'jre' && matrix.jvm-version || '' }}${{ matrix.jvm-type == 'jre' && '-jre' || '' }}"
           echo "image=${DOCKER_IMAGE}" >> $GITHUB_OUTPUT
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
           echo "created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
