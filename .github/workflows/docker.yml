@@ -27,6 +27,7 @@ jobs:
           - jmeter-branch: 5.5
             jmeter-version: 5.5
           - jmeter-branch: 5.4
+            jmeter-version: 5.4.3
         exclude:
           - jmeter-branch: 5.4
             jvm-version: 17-jdk-alpine
