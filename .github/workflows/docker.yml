@@ -34,9 +34,9 @@ jobs:
           - jmeter-branch: 5.4
             jvm-version: 17-jre-alpine
           - jmeter-branch: 5.6
-            jvm-version: 17-jdk-alpine
+            jvm-version: 11-jdk-alpine
           - jmeter-branch: 5.6
-            jvm-version: 17-jre-alpine
+            jvm-version: 11-jre-alpine
 
     # v2 https://github.com/docker/build-push-action/blob/master/UPGRADE.md
     steps:
