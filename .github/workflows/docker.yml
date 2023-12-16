@@ -20,9 +20,10 @@ jobs:
           - jvm-version: "11-jdk-alpine"
             suffix: "-11-jdk"
             suffix2: ""
-          - jmeter-branch: "5.5"
+          - jmeter-branch: 5.5
             jmeter-version: 5.5
-          - jmeter-branch: "5.4"
+            tags-latest: latest
+          - jmeter-branch: 5.4
             jmeter-version: 5.4.3
 
 
@@ -94,7 +95,7 @@ jobs:
             ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}${{ matrix.suffix }}
             ${{ steps.prep.outputs.image }}:${{ matrix.jmeter-branch }}${{ matrix.suffix }}${{ matrix.suffix2 }}
 
-            ${{ steps.prep.outputs.image }}:${{ matrix.tags-latest }}${{ matrix.suffix }}
+            ${{ steps.prep.outputs.image }}:${{ matrix.tags-latest == 'latest' && 'latest' || matrix.jmeter-branch }}${{ matrix.suffix }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
