@@ -12,21 +12,11 @@ jobs:
       matrix:
         jmeter-branch: [5.4, 5.5]
         with-plugins: [false , true]
-        jvm-version: [11-jdk-alpine,11-jre-alpine,17-jdk-alpine,17-jre-alpine]
+        jvm-type: [jdk , jre]
+        jvm-version: [11,17]
         include:
           - folder: "5.x/eclipse-temurin"
-          - jvm-version: "11-jdk-alpine"
-            suffix: "-11-jdk"
-            suffix2: ""
-          - jvm-version: "11-jre-alpine"
-            suffix: ""
-            suffix2: "-11-jre"
-          - jvm-version: "17-jdk-alpine"
-            suffix: "-17-jdk"
-            suffix2: ""
-          - jvm-version: "17-jre-alpine"
-            suffix: ""
-            suffix2: "-17-jre"
+          - jvm-os: "alpine"
 
           - jmeter-branch: 5.5
             jmeter-version: 5.5
@@ -58,7 +48,7 @@ jobs:
       - name: Config 📦
         run: |
           echo jmeter-branch=${{ matrix.jmeter-branch }}
-          echo jvm-version=${{ matrix.jvm-version }}
+          echo jvm-version=${{ matrix.jvm-version }}-${{ matrix.jvm-type }}-${{ matrix.jvm-os }}
           echo jmeter-version=${{ matrix.jmeter-version }}
           echo folder=${{ matrix.folder }}
           echo tags-latest=${{ matrix.tags-latest }}
@@ -69,18 +59,20 @@ jobs:
         run: |
           DOCKER_IMAGE=anasoid/jmeter
           VERSION="${{ matrix.jmeter-version }}"
+          SUFFIX="${{ matrix.jvm-type == 'jdk' && matrix.jmeter-branch'-jdk' || '' }}"
+          SUFFIX2="${{ matrix.jvm-type == 'jre' && matrix.jmeter-branch'-jre' || '' }}"
           echo ::set-output name=image::${DOCKER_IMAGE}
           echo ::set-output name=version::${VERSION}
           echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
-          echo ::set-output name=jvm-version::${{ matrix.jvm-version }}
+          echo ::set-output name=jvm-version::${{ matrix.jvm-version }}-${{ matrix.jvm-type }}-${{ matrix.jvm-os }}
           echo ::set-output name=jmeter-branch::${{ matrix.jmeter-branch }}
           echo ::set-output name=jmeter-version::${{ matrix.jmeter-version }}
           echo ::set-output name=with-plugins::${{ matrix.with-plugins }}
           
-          echo ::set-output name=tag-v1::${{ matrix.jmeter-version }}${{ matrix.suffix }}
-          echo ::set-output name=tag-v2::${{ matrix.jmeter-version }}${{ matrix.suffix }}${{ matrix.suffix2 }}
-          echo ::set-output name=tag-b1::${{ matrix.jmeter-branch }}${{ matrix.suffix }}
-          echo ::set-output name=tag-b2::${{ matrix.jmeter-branch }}${{ matrix.suffix }}${{ matrix.suffix2 }}
+          echo ::set-output name=tag-v1::${{ matrix.jmeter-version }}${SUFFIX}
+          echo ::set-output name=tag-v2::${{ matrix.jmeter-version }}${SUFFIX}${SUFFIX2}
+          echo ::set-output name=tag-b1::${{ matrix.jmeter-branch }}${SUFFIX}
+          echo ::set-output name=tag-b2::${{ matrix.jmeter-branch }}${SUFFIX}${SUFFIX2}
           echo ::set-output name=tag-latest::${{ matrix.tags-latest == 'latest' && 'latest' || matrix.jmeter-branch }}${{ matrix.suffix }}
 
       - name: Show Image Settings 📦
