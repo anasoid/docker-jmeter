@@ -62,7 +62,7 @@ jobs:
           SUFFIX="${{ matrix.jvm-type == 'jdk' && '-' || '' }}${{ matrix.jvm-type == 'jdk' && matrix.jvm-version || '' }}${{ matrix.jvm-type == 'jdk' && '-jdk' || '' }}"
           SUFFIX2="${{ matrix.jvm-type == 'jre' && '-' || '' }}${{ matrix.jvm-type == 'jre' && matrix.jvm-version || '' }}${{ matrix.jvm-type == 'jre' && '-jre' || '' }}"
           echo "image=${DOCKER_IMAGE}" >> $GITHUB_OUTPUT
-          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "jmeter-version=${{ matrix.jmeter-version }}" >> $GITHUB_OUTPUT
           echo "created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
           echo "jvm-version=${{ matrix.jvm-version }}-${{ matrix.jvm-type }}-${{ matrix.jvm-os }}" >> $GITHUB_OUTPUT
           echo "jmeter-branch=${{ matrix.jmeter-branch }}" >> $GITHUB_OUTPUT
