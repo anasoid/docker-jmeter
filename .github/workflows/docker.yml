@@ -11,38 +11,20 @@ jobs:
     strategy:
       matrix:
         with-plugins: [false , true]
+        jmeter-branch: [5.4, 5.5]
         include:
-          - jmeter-version: "5.5"
+          - folder: "5.x/eclipse-temurin"
+          - jvm-version: "11-jre-alpine"
             suffix: ""
             suffix2: "-11-jre"
-            jvm-version: "11-jre-alpine"
-            folder: "5.x/eclipse-temurin"
-            jmeter-branch: 5.5
-            tags-latest: "latest"
-
-          - jmeter-version: "5.5"
+          - jvm-version: "11-jdk-alpine"
             suffix: "-11-jdk"
             suffix2: ""
-            jvm-version: "11-jdk-alpine"
-            folder: "5.x/eclipse-temurin"
-            jmeter-branch: 5.5
-            tags-latest: "latest"
+          - jmeter-branch: "5.5"
+            jmeter-version: 5.5
+          - jmeter-branch: "5.4"
+            jmeter-version: 5.4.3
 
-          - jmeter-version: "5.4.3"
-            suffix: ""
-            suffix2: "-11-jre"
-            jvm-version: "11-jre-alpine"
-            folder: "5.x/eclipse-temurin"
-            jmeter-branch: 5.4
-            tags-latest: "latest"
-
-          - jmeter-version: "5.4.3"
-            suffix: "-11-jdk"
-            suffix2: ""
-            jvm-version: "11-jdk-alpine"
-            folder: "5.x/eclipse-temurin"
-            jmeter-branch: 5.4
-            tags-latest: "latest"
 
 
     # v2 https://github.com/docker/build-push-action/blob/master/UPGRADE.md
