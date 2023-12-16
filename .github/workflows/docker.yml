@@ -1,6 +1,6 @@
 name: Docker Build ⚓
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
   # Single job now to build Docker Image, run GHC unit tests, and push to DockerHub
@@ -10,10 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        jmeter-branch: [5.4, 5.5]
-        with-plugins: [false , true]
-        jvm-type: [jdk , jre]
-        jvm-version: [11,17]
+        platform: [ linux/amd64, linux/arm/v6 ]
+        jmeter-branch: [ 5.4, 5.5 ]
+        with-plugins: [ false , true ]
+        jvm-type: [ jdk , jre ]
+        jvm-version: [ 11,17 ]
         include:
           - folder: "5.x/eclipse-temurin"
           - jvm-os: "alpine"
@@ -52,6 +53,7 @@ jobs:
           echo folder=${{ matrix.folder }}
           echo tags-latest=${{ matrix.tags-latest }}
           echo with-plugins=${{ matrix.with-plugins }}
+          echo platform=${{ matrix.platform }}
 
       - name: Prepare 📦
         id: prep
