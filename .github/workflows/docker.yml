@@ -129,6 +129,13 @@ jobs:
           echo "Flags:     ${{ steps.buildx.outputs.flags }}"
           echo "Platforms: ${{ steps.buildx.outputs.platforms }}"
 
+      - name: Login to DockerHub 📦
+        if: ${{ github.ref_name == 'master' }}
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
       - name: Docker Build only - retain local Image 📦
         id: build
         uses: docker/build-push-action@v5
@@ -260,13 +267,33 @@ jobs:
         run: docker images
 
       #Publish on master
-      - name: Login to DockerHub 📦
-        if: ${{ github.ref_name == 'master' }}
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Push to Docker repo (on Push only) ☁️
+      - name: Push to Docker repo (on Push only) 📦
         if: ${{ github.ref_name == 'master' }}
-        run: docker image push --all-tags ${{ steps.prep.outputs.image }}
+        id: push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          file: ${{ matrix.folder }}/Dockerfile
+          load: false
+          push: true
+          build-args: |
+            JMETER_VERSION=${{ steps.prep.outputs.jmeter-version }}
+            WITH_BASE_PLUGINS=${{ steps.prep.outputs.with-plugins }}
+            JVM_VERSION=${{ steps.prep.outputs.jvm-version }}
+
+          tags: |
+            ${{ steps.prep.outputs.image }}:${{ steps.prep.outputs.tag-v1 }}
+            ${{ steps.prep.outputs.image }}:${{ steps.prep.outputs.tag-v2 }}
+            ${{ steps.prep.outputs.image }}:${{ steps.prep.outputs.tag-b1 }}
+            ${{ steps.prep.outputs.image }}:${{ steps.prep.outputs.tag-b2 }}
+
+            ${{ steps.prep.outputs.image }}:${{ steps.prep.outputs.tag-latest }}
+          labels: |
+            org.opencontainers.image.source=${{ github.event.repository.html_url }}
+            org.opencontainers.image.created=${{ steps.prep.outputs.created }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.version=${{ github.sha }}
+            
+
