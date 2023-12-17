@@ -57,7 +57,8 @@ jobs:
           echo folder=${{ matrix.folder }}
           echo tags-latest=${{ matrix.tags-latest }}
           echo with-plugins=${{ matrix.with-plugins }}
-
+          echo "has plugin: ${{ matrix.with-plugins == 'true' && '-plugins' || '' }}"
+          echo "has plugin2: ${{ matrix.with-plugins  && '-plugins' || '' }}"
 
       - name: Prepare 📦
         id: prep
