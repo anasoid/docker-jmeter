@@ -90,16 +90,17 @@ jobs:
           suffix1=${SUFFIX}
           suffix2=${SUFFIX}${SUFFIX2}
           if '${{ matrix.default}}' == 'true' ; then
-              echo "DEFAUUUUUULT"
+          echo "DEFAUUUUUULT"
           else
-               suffix1=${suffix2}
-               echo "NOOOT DEFAUUUUUULT"
+          echo "changing value to suffix2"
+          suffix1=${suffix2}
+          echo "NOOOT DEFAUUUUUULT"
           fi
           echo "tag-v1=${{ matrix.jmeter-version }}${suffix1}" >> $GITHUB_OUTPUT
           echo "tag-v2=${{ matrix.jmeter-version }}${suffix2}" >> $GITHUB_OUTPUT
           echo "tag-b1=${{ matrix.jmeter-branch }}${suffix1}" >> $GITHUB_OUTPUT
           echo "tag-b2=${{ matrix.jmeter-branch }}${suffix2}" >> $GITHUB_OUTPUT
-          echo "tag-latest=${{ matrix.tags-latest == 'latest' && 'latest' || matrix.jmeter-branch }}${SUFFIX}" >> $GITHUB_OUTPUT
+          echo "tag-latest=${{ matrix.tags-latest == 'latest' && 'latest' || matrix.jmeter-branch }}${suffix1}" >> $GITHUB_OUTPUT
 
       - name: Show Image Settings 📦
         run: |
