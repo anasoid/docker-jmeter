@@ -271,7 +271,7 @@ jobs:
 
       - name: Push to Docker repo (on Push only) 📦
         if: ${{ github.ref_name == 'master' }}
-        id: build
+        id: push
         uses: docker/build-push-action@v5
         with:
           context: .
