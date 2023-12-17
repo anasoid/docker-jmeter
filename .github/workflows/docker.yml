@@ -76,7 +76,7 @@ jobs:
           echo "tag-v2=${{ matrix.jmeter-version }}${SUFFIX}${SUFFIX2}" >> $GITHUB_OUTPUT
           echo "tag-b1=${{ matrix.jmeter-branch }}${SUFFIX}" >> $GITHUB_OUTPUT
           echo "tag-b2=${{ matrix.jmeter-branch }}${SUFFIX}${SUFFIX2}" >> $GITHUB_OUTPUT
-          echo "tag-latest=${{ matrix.tags-latest == 'latest' && 'latest' || matrix.jmeter-branch }}${{ matrix.suffix }}" >> $GITHUB_OUTPUT
+          echo "tag-latest=${{ matrix.tags-latest == 'latest' && 'latest' || matrix.jmeter-branch }}${SUFFIX}" >> $GITHUB_OUTPUT
 
       - name: Show Image Settings 📦
         run: |
@@ -89,6 +89,7 @@ jobs:
           echo "steps.prep.outputs.tag-b1=${{ steps.prep.outputs.tag-b1 }} "
           echo "steps.prep.outputs.tag-v2=${{ steps.prep.outputs.tag-v2 }} "
           echo "steps.prep.outputs.tag-b2=${{ steps.prep.outputs.tag-b2 }} "     
+          echo "steps.prep.outputs.tag-latest=${{ steps.prep.outputs.tag-latest }} "
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
