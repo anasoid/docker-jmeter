@@ -44,8 +44,11 @@ jobs:
             jmeter-version: 5.5
           - jmeter-branch: 5.4
             jmeter-version: 5.4.3
-
-
+        exclude:
+          - jmeter-branch: 5.4
+            jvm-version: 17
+          - jmeter-branch: 5.4
+            jvm-version: 21
 
     # v2 https://github.com/docker/build-push-action/blob/master/UPGRADE.md
     steps:
