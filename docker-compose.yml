@@ -1,0 +1,19 @@
+services:
+  jmeter:
+    build:
+      context: .
+      dockerfile: 5.x/eclipse-temurin/Dockerfile
+      args:
+        JMETER_VERSION: "${JMETER_VERSION:-5.6}"
+        WITH_BASE_PLUGINS: "${WITH_BASE_PLUGINS:-false}"
+        JVM_VERSION: "${JVM_VERSION:-11-jdk-alpine}"
+    volumes:
+      - ./tests/projects/sample1/:/jmeter/project
+      - ./tests/projects/sample1/dummy/:/jmeter/additional/lib/ext
+      - ./tests/projects/sample1/out/:/jmeter/out
+    environment:
+      JMETER_JTL_FILE: "out.jtl"
+      JMETER_LOG_FILE: "out.log"
+      JMETER_REPORT_NAME : "html2"
+      JMETER_JMX : "test-plan.jmx"
+
