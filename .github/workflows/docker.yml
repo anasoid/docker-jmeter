@@ -90,11 +90,11 @@ jobs:
           suffix1=${SUFFIX}
           suffix2=${SUFFIX}${SUFFIX2}
           if [[ '${{ matrix.default}}' == 'true' ]] ; then
-          echo "DEFAUUUUUULT"
+            echo "DEFAUUUUUULT"
           else
-          echo "changing value to suffix2"
-          suffix1=${suffix2}
-          echo "NOOOT DEFAUUUUUULT"
+            echo "changing value to suffix2"
+            suffix1=${suffix2}
+            echo "NOOOT DEFAUUUUUULT"
           fi
           echo "tag-v1=${{ matrix.jmeter-version }}${suffix1}" >> $GITHUB_OUTPUT
           echo "tag-v2=${{ matrix.jmeter-version }}${suffix2}" >> $GITHUB_OUTPUT
