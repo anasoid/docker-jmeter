@@ -13,7 +13,7 @@ fileExistenceTests:
     shouldExist: false
 
   - name: "PluginsManager jar"
-    path: "/opt/apache-jmeter/lib/ext/jmeter-plugins-manager-1.8.jar"
+    path: "/opt/apache-jmeter/lib/ext/jmeter-plugins-manager-1.10.jar"
     shouldExist: false
 
   - name: "cmn jar"
