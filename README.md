@@ -14,18 +14,24 @@ You can find image on [Docker Hub](https://hub.docker.com/r/anasoid/jmeter)
 ## Image version
 
 ### Jmeter 5.6
-
-- [`latest`, `5.6`, `5.6-17-jre`,`5.6.0`, `5.6.2-17-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
-- [`latest-17-jdk`, `5.6-17-jdk`,`5.6.2-17-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
-- [`latest-plugins`, `5.6-plugins`, `5.6-plugins-17-jre`, `5.6.2-plugins`, `5.6.2-plugins-17-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
-- [`latest-plugins-17-jdk`, `5.6-plugins-17-jdk`, `5.6.2-plugins-17-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`latest`, `5.6`, `5.6-21-jre`,`5.6.0`, `5.6.2-21-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`latest-21-jdk`, `5.6-21-jdk`,`5.6.2-21-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`latest-plugins`, `5.6-plugins`, `5.6-plugins-21-jre`, `5.6.2-plugins`, `5.6.2-plugins-21-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`latest-plugins-21-jdk`, `5.6-plugins-21-jdk`, `5.6.2-plugins-21-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`5.6-17-jre`,`5.6.0`, `5.6.2-17-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`5.6-17-jdk`,`5.6.2-17-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`5.6-plugins`, `5.6-plugins-17-jre`, `5.6.2-plugins`, `5.6.2-plugins-17-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`5.6-plugins-17-jdk`, `5.6.2-plugins-17-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
 - [`5.6`, `5.6-11-jre`,`5.6.0`, `5.6.2-11-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
 - [`5.6-11-jdk`,`5.6.2-11-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
 - [`5.6-plugins`, `5.6-plugins-11-jre`, `5.6.2-plugins`, `5.6.2-plugins-11-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
 - [`5.6-plugins-11-jdk`, `5.6.2-plugins-11-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
 
 ### Jmeter 5.5
-
+- [`5.5`, `5.5-21-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`5.5-21-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`5.5-plugins`, `5.5-plugins-21-jre`, `5.5.0-plugins`, `5.5.0-plugins-21-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
+- [`5.5-plugins-21-jdk`, `5.5.3-plugins-21-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
 - [`5.5`, `5.5-17-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
 - [`5.5-17-jdk`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
 - [`5.5-plugins`, `5.5-plugins-17-jre`, `5.5.0-plugins`, `5.5.0-plugins-17-jre`](https://github.com/anasoid/docker-jmeter/blob/master/5.x/eclipse-temurin/Dockerfile)
@@ -45,7 +51,7 @@ You can find image on [Docker Hub](https://hub.docker.com/r/anasoid/jmeter)
 ## Features
 
 1. Smallest size with ~110MB.
-2. ARM64 architecture available, can be executed on oracle always free vm.
+2. ARM64 architecture available (only jvm 21), can be executed on oracle always free vm.
 2. Two versions: Native JMeter version and JMeter version with pre-configured plugin manager.
 3. Timeout for execution. After the timeout, docker will be stopped, even if test is not finished. This is helpful to
    force stop JMeter docker after a timeout.
