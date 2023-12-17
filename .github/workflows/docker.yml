@@ -1,6 +1,10 @@
 name: Docker Build ⚓
 
-on: [ push, pull_request ]
+on:
+  pull_request:
+  push:
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   # Single job now to build Docker Image, run GHC unit tests, and push to DockerHub
@@ -22,7 +26,19 @@ jobs:
             jvm-type: jre
             jvm-version: 17
             tags-latest: latest
+            default: true
 
+          - jmeter-branch: 5.5
+            jvm-type: jre
+            jvm-version: 17
+            default: true
+
+          - jmeter-branch: 5.4
+            jvm-type: jre
+            jvm-version: 11
+            default: true
+
+          - jmeter-version: 17
           - jmeter-branch: 5.6
             jmeter-version: 5.6.2
           - jmeter-branch: 5.5
@@ -71,11 +87,17 @@ jobs:
           echo "jvm-version=${{ matrix.jvm-version }}-${{ matrix.jvm-type }}-${{ matrix.jvm-os }}" >> $GITHUB_OUTPUT
           echo "jmeter-branch=${{ matrix.jmeter-branch }}" >> $GITHUB_OUTPUT
           echo "with-plugins=${{ matrix.with-plugins }}" >> $GITHUB_OUTPUT
-          
-          echo "tag-v1=${{ matrix.jmeter-version }}${SUFFIX}" >> $GITHUB_OUTPUT
-          echo "tag-v2=${{ matrix.jmeter-version }}${SUFFIX}${SUFFIX2}" >> $GITHUB_OUTPUT
-          echo "tag-b1=${{ matrix.jmeter-branch }}${SUFFIX}" >> $GITHUB_OUTPUT
-          echo "tag-b2=${{ matrix.jmeter-branch }}${SUFFIX}${SUFFIX2}" >> $GITHUB_OUTPUT
+          suffix1=${SUFFIX}
+          suffix2=${SUFFIX}${SUFFIX2}
+          if '${{ matrix.default}}' == 'true' ; then
+              echo "DEFAUUUUUULT"
+          else
+               echo "NOOOT DEFAUUUUUULT"
+          fi
+          echo "tag-v1=${{ matrix.jmeter-version }}${suffix1}" >> $GITHUB_OUTPUT
+          echo "tag-v2=${{ matrix.jmeter-version }}${suffix2}" >> $GITHUB_OUTPUT
+          echo "tag-b1=${{ matrix.jmeter-branch }}${suffix1}" >> $GITHUB_OUTPUT
+          echo "tag-b2=${{ matrix.jmeter-branch }}${suffix2}" >> $GITHUB_OUTPUT
           echo "tag-latest=${{ matrix.tags-latest == 'latest' && 'latest' || matrix.jmeter-branch }}${SUFFIX}" >> $GITHUB_OUTPUT
 
       - name: Show Image Settings 📦
