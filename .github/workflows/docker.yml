@@ -79,16 +79,21 @@ jobs:
         run: |
           DOCKER_IMAGE=anasoid/jmeter
           VERSION="${{ matrix.jmeter-version }}"
+          echo "55"
           SUFFIX="${{ matrix.with-plugins && '-plugins' || '' }}${{ matrix.jvm-type == 'jdk' && '-' || '' }}${{ matrix.jvm-type == 'jdk' && matrix.jvm-version || '' }}${{ matrix.jvm-type == 'jdk' && '-jdk' || '' }}"
           SUFFIX2="${{ matrix.jvm-type == 'jre' && '-' || '' }}${{ matrix.jvm-type == 'jre' && matrix.jvm-version || '' }}${{ matrix.jvm-type == 'jre' && '-jre' || '' }}"
           echo "image=${DOCKER_IMAGE}" >> $GITHUB_OUTPUT
           echo "jmeter-version=${{ matrix.jmeter-version }}" >> $GITHUB_OUTPUT
+          echo "444"
           echo "created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+          echo "3333"
           echo "jvm-version=${{ matrix.jvm-version }}-${{ matrix.jvm-type }}-${{ matrix.jvm-os }}" >> $GITHUB_OUTPUT
           echo "jmeter-branch=${{ matrix.jmeter-branch }}" >> $GITHUB_OUTPUT
           echo "with-plugins=${{ matrix.with-plugins }}" >> $GITHUB_OUTPUT
+          echo "222"
           suffix1=${SUFFIX}
           suffix2=${SUFFIX}${SUFFIX2}
+          echo "11111"
           if '${{ matrix.default}}' == 'true' ; then
           echo "DEFAUUUUUULT"
           else
