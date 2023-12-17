@@ -92,6 +92,7 @@ jobs:
           if '${{ matrix.default}}' == 'true' ; then
               echo "DEFAUUUUUULT"
           else
+               suffix1=${suffix2}
                echo "NOOOT DEFAUUUUUULT"
           fi
           echo "tag-v1=${{ matrix.jmeter-version }}${suffix1}" >> $GITHUB_OUTPUT
