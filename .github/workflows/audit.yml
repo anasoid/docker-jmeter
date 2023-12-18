@@ -2,11 +2,12 @@ name: Audit ⚓
 
 on:
   workflow_dispatch:
-    max_parallel:
-      description: 'True to print to STDOUT'
-      required: true
-      type: number
-      default: 1
+    inputs:
+      max_parallel:
+        description: 'True to print to STDOUT'
+        required: true
+        type: number
+        default: 1
   schedule:
     - cron: '23 0/4 * * *'
 
