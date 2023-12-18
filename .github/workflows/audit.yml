@@ -122,7 +122,7 @@ jobs:
 
       - name: pull image
         run: |
-          docker pull --image ${{ steps.result.outputs.currentImage }} 
+          docker pull  ${{ steps.result.outputs.currentImage }} 
 
 
       - name: Run Trivy vulnerability scanner
