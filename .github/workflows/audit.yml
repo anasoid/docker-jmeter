@@ -2,6 +2,11 @@ name: Audit ⚓
 
 on:
   workflow_dispatch:
+    max_parallel:
+      description: 'True to print to STDOUT'
+      required: true
+      type: number
+      default: 1
   schedule:
     - cron: '23 0/4 * * *'
 
@@ -12,6 +17,7 @@ jobs:
 
     runs-on: ubuntu-latest
     strategy:
+      max-parallel:  ${{ inputs.max_parallel }}
       matrix:
         jmeter-branch: [ 5.4, 5.5, 5.6 ]
         jvm-type: [ jdk , jre ]
