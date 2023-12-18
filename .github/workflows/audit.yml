@@ -2,12 +2,6 @@ name: Audit ⚓
 
 on:
   workflow_dispatch:
-    inputs:
-      max_parallel:
-        description: 'max parallel'
-        required: true
-        type: number
-        default: 1
   schedule:
     - cron: '23 0/4 * * *'
 
