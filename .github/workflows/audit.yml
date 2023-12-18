@@ -1,0 +1,133 @@
+name: Docker Build ⚓
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  # Single job now to build Docker Image, run GHC unit tests, and push to DockerHub
+  build_test_push:
+    name: scan image
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        jmeter-branch: [ 5.4, 5.5, 5.6 ]
+        jvm-type: [ jdk , jre ]
+        jvm-version: [ 11,17,21 ]
+        with-plugins: [ false , true ]
+        include:
+          - folder: "5.x/eclipse-temurin"
+          - jvm-os: "alpine"
+
+          - jmeter-branch: 5.6
+            jvm-type: jre
+            jvm-version: 21
+            tags-latest: latest
+            default: true
+
+          - jmeter-branch: 5.5
+            jvm-type: jre
+            jvm-version: 21
+            default: true
+
+          - jmeter-branch: 5.4
+            jvm-type: jre
+            jvm-version: 11
+            default: true
+
+          - jmeter-branch: 5.6
+            jmeter-version: 5.6.2
+          - jmeter-branch: 5.5
+            jmeter-version: 5.5
+          - jmeter-branch: 5.4
+            jmeter-version: 5.4.3
+        exclude:
+          - jmeter-branch: 5.4
+            jvm-version: 17
+          - jmeter-branch: 5.4
+            jvm-version: 21
+
+    # v2 https://github.com/docker/build-push-action/blob/master/UPGRADE.md
+    steps:
+      - name: Checkout ✅
+        uses: actions/checkout@v4
+
+      - name: Unit Test bash Script 📦
+        run: |
+          ./scripts/internal/build/test/jmeter-utils-test.sh
+
+      - name: Install  container-structure-test 📦
+        run: |
+          curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64
+          chmod +x container-structure-test-linux-amd64
+          sudo mv container-structure-test-linux-amd64 /usr/local/bin/container-structure-test
+
+      - name: Config 📦
+        run: |
+          echo jmeter-branch=${{ matrix.jmeter-branch }}
+          echo jvm-version=${{ matrix.jvm-version }}-${{ matrix.jvm-type }}-${{ matrix.jvm-os }}
+          echo jmeter-version=${{ matrix.jmeter-version }}
+          echo folder=${{ matrix.folder }}
+          echo tags-latest=${{ matrix.tags-latest }}
+          echo with-plugins=${{ matrix.with-plugins }}
+
+      - name: Prepare 📦
+        id: prep
+        run: |
+          DOCKER_IMAGE=anasoid/jmeter
+          VERSION="${{ matrix.jmeter-version }}"
+          SUFFIX="${{ matrix.with-plugins && '-plugins' || '' }}${{ matrix.jvm-type == 'jdk' && '-' || '' }}${{ matrix.jvm-type == 'jdk' && matrix.jvm-version || '' }}${{ matrix.jvm-type == 'jdk' && '-jdk' || '' }}"
+          SUFFIX2="${{ matrix.jvm-type == 'jre' && '-' || '' }}${{ matrix.jvm-type == 'jre' && matrix.jvm-version || '' }}${{ matrix.jvm-type == 'jre' && '-jre' || '' }}"
+          echo "image=${DOCKER_IMAGE}" >> $GITHUB_OUTPUT
+          echo "jmeter-version=${{ matrix.jmeter-version }}" >> $GITHUB_OUTPUT
+          echo "created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+          echo "jvm-version=${{ matrix.jvm-version }}-${{ matrix.jvm-type }}-${{ matrix.jvm-os }}" >> $GITHUB_OUTPUT
+          echo "jmeter-branch=${{ matrix.jmeter-branch }}" >> $GITHUB_OUTPUT
+          echo "with-plugins=${{ matrix.with-plugins }}" >> $GITHUB_OUTPUT
+          suffix1=${SUFFIX}
+          suffix2=${SUFFIX}${SUFFIX2}
+          if [[ '${{ matrix.default}}' == 'true' ]] ; then
+            echo "DEFAUUUUUULT"
+          else
+            echo "changing value to suffix2"
+            suffix1=${suffix2}
+            echo "NOOOT DEFAUUUUUULT"
+          fi
+          echo "tag-v1=${{ matrix.jmeter-version }}${suffix1}" >> $GITHUB_OUTPUT
+          echo "tag-v2=${{ matrix.jmeter-version }}${suffix2}" >> $GITHUB_OUTPUT
+          echo "tag-b1=${{ matrix.jmeter-branch }}${suffix1}" >> $GITHUB_OUTPUT
+          echo "tag-b2=${{ matrix.jmeter-branch }}${suffix2}" >> $GITHUB_OUTPUT
+          echo "tag-latest=${{ matrix.tags-latest == 'latest' && 'latest' || matrix.jmeter-branch }}${suffix1}" >> $GITHUB_OUTPUT
+
+      - name: Show Image Settings 📦
+        run: |
+          echo "IMAGE=${{ steps.prep.outputs.image }} VERSION=${{ steps.prep.outputs.version }} TAGS=${{ steps.prep.outputs.tag-latest }}"
+          echo "steps.prep.outputs.created=${{ steps.prep.outputs.created }} "
+          echo "steps.prep.outputs.jvm-version=${{ steps.prep.outputs.jvm-version }} "
+          echo "steps.prep.outputs.jmeter-branch=${{ steps.prep.outputs.jmeter-branch }} "
+          echo "steps.prep.outputs.with-plugins=${{ steps.prep.outputs.with-plugins }} "
+          echo "steps.prep.outputs.tag-v1=${{ steps.prep.outputs.tag-v1 }} "
+          echo "steps.prep.outputs.tag-b1=${{ steps.prep.outputs.tag-b1 }} "
+          echo "steps.prep.outputs.tag-v2=${{ steps.prep.outputs.tag-v2 }} "
+          echo "steps.prep.outputs.tag-b2=${{ steps.prep.outputs.tag-b2 }} "     
+          echo "steps.prep.outputs.tag-latest=${{ steps.prep.outputs.tag-latest }} "
+
+
+      - name: Result 📦
+        id: result
+        run: |
+          echo "currentImage=${{ steps.prep.outputs.image }}:${{ steps.prep.outputs.tag-b1 }}" >> $GITHUB_OUTPUT
+
+      - name: pull image
+        run: |
+          docker pull --image ${{ steps.result.outputs.currentImage }} 
+
+
+      - name: Scan for vulnerabilities
+        uses: crazy-max/ghaction-container-scan@v3
+        with:
+          image: ${{ steps.result.outputs.currentImage }}
+
+
