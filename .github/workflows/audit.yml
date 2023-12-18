@@ -1,9 +1,9 @@
-name: Docker Build ⚓
+name: Audit ⚓
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '23 0/4 * * *'
 
 jobs:
   # Single job now to build Docker Image, run GHC unit tests, and push to DockerHub
@@ -122,12 +122,17 @@ jobs:
 
       - name: pull image
         run: |
-          docker pull --image ${{ steps.result.outputs.currentImage }} 
+          docker pull  ${{ steps.result.outputs.currentImage }} 
 
 
-      - name: Scan for vulnerabilities
-        uses: crazy-max/ghaction-container-scan@v3
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
         with:
-          image: ${{ steps.result.outputs.currentImage }}
+          image-ref: ${{ steps.result.outputs.currentImage }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
 
-
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
