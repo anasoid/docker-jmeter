@@ -3,7 +3,7 @@ name: Audit ⚓
 on:
   workflow_dispatch:
   schedule:
-    - cron: '23 0/4 * * *'
+    - cron: '23 0/1 * * *'
 
 jobs:
   # Single job now to build Docker Image, run GHC unit tests, and push to DockerHub
