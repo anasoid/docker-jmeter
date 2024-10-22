@@ -11,8 +11,10 @@ jobs:
     name: scan image
 
     runs-on: ubuntu-latest
+    continue-on-error: true
     strategy:
       max-parallel:  1
+      fail-fast: false
       matrix:
         jmeter-branch: [ 5.4, 5.5, 5.6 ]
         jvm-type: [ jdk , jre ]

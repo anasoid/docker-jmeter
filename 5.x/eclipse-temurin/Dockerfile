@@ -1,4 +1,4 @@
-ARG  JVM_VERSION=11-jre-alpine
+ARG  JVM_VERSION=11.0.23_9-jre-alpine
 #use Maven image to install maven
 FROM maven:3.9-eclipse-temurin-21-alpine  as maven-install-build
 

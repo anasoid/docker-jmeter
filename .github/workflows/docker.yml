@@ -136,7 +136,7 @@ jobs:
 
       - name: Docker Build only - retain local Image 📦
         id: build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ${{ matrix.folder }}/Dockerfile
@@ -269,7 +269,7 @@ jobs:
       - name: Push to Docker repo (on Push only) 📦
         if: ${{ github.ref_name == 'master' }}
         id: push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           platforms: ${{ matrix.jvm-version == '21' && 'linux/amd64,linux/arm64' || 'linux/amd64' }}
